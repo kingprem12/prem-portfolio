@@ -7,131 +7,132 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Poppins', sans-serif; overflow-x: hidden; background: radial-gradient(circle at top, #0f2027, #203a43, #2c5364); color: #fff; scroll-behavior: smooth; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      overflow-x: hidden;
+      background: #0a0a0a;
+      color: #fff;
+      scroll-behavior: smooth;
+    }
 
-    /* Navigation */
-    nav { position: fixed; top: 0; left: 0; width: 100%; display: flex; justify-content: center; gap: 20px; padding: 20px; background: rgba(0,0,0,0.8); z-index: 100; backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,0.1); }
-    nav a { color: #fff; text-decoration: none; font-weight: 500; transition: .3s; }
+    /* Full-screen energy waves canvas */
+    #bgCanvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: -1;
+      background: #000;
+    }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; width: 100%;
+      display: flex; justify-content: center; gap: 20px;
+      padding: 20px;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(10px);
+      z-index: 100;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    nav a {
+      color: #fff; text-decoration: none; font-weight: 500;
+      transition: .3s;
+    }
     nav a:hover { color: #0ff; text-shadow: 0 0 10px #0ff; }
 
-    section { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; text-align: center; position: relative; z-index: 1; }
-    h1, h2, h3 { margin-bottom: 16px; color: #0ff; text-shadow: 0 0 20px rgba(0,255,255,0.8); }
-    p { max-width: 700px; margin: 0 auto 16px; line-height: 1.6; color: #e0e0e0; }
-
-    /* Buttons */
-    .btn { display: inline-block; margin: 10px; padding: 12px 20px; border-radius: 10px; text-decoration: none; font-weight: 600; transition: .3s; }
-    .btn-view { background: #0ff; color: #000; }
-    .btn-download { background: #8e2de2; color: #fff; }
-    .btn:hover { transform: scale(1.05); box-shadow: 0 0 20px #0ff; }
-
-    /* Cards */
-    .projects-grid, .certs-grid, .internships-grid, .achievements-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 40px;
-      width: 100%;
-      max-width: 1200px;
-      margin-top: 40px;
+    section {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 60px 20px;
+      text-align: center;
+      position: relative;
+      z-index: 1;
     }
-    .project-card, .cert-item, .internship-card, .achievement-item {
-      background: rgba(255,255,255,0.08);
-      padding: 30px;
-      border-radius: 16px;
+    h1, h2, h3 { color: #0ff; margin-bottom: 16px; text-shadow: 0 0 20px rgba(0,255,255,0.8); }
+    p { max-width: 800px; margin: 0 auto 16px; line-height: 1.6; color: #ddd; }
+
+    /* Projects */
+    .projects-grid {
+      display: grid; grid-template-columns: 1fr;
+      gap: 30px; width: 100%; max-width: 1200px; margin-top: 40px;
+    }
+    .project-card {
+      background: rgba(255,255,255,0.05);
       border: 1px solid rgba(255,255,255,0.1);
-      transition: transform 0.4s ease, box-shadow 0.4s ease;
-      box-shadow: 0 0 15px rgba(0,255,255,0.2);
+      padding: 25px; border-radius: 16px;
+      transition: 0.4s; box-shadow: 0 0 15px rgba(0,255,255,0.2);
     }
-    .project-card:hover, .internship-card:hover, .achievement-item:hover {
-      transform: translateY(-10px) scale(1.05);
+    .project-card:hover {
+      transform: translateY(-8px) scale(1.03);
       box-shadow: 0 20px 40px rgba(0,255,255,0.6), 0 0 25px rgba(142,45,226,0.7);
     }
-    @media (min-width: 768px) {
-      .projects-grid, .certs-grid, .internships-grid, .achievements-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-    }
+    @media(min-width: 768px) { .projects-grid { grid-template-columns: 1fr 1fr; } }
 
-    /* Skills Section */
+    /* Skills */
     .skills-grid {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 25px;
-      margin-top: 40px;
-      width: 100%;
-      max-width: 900px;
+      display: flex; flex-wrap: wrap;
+      justify-content: center; gap: 25px;
+      margin-top: 40px; max-width: 900px;
     }
     .skills-chip-container {
-      width: 180px;
-      height: 100px;
-      position: relative;
-      transform-style: preserve-3d;
-      transition: transform 0.4s ease, box-shadow 0.4s ease;
-      cursor: pointer;
+      width: 200px; height: 100px;
+      position: relative; cursor: pointer;
+      transition: transform 0.3s;
     }
-    .skills-chip-container:hover {
-      transform: rotateY(10deg) rotateX(5deg) scale(1.1);
-      box-shadow: 0 20px 40px rgba(0,255,255,0.5);
-    }
+    .skills-chip-container:hover { transform: scale(1.1); }
     .skills-chip, .skill-description-box {
-      position: absolute;
-      width: 100%; height: 100%;
-      backface-visibility: hidden;
+      position: absolute; width: 100%; height: 100%;
       display: flex; justify-content: center; align-items: center;
       border-radius: 10px;
-      transition: opacity 0.4s ease;
+      backface-visibility: hidden;
     }
     .skills-chip {
-      background: rgba(255,255,255,0.1);
-      color: #fff; font-weight: 500; font-size: 16px;
+      background: rgba(255,255,255,0.1); color: #fff; font-weight: 500;
       box-shadow: 0 0 20px rgba(0,255,255,0.2);
     }
     .skill-description-box {
-      background: rgba(0,0,0,0.9);
-      border: 1px solid #0ff;
-      color: #fff; padding: 15px;
-      font-size: 14px; line-height: 1.4;
-      opacity: 0;
+      background: rgba(0,0,0,0.9); border: 1px solid #0ff; color: #fff;
+      padding: 15px; font-size: 14px; opacity: 0; transition: opacity 0.3s;
     }
     .skills-chip-container:hover .skill-description-box { opacity: 1; }
 
-    /* Contact Form */
-    .contact-form {
-      display: flex; flex-direction: column; gap: 15px;
-      max-width: 500px; width: 100%; margin-top: 20px;
+    /* Contact */
+    .contact-container {
+      display: flex; flex-direction: column;
+      gap: 20px; max-width: 900px; width: 100%;
+    }
+    .contact-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 30px; border-radius: 16px;
+      box-shadow: 0 0 15px rgba(0,255,255,0.2);
+    }
+    form {
+      display: flex; flex-direction: column;
+      gap: 15px; max-width: 500px; margin: 0 auto;
     }
     input, textarea {
-      padding: 15px; border: none;
-      border-radius: 10px;
-      background: rgba(255,255,255,0.1);
+      padding: 15px; border-radius: 8px;
+      border: none; background: rgba(255,255,255,0.1);
       color: #fff; font-size: 16px;
     }
-    textarea { resize: none; height: 120px; }
     button {
-      padding: 14px; background: #0ff;
-      color: #000; border: none; border-radius: 10px;
-      font-weight: 700; cursor: pointer; transition: .3s;
+      padding: 14px; border-radius: 8px;
+      border: none; background: #0ff; color: #000;
+      font-weight: 700; cursor: pointer;
     }
-    button:hover { background: #fff; color: #000; transform: scale(1.05); }
+    button:hover { background: #fff; }
 
     /* Modal */
-    .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); align-items: center; justify-content: center; }
-    .modal-content-container { max-height: 90vh; display: flex; align-items: center; justify-content: center; }
-    .modal-content-container img, .modal-content-container iframe, .modal-content-container video {
-      max-width: 85%; max-height: 85vh;
-      border-radius: 12px;
-      border: 2px solid transparent;
-      box-shadow: 0 0 30px rgba(0,255,255,0.6);
-      opacity: 0; transform: scale(0.8);
-      animation: popIn 0.6s forwards;
-    }
-    @keyframes popIn {
-      to { opacity: 1; transform: scale(1); border-color: #8e2de2; }
-    }
-    .close { position: absolute; top: 20px; right: 40px; color: #fff; font-size: 40px; font-weight: bold; cursor: pointer; }
+    .modal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.9); z-index: 1000; justify-content: center; align-items: center; }
+    .modal-content-container img, .modal-content-container iframe, .modal-content-container video { max-width: 90%; max-height: 90vh; }
+    .close { position: absolute; top: 20px; right: 40px; font-size: 40px; cursor: pointer; color: #fff; }
   </style>
 </head>
 <body>
+  <canvas id="bgCanvas"></canvas>
+
   <nav>
     <a href="#intro">Home</a>
     <a href="#about">About</a>
@@ -158,16 +159,19 @@
   <!-- About -->
   <section id="about">
     <h2>About Me</h2>
-    <p>As a 3rd-year BE CSE student, I specialize in full-stack development, IoT systems, and scalable cloud solutions.</p>
+    <p>As a driven BE Computer Science student, I specialize in crafting robust full-stack applications and deploying innovative IoT systems.</p>
   </section>
 
   <!-- Projects -->
   <section id="projects">
     <h2>My Projects</h2>
     <div class="projects-grid">
-      <div class="project-card"><h3>Smart AI Traffic Management</h3><p><a onclick="openModal('traffic managemnet proto.jpeg','image')">View Prototype</a></p></div>
-      <div class="project-card"><h3>Kutty Port</h3><p><a onclick="openModal('kutty port.pptx','ppt')">View Details</a></p></div>
-      <div class="project-card"><h3>IEEE Lane Clearance</h3><p><a onclick="openModal('IEEE lane clearance.docx','docx')">View Details</a></p></div>
+      <div class="project-card"><h3>Smart AI Traffic Management</h3><p>IoT-based system that detects violations and resets signals.</p></div>
+      <div class="project-card"><h3>Kutty Port</h3><p>A logistics platform for Indian export MSMEs.</p></div>
+      <div class="project-card"><h3>IEEE Emergency Lane Clearance</h3><p>Edge-IoT system for smart lane clearance.</p></div>
+      <div class="project-card"><h3>IEEE Shadow AI</h3><p>Consultancy on risks of unauthorized AI usage.</p></div>
+      <div class="project-card"><h3>SAP Hackfest: AI-Dharma</h3><p>Fraud detection with ethics + ML.</p></div>
+      <div class="project-card"><h3>Budget Management System</h3><p>Secure financial tracker built with Spring Boot & REST API.</p></div>
     </div>
   </section>
 
@@ -175,12 +179,10 @@
   <section id="skills">
     <h2>Skills</h2>
     <div class="skills-grid">
-      <div class="skills-chip-container"><div class="skills-chip">C++</div><div class="skill-description-box">Competitive programming & system-level apps.</div></div>
+      <div class="skills-chip-container"><div class="skills-chip">C++</div><div class="skill-description-box">Proficient in C++.</div></div>
       <div class="skills-chip-container"><div class="skills-chip">Java</div><div class="skill-description-box">Backend with Spring Boot.</div></div>
-      <div class="skills-chip-container"><div class="skills-chip">JavaScript</div><div class="skill-description-box">Interactive web apps.</div></div>
-      <div class="skills-chip-container"><div class="skills-chip">React</div><div class="skill-description-box">Responsive UI design.</div></div>
-      <div class="skills-chip-container"><div class="skills-chip">AWS</div><div class="skill-description-box">Cloud deployments.</div></div>
-      <div class="skills-chip-container"><div class="skills-chip">Python</div><div class="skill-description-box">Data analysis & ML.</div></div>
+      <div class="skills-chip-container"><div class="skills-chip">React</div><div class="skill-description-box">Modern UI interfaces.</div></div>
+      <div class="skills-chip-container"><div class="skills-chip">AWS</div><div class="skill-description-box">Deployments with EC2, Lambda.</div></div>
     </div>
   </section>
 
@@ -188,9 +190,8 @@
   <section id="certs">
     <h2>Certifications</h2>
     <div class="certs-grid">
-      <a class="cert-item" onclick="openModal('azure-cert.jpeg','image')">Microsoft Azure Fundamentals</a>
-      <a class="cert-item" onclick="openModal('genai.jpg','image')">GenAI Data Analyst</a>
-      <a class="cert-item" onclick="openModal('full stack.jpg','image')">Full Stack Developer</a>
+      <a class="cert-item" onclick="openModal('azure-cert.jpeg','image')">Azure Fundamentals</a>
+      <a class="cert-item" onclick="openModal('genai.jpg','image')">GenAI Analyst</a>
     </div>
   </section>
 
@@ -198,8 +199,8 @@
   <section id="internships">
     <h2>Internships & Workshops</h2>
     <div class="internships-grid">
-      <div class="internship-card"><h3>Raspberry Pi Workshop</h3><p><a onclick="openModal('respberry pi.jpeg','image')">View Certificate</a></p></div>
-      <div class="internship-card"><h3>Maven Advert Intern</h3><p><a onclick="openModal('Prem INTERN CERTIFICATE 3.pdf','pdf')">View Certificate</a></p></div>
+      <div class="internship-card"><h3>Raspberry Pi Workshop</h3><p>Built IoT apps with Node.js</p></div>
+      <div class="internship-card"><h3>Maven Advert Intern</h3><p>Digital marketing experience</p></div>
     </div>
   </section>
 
@@ -215,14 +216,24 @@
   <!-- Contact -->
   <section id="contact">
     <h2>Contact Me</h2>
-    <form class="contact-form" action="https://formspree.io/f/mwkawnyg" method="POST">
-      <input type="text" name="name" placeholder="Your Name" required>
-      <input type="email" name="email" placeholder="Your Email" required>
-      <textarea name="message" placeholder="Your Message" required></textarea>
-      <button type="submit">Send Message</button>
-    </form>
-    <p style="margin-top:15px;">📧 <a href="mailto:selvaraj3805@gmail.com" style="color:#0ff">selvaraj3805@gmail.com</a> | 🔗 <a href="https://www.linkedin.com/in/prem-s-12626b309/" style="color:#0ff" target="_blank">LinkedIn</a> | 💻 <a href="https://github.com/kingprem12" style="color:#0ff" target="_blank">GitHub</a></p>
-    <p>📱 <a href="tel:+918778642535" style="color:#0ff">+91 8778642535</a></p>
+    <div class="contact-container">
+      <div class="contact-card">
+        <h3>Send a Message</h3>
+        <form action="https://formspree.io/f/mwkawnyg" method="POST">
+          <input type="text" name="name" placeholder="Your Name" required>
+          <input type="email" name="email" placeholder="Your Email" required>
+          <textarea name="message" rows="4" placeholder="Your Message" required></textarea>
+          <button type="submit">Send</button>
+        </form>
+      </div>
+      <div class="contact-card">
+        <h3>Connect</h3>
+        <p>LinkedIn: <a href="https://www.linkedin.com/in/prem-s-12626b309/" target="_blank">Profile</a></p>
+        <p>GitHub: <a href="https://github.com/kingprem12" target="_blank">Repo</a></p>
+        <p>Email: <a href="mailto:selvaraj3805@gmail.com">selvaraj3805@gmail.com</a></p>
+        <p>Phone: +91 8778642535</p>
+      </div>
+    </div>
   </section>
 
   <!-- Resume -->
@@ -242,24 +253,40 @@
   </div>
 
   <script>
-    function openModal(src, type) {
-      const modal = document.getElementById('fileModal');
-      const img = document.getElementById('modalImg');
-      const iframe = document.getElementById('modalIframe');
-      const video = document.getElementById('modalVideo');
+    // Energy Waves Background
+    const canvas = document.getElementById('bgCanvas');
+    const ctx = canvas.getContext('2d');
+    let w,h,t=0; function resize(){w=canvas.width=window.innerWidth;h=canvas.height=window.innerHeight;}
+    window.addEventListener('resize',resize);resize();
+    function draw(){
+      t+=0.01; ctx.clearRect(0,0,w,h);
+      for(let i=0;i<50;i++){
+        ctx.beginPath();
+        ctx.moveTo(0,h/2);
+        for(let x=0;x<w;x+=20){
+          let y=h/2+Math.sin(x*0.01+i+t)*50*Math.sin(t+i);
+          ctx.lineTo(x,y);
+        }
+        ctx.strokeStyle=`hsla(${i*10+t*50},100%,50%,0.1)`;
+        ctx.stroke();
+      }
+      requestAnimationFrame(draw);
+    } draw();
 
-      img.style.display = iframe.style.display = video.style.display = 'none';
-      video.pause(); video.currentTime = 0;
-
-      if (type === 'image') { img.src = src; img.style.display = 'block'; }
-      else if (['pdf','ppt','pptx','doc','docx'].includes(type)) { iframe.src = src; iframe.style.display = 'block'; }
-      else if (type === 'video') { video.src = src; video.style.display = 'block'; }
-
-      modal.style.display = 'flex';
+    // Modal
+    function openModal(src,type){
+      const m=document.getElementById('fileModal');
+      const img=document.getElementById('modalImg');
+      const ifr=document.getElementById('modalIframe');
+      const vid=document.getElementById('modalVideo');
+      img.style.display=ifr.style.display=vid.style.display="none";
+      if(type==="image"){img.src=src;img.style.display="block";}
+      else if(type==="pdf"||type==="ppt"||type==="doc"){ifr.src=src;ifr.style.display="block";}
+      else if(type==="video"){vid.src=src;vid.style.display="block";}
+      m.style.display="flex";
     }
-    function closeModal() {
-      document.getElementById('fileModal').style.display = 'none';
-      const video = document.getElementById('modalVideo'); video.pause(); video.currentTime = 0;
+    function closeModal(){
+      document.getElementById('fileModal').style.display="none";
     }
   </script>
 </body>
