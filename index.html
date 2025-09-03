@@ -23,13 +23,53 @@
         
         .intro, .about, .projects, .skills, .certs, .contact, .resume, .achievements, .internships { background: none; }
         
+        /* Projects Section */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 40px;
+            width: 100%;
+            max-width: 1200px;
+            margin-top: 40px;
+        }
+        .project-card {
+            background: rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 0 10px rgba(0,255,255,0.2);
+        }
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0,255,255,0.4);
+        }
+        .project-card h3 { color: #0ff; }
+
+        @media (min-width: 768px) {
+            .projects-grid {
+                grid-template-columns: 1fr 1fr;
+                grid-template-areas:
+                    "card1 card2"
+                    "card3 card4"
+                    "card5 card6";
+            }
+            #project-1 { grid-area: card1; }
+            #project-2 { grid-area: card2; }
+            #project-3 { grid-area: card3; }
+            #project-4 { grid-area: card4; }
+            #project-5 { grid-area: card5; }
+            #project-6 { grid-area: card6; }
+        }
+
         /* Skills Section Overhaul */
         .skills-grid {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             gap: 20px;
-            width: 80%;
+            width: 100%;
+            max-width: 900px;
             margin-top: 40px;
         }
         .skills-chip {
@@ -43,32 +83,59 @@
             border: 1px solid transparent;
             box-shadow: 0 0 10px rgba(0,255,255,0.2);
             transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
         }
         .skills-chip:hover {
-            transform: scale(1.1);
+            transform: translateY(-5px);
             background: rgba(0,255,255,0.2);
             box-shadow: 0 0 20px rgba(0,255,255,0.8);
         }
-
-        /* Projects Section Overhaul */
-        .projects {
-            perspective: 1000px;
-            padding: 80px 20px;
-        }
-        .project-card {
-            background: rgba(255,255,255,0.1);
-            padding: 30px;
-            border-radius: 16px;
-            border: 1px solid rgba(255,255,255,0.1);
-            margin-bottom: 40px;
-            transition: transform 0.6s ease-out;
-            transform-origin: center center;
+        .skill-description {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 10px;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
+            border-top: 1px solid #0ff;
             opacity: 0;
-            transform: translateY(50px) rotateX(15deg);
+            visibility: hidden;
+            transform: translateY(100%);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            text-align: center;
+            font-size: 12px;
+            line-height: 1.4;
         }
-        .project-card.in-view {
+        .skills-chip:hover .skill-description {
             opacity: 1;
-            transform: translateY(0) rotateX(0deg);
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        /* Certifications Section */
+        .certs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1000px;
+        }
+        .cert-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            text-align: center;
+            padding: 10px;
+        }
+        .cert-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px rgba(0,255,255,0.8);
         }
 
         /* General styles */
@@ -144,65 +211,72 @@
 
     <section id="projects" class="projects">
         <h2>My Projects</h2>
-        <div class="project-card">
-            <h3>Smart AI-Based Traffic Management</h3>
-            <p>An IoT-based system that uses thermal and humidity-aware vision to manage urban traffic dynamically. It adjusts traffic light timings based on real-time data, helping to reduce congestion and improve efficiency. This project was presented at the IoT InnovateX.</p>
-            <p>
-                <a class="project-link" onclick="openModal('traffic managemnet proto.jpeg', 'image')">View Prototype</a>
-            </p>
-        </div>
-        <div class="project-card">
-            <h3>Kutty Port: The Zepto of Indian Export Logistics</h3>
-            <p>A logistics platform designed to streamline the export process for small and medium-sized businesses (MSMEs). It addresses issues like high costs, delays, and lack of real-time tracking through a decentralized port model.</p>
-            <a class="project-link" onclick="openModal('kutty port.pptx', 'ppt')">View Details</a>
-        </div>
-        <div class="project-card">
-            <h3>IEEE Emergency Lane Clearance</h3>
-            <p>A smart Edge-IoT system for dynamic emergency lane clearance. The system uses a combination of thermal cameras and humidity sensors to detect emergency vehicles in any weather, including fog and rain, and controls traffic lights to provide a clear path.</p>
-            <p>
-                <a class="project-link" onclick="openModal('IEEE lane clearance.docx', 'docx')">View Details</a> |
-                <a class="project-link" onclick="openModal('lane clearance.mp4', 'video')">View Video</a>
-            </p>
-        </div>
-        <div class="project-card">
-            <h3>IEEE Shadow AI</h3>
-            <p>A consultancy project focused on the risks and ethical implications of "Shadow AI"—the unauthorized use of AI tools by employees within a company. The project highlights the security and privacy risks and provides a framework for responsible AI use.</p>
-            <a class="project-link" onclick="openModal('IEEE shadow ai.docx', 'docx')">View Details</a>
-        </div>
-        <div class="project-card">
-            <h3>SAP Hackfest: AI-Dharma</h3>
-            <p>An ethical AI-based fraud detection system for the banking sector. The project uses machine learning and game theory to identify suspicious transactions while ensuring transparency and fairness, aligning with principles from the Indian Knowledge System (IKS).</p>
-            <a class="project-link" onclick="openModal('SAP_HACKFEST_UPDATED.pptx', 'ppt')">View Details</a>
+        <div class="projects-grid">
+            <div class="project-card" id="project-1">
+                <h3>Smart AI-Based Traffic Management</h3>
+                <p>An IoT-based system that uses thermal and humidity-aware vision to manage urban traffic dynamically. It adjusts traffic light timings based on real-time data, helping to reduce congestion and improve efficiency. This project was presented at the IoT InnovateX.</p>
+                <p>
+                    <a class="project-link" onclick="openModal('traffic managemnet proto.jpeg', 'image')">View Prototype</a>
+                </p>
+            </div>
+            <div class="project-card" id="project-2">
+                <h3>Kutty Port: The Zepto of Indian Export Logistics</h3>
+                <p>A logistics platform designed to streamline the export process for small and medium-sized businesses (MSMEs). It addresses issues like high costs, delays, and lack of real-time tracking through a decentralized port model.</p>
+                <a class="project-link" onclick="openModal('kutty port.pptx', 'ppt')">View Details</a>
+            </div>
+            <div class="project-card" id="project-3">
+                <h3>IEEE Emergency Lane Clearance</h3>
+                <p>A smart Edge-IoT system for dynamic emergency lane clearance. The system uses a combination of thermal cameras and humidity sensors to detect emergency vehicles in any weather, including fog and rain, and controls traffic lights to provide a clear path.</p>
+                <p>
+                    <a class="project-link" onclick="openModal('IEEE lane clearance.docx', 'docx')">View Details</a> |
+                    <a class="project-link" onclick="openModal('lane clearance.mp4', 'video')">View Video</a>
+                </p>
+            </div>
+            <div class="project-card" id="project-4">
+                <h3>IEEE Shadow AI</h3>
+                <p>A consultancy project focused on the risks and ethical implications of "Shadow AI"—the unauthorized use of AI tools by employees within a company. The project highlights the security and privacy risks and provides a framework for responsible AI use.</p>
+                <a class="project-link" onclick="openModal('IEEE shadow ai.docx', 'docx')">View Details</a>
+            </div>
+            <div class="project-card" id="project-5">
+                <h3>SAP Hackfest: AI-Dharma</h3>
+                <p>An ethical AI-based fraud detection system for the banking sector. The project uses machine learning and game theory to identify suspicious transactions while ensuring transparency and fairness, aligning with principles from the Indian Knowledge System (IKS).</p>
+                <a class="project-link" onclick="openModal('SAP_HACKFEST_UPDATED.pptx', 'ppt')">View Details</a>
+            </div>
+            <div class="project-card" id="project-6">
+                <h3>Budget Management System</h3>
+                <p>A secure, full-stack financial application built with Spring Boot and REST API. This system allows users to track expenses, manage budgets, and visualize financial data for better financial control and planning.</p>
+                <a class="project-link" onclick="openModal('budget.pdf', 'pdf')">View Details</a>
+            </div>
         </div>
     </section>
 
     <section id="skills" class="skills">
         <h2>Skills</h2>
         <div class="skills-grid">
-            <div class="skills-chip">C++</div>
-            <div class="skills-chip">Java</div>
-            <div class="skills-chip">JavaScript</div>
-            <div class="skills-chip">React</div>
-            <div class="skills-chip">Node.js</div>
-            <div class="skills-chip">Express</div>
-            <div class="skills-chip">MySql</div>
-            <div class="skills-chip">AWS (EC2, S3, Lambda)</div>
-            <div class="skills-chip">Spring Boot</div>
-            <div class="skills-chip">Python</div>
-            <div class="skills-chip">UI/UX Design</div>
+            <div class="skills-chip" data-description="Proficient in C++ for system-level programming and competitive coding.">C++</div>
+            <div class="skills-chip" data-description="Extensive experience with Java for building robust backend services and enterprise applications with Spring Boot.">Java</div>
+            <div class="skills-chip" data-description="Skilled in modern JavaScript frameworks and libraries for dynamic web development.">JavaScript</div>
+            <div class="skills-chip" data-description="Experienced in building single-page applications with React.js for user interfaces.">React</div>
+            <div class="skills-chip" data-description="Strong background in using Node.js to create scalable server-side applications and APIs.">Node.js</div>
+            <div class="skills-chip" data-description="Used Express.js to build efficient and flexible web applications and APIs.">Express</div>
+            <div class="skills-chip" data-description="Expert in designing and managing relational databases with MySQL.">MySql</div>
+            <div class="skills-chip" data-description="Hands-on experience with AWS services like EC2, S3, and Lambda for cloud deployments.">AWS</div>
+            <div class="skills-chip" data-description="Proficient in Spring Boot for creating production-grade, stand-alone applications.">Spring Boot</div>
+            <div class="skills-chip" data-description="Utilized Python for data analysis, machine learning, and scripting.">Python</div>
+            <div class="skills-chip" data-description="Designed user-centric interfaces and experiences for web and mobile applications.">UI/UX Design</div>
         </div>
     </section>
 
     <section id="certs" class="certs">
         <h2>Certifications</h2>
-        <div class="cert-gallery">
-            <a onclick="openModal('azure-cert.jpeg', 'image')">Microsoft Azure Fundamentals</a>
-            <a onclick="openModal('aws-cloud.jpeg', 'image')">AWS Cloud Foundations</a>
-            <a onclick="openModal('cisco cyber cert.pdf', 'pdf')">Cisco Introduction to Cybersecurity</a>
-            <a onclick="openModal('data analyst.jpg', 'image')">GenAI Data Analyst</a>
-            <a onclick="openModal('full stack.jpg', 'image')">Full Stack/MERN Developer</a>
-            <a onclick="openModal('azure badge.jpeg', 'image')">Microsoft Azure AI-900 Badge</a>
-            <a onclick="openModal('innovate x cert.jpeg', 'image')">IoT InnovateX Certification</a>
+        <div class="certs-grid">
+            <a class="cert-item" onclick="openModal('azure-cert.jpeg', 'image')">Microsoft Azure Fundamentals</a>
+            <a class="cert-item" onclick="openModal('aws-cloud.jpeg', 'image')">AWS Cloud Foundations</a>
+            <a class="cert-item" onclick="openModal('cisco cyber cert.pdf', 'pdf')">Cisco Introduction to Cybersecurity</a>
+            <a class="cert-item" onclick="openModal('data analyst.jpg', 'image')">GenAI Data Analyst</a>
+            <a class="cert-item" onclick="openModal('full stack.jpg', 'image')">Full Stack/MERN Developer</a>
+            <a class="cert-item" onclick="openModal('azure badge.jpeg', 'image')">Microsoft Azure AI-900 Badge</a>
+            <a class="cert-item" onclick="openModal('innovate x cert.jpeg', 'image')">IoT InnovateX Certification</a>
         </div>
     </section>
 
@@ -264,7 +338,7 @@
     </div>
 
     <script>
-        // Background and cursor particles (Existing)
+        // Background and cursor particles
         const cursorCanvas=document.getElementById('cursorCanvas');
         const ctxCursor=cursorCanvas.getContext('2d');
         let cursorParticles=[];
@@ -356,7 +430,19 @@
             });
         });
 
-        // Modal functions (Existing)
+        // Skill description hover effect
+        document.addEventListener('DOMContentLoaded', () => {
+            const skillChips = document.querySelectorAll('.skills-chip');
+            skillChips.forEach(chip => {
+                const description = document.createElement('div');
+                description.classList.add('skill-description');
+                description.textContent = chip.dataset.description;
+                chip.appendChild(description);
+            });
+        });
+
+
+        // Modal functions
         function openModal(src, type){
             const modal = document.getElementById('fileModal');
             const img = document.getElementById('modalImg');
