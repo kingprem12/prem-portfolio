@@ -1,108 +1,245 @@
-<section id="skills" class="skills">
-  <h2>Skills</h2>
-  <div class="skills-grid">
-    <div class="skills-chip-container">
-      <div class="skills-chip">C++</div>
-      <div class="skill-description-box">Proficient in C++ for competitive programming and system-level applications.</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Prem S — Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Poppins', sans-serif; overflow-x: hidden; background: #0a0a0a; color: #fff; scroll-behavior: smooth; perspective: 1000px; }
+
+    #backgroundCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; background-color: #0a0a0a; }
+    #cursorCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+
+    section { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; text-align: center; position: relative; z-index: 1; background: rgba(0,0,0,0.6); margin-bottom: 20px; border-radius: 16px; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+    section:first-child { margin-top: 80px; }
+
+    h1, h2, h3 { margin-bottom: 16px; color: #0ff; text-shadow: 0 0 20px rgba(0,255,255,0.8); }
+    p { max-width: 700px; margin: 0 auto 16px; line-height: 1.6; color: #e0e0e0; }
+    nav { position: fixed; top: 0; left: 0; width: 100%; display: flex; justify-content: center; gap: 20px; padding: 20px; background: rgba(0,0,0,0.8); z-index: 100; backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,0.1); }
+    nav a { color: #fff; text-decoration: none; font-weight: 500; transition: .3s; }
+    nav a:hover { color: #0ff; text-shadow: 0 0 10px #0ff; }
+
+    /* Card styles */
+    .projects-grid, .certs-grid, .internships-grid, .achievements-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 40px;
+      width: 100%;
+      max-width: 1200px;
+      margin-top: 40px;
+    }
+    .project-card, .cert-item, .internship-card, .achievement-item {
+      background: rgba(255,255,255,0.1);
+      padding: 30px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.1);
+      transform-style: preserve-3d;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      box-shadow: 0 0 15px rgba(0,255,255,0.2);
+    }
+    .project-card:hover, .internship-card:hover, .achievement-item:hover {
+      transform: translateY(-10px) rotateX(5deg) rotateY(5deg) scale(1.05);
+      box-shadow: 0 20px 40px rgba(0,255,255,0.6), 0 0 25px rgba(142,45,226,0.7);
+    }
+
+    @media (min-width: 768px) {
+      .projects-grid, .certs-grid, .internships-grid, .achievements-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    /* Skills Section */
+    .skills-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 25px;
+      margin-top: 40px;
+      width: 100%;
+      max-width: 900px;
+      perspective: 1000px;
+    }
+    .skills-chip-container {
+      width: 200px;
+      height: 100px;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      cursor: pointer;
+    }
+    .skills-chip-container:hover {
+      transform: rotateY(15deg) rotateX(10deg) scale(1.1);
+      box-shadow: 0 20px 40px rgba(0,255,255,0.5);
+    }
+    .skills-chip-container .skills-chip, 
+    .skills-chip-container .skill-description-box {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0,255,255,0.2);
+      transition: opacity 0.4s ease;
+    }
+    .skills-chip {
+      background: rgba(255,255,255,0.1);
+      color: #fff;
+      font-weight: 500;
+      font-size: 16px;
+    }
+    .skill-description-box {
+      background: rgba(0,0,0,0.9);
+      border: 1px solid #0ff;
+      color: #fff;
+      text-align: center;
+      padding: 15px;
+      font-size: 14px;
+      line-height: 1.4;
+      opacity: 0;
+      pointer-events: none;
+    }
+    .skills-chip-container:hover .skill-description-box {
+      opacity: 1;
+    }
+
+    /* Buttons */
+    .btn { display: inline-block; margin: 10px; padding: 12px 20px; border-radius: 10px; text-decoration: none; font-weight: 600; transition: .3s; }
+    .btn-view { background: #0ff; color: #000; }
+    .btn-download { background: #8e2de2; color: #fff; }
+    .btn:hover { transform: scale(1.05); box-shadow: 0 0 20px #0ff; }
+
+    iframe { width: 80%; height: 80vh; border-radius: 12px; border: none; margin-top: 20px; }
+
+    /* Modal */
+    .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background: rgba(0,0,0,0.9); align-items: center; justify-content: center; }
+    .modal-content-container { max-height: 90vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .modal-content-container img, .modal-content-container iframe, .modal-content-container video { max-width: 90%; max-height: 90vh; }
+    .close { position: absolute; top: 20px; right: 40px; color: #fff; font-size: 40px; font-weight: bold; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <canvas id="backgroundCanvas"></canvas>
+  <canvas id="cursorCanvas"></canvas>
+
+  <nav>
+    <a href="#intro">Home</a>
+    <a href="#about">About</a>
+    <a href="#projects">Projects</a>
+    <a href="#skills">Skills</a>
+    <a href="#certs">Certifications</a>
+    <a href="#internships">Internships</a>
+    <a href="#achievements">Achievements</a>
+    <a href="#contact">Contact</a>
+    <a href="#resume">Resume</a>
+  </nav>
+
+  <section id="intro" class="intro">
+    <h1>Hi, I'm Prem 👋</h1>
+    <h3>Software Developer · Full-Stack · IoT & Cloud</h3>
+    <p>Turning visionary ideas into scalable applications, intelligent IoT solutions, and cutting-edge AI-driven projects.</p>
+    <div>
+      <a href="kisame.pdf" target="_blank" class="btn btn-view">📄 View Resume</a>
+      <a href="kisame.pdf" download class="btn btn-download">⬇️ Download Resume</a>
     </div>
-    <div class="skills-chip-container">
-      <div class="skills-chip">Java</div>
-      <div class="skill-description-box">Extensive experience with Java for building robust backend services with Spring Boot.</div>
+  </section>
+
+  <section id="skills" class="skills">
+    <h2>Skills</h2>
+    <div class="skills-grid">
+      <div class="skills-chip-container"><div class="skills-chip">C++</div><div class="skill-description-box">Proficient in C++ for competitive programming and system-level applications.</div></div>
+      <div class="skills-chip-container"><div class="skills-chip">Java</div><div class="skill-description-box">Extensive experience with Java for backend services with Spring Boot.</div></div>
+      <div class="skills-chip-container"><div class="skills-chip">JavaScript</div><div class="skill-description-box">Skilled in modern JavaScript frameworks for interactive web experiences.</div></div>
+      <div class="skills-chip-container"><div class="skills-chip">React</div><div class="skill-description-box">Experienced in building responsive user interfaces with React.js.</div></div>
+      <div class="skills-chip-container"><div class="skills-chip">Node.js</div><div class="skill-description-box">Strong background in server-side applications and APIs using Node.js.</div></div>
+      <div class="skills-chip-container"><div class="skills-chip">Express</div><div class="skill-description-box">Used Express.js to create efficient RESTful APIs.</div></div>
+      <div class="skills-chip-container"><div class="skills-chip">MySQL</div><div class="skill-description-box">Expert in designing and managing relational databases with MySQL.</div></div>
+      <div class="skills-chip-container"><div class="skills-chip">AWS</div><div class="skill-description-box">Hands-on with AWS services like EC2, S3, Lambda for cloud deployments.</div></div>
+      <div class="skills-chip-container"><div class="skills-chip">Spring Boot</div><div class="skill-description-box">Proficient in Spring Boot for production-grade applications.</div></div>
+      <div class="skills-chip-container"><div class="skills-chip">Python</div><div class="skill-description-box">Utilized Python for data analysis, ML, and scripting.</div></div>
+      <div class="skills-chip-container"><div class="skills-chip">UI/UX Design</div><div class="skill-description-box">Designed user-centric interfaces for web and mobile apps.</div></div>
     </div>
-    <div class="skills-chip-container">
-      <div class="skills-chip">JavaScript</div>
-      <div class="skill-description-box">Skilled in modern JavaScript frameworks for dynamic, interactive web experiences.</div>
+  </section>
+
+  <section id="certs" class="certs">
+    <h2>Certifications</h2>
+    <div class="certs-grid">
+      <a class="cert-item" onclick="openModal('azure-cert.jpeg','image')">Microsoft Azure Fundamentals</a>
+      <a class="cert-item" onclick="openModal('aws-cloud.jpeg','image')">AWS Cloud Foundations</a>
+      <a class="cert-item" onclick="openModal('cisco cyber cert.pdf','pdf')">Cisco Introduction to Cybersecurity</a>
+      <a class="cert-item" onclick="openModal('data analyst.jpg','image')">Data Analyst</a>
+      <a class="cert-item" onclick="openModal('genai.jpg','image')">GenAI Data Analyst</a>
+      <a class="cert-item" onclick="openModal('full stack.jpg','image')">Full Stack/MERN Developer</a>
+      <a class="cert-item" onclick="openModal('azure badge.jpeg','image')">Microsoft Azure AI-900 Badge</a>
+      <a class="cert-item" onclick="openModal('innovate x cert.jpeg','image')">IoT InnovateX Certification</a>
     </div>
-    <div class="skills-chip-container">
-      <div class="skills-chip">React</div>
-      <div class="skill-description-box">Experienced in building modern, responsive user interfaces with React.js.</div>
+  </section>
+
+  <section id="internships" class="internships">
+    <h2>Internships & Workshops</h2>
+    <div class="internships-grid">
+      <div class="internship-card">
+        <h3>Raspberry Pi & Node.js Workshop</h3>
+        <p>Attended a workshop at IIT Madras focused on IoT applications using Raspberry Pi and Node.js.</p>
+        <p><a class="internship-link" onclick="openModal('respberry pi.jpeg','image')">View Certificate</a></p>
+      </div>
+      <div class="internship-card">
+        <h3>Digital Marketing Intern — Maven Advert</h3>
+        <p>Hands-on experience in digital marketing strategies, content creation, and analytics.</p>
+        <p><a class="internship-link" onclick="openModal('Prem INTERN CERTIFICATE 3.pdf','pdf')">View Certificate</a></p>
+      </div>
     </div>
-    <div class="skills-chip-container">
-      <div class="skills-chip">Node.js</div>
-      <div class="skill-description-box">Strong background in building scalable server-side applications and APIs using Node.js.</div>
+  </section>
+
+  <section id="achievements" class="achievements">
+    <h2>Achievements & Awards</h2>
+    <div class="achievements-grid">
+      <div class="achievement-item"><a class="achievement-link" onclick="openModal('academic.jpg','image')">Academic Recognition</a></div>
+      <div class="achievement-item"><a class="achievement-link" onclick="openModal('college.jpg','image')">College Recognition</a></div>
     </div>
-    <div class="skills-chip-container">
-      <div class="skills-chip">Express</div>
-      <div class="skill-description-box">Used Express.js to create efficient and flexible RESTful APIs.</div>
-    </div>
-    <div class="skills-chip-container">
-      <div class="skills-chip">MySQL</div>
-      <div class="skill-description-box">Expert in designing and managing relational databases with MySQL.</div>
-    </div>
-    <div class="skills-chip-container">
-      <div class="skills-chip">AWS</div>
-      <div class="skill-description-box">Hands-on experience with AWS services like EC2, S3, and Lambda for cloud deployments.</div>
-    </div>
-    <div class="skills-chip-container">
-      <div class="skills-chip">Spring Boot</div>
-      <div class="skill-description-box">Proficient in Spring Boot for creating production-grade, stand-alone applications.</div>
-    </div>
-    <div class="skills-chip-container">
-      <div class="skills-chip">Python</div>
-      <div class="skill-description-box">Utilized Python for data analysis, machine learning, and scripting.</div>
-    </div>
-    <div class="skills-chip-container">
-      <div class="skills-chip">UI/UX Design</div>
-      <div class="skill-description-box">Designed user-centric interfaces and experiences for web and mobile applications.</div>
+  </section>
+
+  <div id="fileModal" class="modal" onclick="closeModal()">
+    <span class="close">&times;</span>
+    <div class="modal-content-container">
+      <img class="modal-content" id="modalImg" style="display: none;">
+      <iframe id="modalIframe" style="display: none;"></iframe>
+      <video id="modalVideo" controls style="display: none;"></video>
     </div>
   </div>
-</section>
 
-<style>
-/* Skills Section */
-.skills-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 25px;
-  margin-top: 40px;
-  width: 100%;
-  max-width: 900px;
-  perspective: 1000px;
-}
-.skills-chip-container {
-  width: 200px;
-  height: 100px;
-  position: relative;
-  transform-style: preserve-3d;
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
-  cursor: pointer;
-}
-.skills-chip-container:hover {
-  transform: rotateY(15deg) rotateX(10deg) scale(1.1);
-  box-shadow: 0 20px 40px rgba(0,255,255,0.5);
-}
-.skills-chip-container .skills-chip, 
-.skills-chip-container .skill-description-box {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 10px;
-  box-shadow: 0 0 20px rgba(0,255,255,0.2);
-  transition: opacity 0.4s ease;
-}
-.skills-chip {
-  background: rgba(255,255,255,0.1);
-  color: #fff;
-  font-weight: 500;
-  font-size: 16px;
-}
-.skill-description-box {
-  background: rgba(0,0,0,0.9);
-  border: 1px solid #0ff;
-  color: #fff;
-  text-align: center;
-  padding: 15px;
-  font-size: 14px;
-  line-height: 1.4;
-  opacity: 0;
-  pointer-events: none;
-}
-.skills-chip-container:hover .skill-description-box {
-  opacity: 1;
-}
-</style>
+  <script>
+    // Modal functions
+    function openModal(src, type) {
+      const modal = document.getElementById('fileModal');
+      const img = document.getElementById('modalImg');
+      const iframe = document.getElementById('modalIframe');
+      const video = document.getElementById('modalVideo');
+
+      img.style.display = 'none';
+      iframe.style.display = 'none';
+      video.style.display = 'none';
+      video.pause();
+      video.currentTime = 0;
+
+      if (type === 'image') {
+        img.src = src; img.style.display = 'block';
+      } else if (type === 'pdf' || type === 'ppt' || type === 'pptx' || type === 'doc' || type === 'docx') {
+        iframe.src = src; iframe.style.display = 'block';
+      } else if (type === 'video') {
+        video.src = src; video.style.display = 'block';
+      }
+      modal.style.display = 'flex';
+    }
+    function closeModal() {
+      document.getElementById('fileModal').style.display = 'none';
+      const video = document.getElementById('modalVideo');
+      video.pause(); video.currentTime = 0;
+    }
+  </script>
+</body>
+</html>
