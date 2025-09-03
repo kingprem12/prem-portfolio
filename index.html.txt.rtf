@@ -1,0 +1,239 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2822
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww29200\viewh18380\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 <!DOCTYPE html>\
+<html lang="en">\
+<head>\
+    <meta charset="utf-8" />\
+    <meta name="viewport" content="width=device-width, initial-scale=1" />\
+    <title>Prem S \'97 Portfolio</title>\
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">\
+    <style>\
+        *\{margin:0;padding:0;box-sizing:border-box\}\
+        body\{font-family:'Poppins',sans-serif;overflow-x:hidden;background:#0a0a0a;color:#fff;scroll-behavior:smooth\}\
+        section\{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px;text-align:center;position:relative\}\
+        h1,h2,h3\{margin-bottom:16px\}\
+        p\{max-width:700px;margin:0 auto 16px;line-height:1.6\}\
+        nav\{position:fixed;top:0;left:0;width:100%;display:flex;justify-content:center;gap:20px;padding:20px;background:rgba(0,0,0,0.6);z-index:100\}\
+        nav a\{color:#fff;text-decoration:none;font-weight:500;transition:.3s\}\
+        nav a:hover\{color:#0ff\}\
+        .intro\{background:linear-gradient(135deg,#4f46e5,#9333ea,#ec4899)\}\
+        .about\{background:linear-gradient(135deg,#ff7eb9,#ff65a3,#7afcff)\}\
+        .projects\{background:linear-gradient(135deg,#43cea2,#185a9d)\}\
+        .skills\{background:linear-gradient(135deg,#fc6076,#ff9a44)\}\
+        .certs\{background:linear-gradient(135deg,#8e2de2,#4a00e0)\}\
+        .contact\{background:linear-gradient(135deg,#11998e,#38ef7d)\}\
+        .resume\{background:linear-gradient(135deg,#1e3c72,#2a5298)\}\
+        .achievements\{background:linear-gradient(135deg,#fcc5e4,#fda34b)\}\
+        .internships\{background:linear-gradient(135deg, #00c6ff, #0072ff)\}\
+        .card\{background:rgba(255,255,255,0.1);padding:20px;border-radius:16px;margin:10px auto;max-width:600px\}\
+        .chips\{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:10px\}\
+        .chip\{background:rgba(255,255,255,0.2);padding:6px 14px;border-radius:20px;font-size:14px\}\
+        form\{display:flex;flex-direction:column;gap:10px;max-width:400px;width:100%;margin:20px auto\}\
+        input,textarea\{padding:12px;border:none;border-radius:8px;font-family:inherit\}\
+        button\{padding:12px;background:#fff;color:#000;border:none;border-radius:8px;font-weight:700;cursor:pointer;transition:.3s\}\
+        button:hover\{background:#0ff;color:#000\}\
+        canvas\{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1\}\
+        img.project-img, .modal-img\{max-width:100%;border-radius:12px;margin-top:12px;border:2px solid rgba(255,255,255,0.2)\}\
+        .btn\{display:inline-block;margin:10px;padding:12px 20px;border-radius:10px;text-decoration:none;font-weight:600;transition:.3s\}\
+        .btn-view\{background:#fff;color:#4f46e5\}\
+        .btn-download\{background:#ffd60a;color:#000\}\
+        .btn:hover\{transform:scale(1.05)\}\
+        iframe\{width:80%;height:80vh;border-radius:12px;border:none;margin-top:20px\}\
+        .cert-gallery, .internship-gallery\{display:flex;flex-direction:column;gap:12px;align-items:center\}\
+        .cert-gallery a, .project-link, .internship-link\{color:#fff;text-decoration:underline;cursor:pointer\}\
+        .modal\{display:none;position:fixed;z-index:1000;left:0;top:0;width:100%;height:100%;overflow:auto;background:rgba(0,0,0,0.9);align-items:center;justify-content:center\}\
+        .modal-content\{margin:5% auto;display:block;max-width:80%;border-radius:12px\}\
+        .close\{position:absolute;top:20px;right:40px;color:#fff;font-size:40px;font-weight:bold;cursor:pointer\}\
+        .modal-content-container\{max-height:90vh;display:flex;flex-direction:column;align-items:center;justify-content:center\}\
+        .modal-content-container img, .modal-content-container iframe, .modal-content-container video \{ max-width: 90%; max-height: 90vh; \}\
+    </style>\
+</head>\
+<body>\
+    <canvas id="cursorCanvas"></canvas>\
+    <nav>\
+        <a href="#intro">Home</a>\
+        <a href="#about">About</a>\
+        <a href="#projects">Projects</a>\
+        <a href="#skills">Skills</a>\
+        <a href="#certs">Certifications</a>\
+        <a href="#internships">Internships</a>\
+        <a href="#achievements">Achievements</a>\
+        <a href="#contact">Contact</a>\
+        <a href="#resume">Resume</a>\
+    </nav>\
+\
+    <section id="intro" class="intro">\
+        <h1>Hi, I'm Prem \uc0\u55357 \u56395 </h1>\
+        <h3>Software Developer \'b7 Full-Stack \'b7 IoT & Cloud</h3>\
+        <p>Turning ideas into scalable apps, IoT solutions, and AI-driven projects.</p>\
+        <div>\
+            <a href="kisame.pdf" target="_blank" class="btn btn-view">\uc0\u55357 \u56516  View Resume</a>\
+            <a href="kisame.pdf" download class="btn btn-download">\uc0\u11015 \u65039  Download Resume</a>\
+        </div>\
+    </section>\
+\
+    <section id="about" class="about">\
+        <h2>About Me</h2>\
+        <p>3rd-year BE Computer Science student with strong experience in full-stack development, IoT systems, and cloud platforms (AWS). Passionate about building impactful projects and solving real-world problems.</p>\
+    </section>\
+\
+    <section id="projects" class="projects">\
+        <h2>My Projects</h2>\
+        <div class="card">\
+            <h3>Smart AI-Based Traffic Management</h3>\
+            <p>An IoT-based system that uses thermal and humidity-aware vision to manage urban traffic dynamically. It adjusts traffic light timings based on real-time data, helping to reduce congestion and improve efficiency. This project was presented at the IoT InnovateX.</p>\
+            <a class="project-link" onclick="openModal('traffic managemnet proto.jpeg', 'image')">View Prototype</a>\
+        </div>\
+        <div class="card">\
+            <h3>Kutty Port: The Zepto of Indian Export Logistics</h3>\
+            <p>A logistics platform designed to streamline the export process for small and medium-sized businesses (MSMEs). It addresses issues like high costs, delays, and lack of real-time tracking through a decentralized port model.</p>\
+            <a class="project-link" onclick="openModal('kutty port.pptx', 'ppt')">View Details</a>\
+        </div>\
+        <div class="card">\
+            <h3>IEEE Emergency Lane Clearance</h3>\
+            <p>A smart Edge-IoT system for dynamic emergency lane clearance. The system uses a combination of thermal cameras and humidity sensors to detect emergency vehicles in any weather, including fog and rain, and controls traffic lights to provide a clear path.</p>\
+            <a class="project-link" onclick="openModal('IEEE lane clearance.docx', 'docx')">View Details</a>\
+        </div>\
+        <div class="card">\
+            <h3>IEEE Shadow AI</h3>\
+            <p>A consultancy project focused on the risks and ethical implications of "Shadow AI"\'97the unauthorized use of AI tools by employees within a company. The project highlights the security and privacy risks and provides a framework for responsible AI use.</p>\
+            <a class="project-link" onclick="openModal('IEEE shadow ai.docx', 'docx')">View Details</a>\
+        </div>\
+        <div class="card">\
+            <h3>SAP Hackfest: AI-Dharma</h3>\
+            <p>An ethical AI-based fraud detection system for the banking sector. The project uses machine learning and game theory to identify suspicious transactions while ensuring transparency and fairness, aligning with principles from the Indian Knowledge System (IKS).</p>\
+            <a class="project-link" onclick="openModal('SAP_HACKFEST_UPDATED.pptx', 'ppt')">View Details</a>\
+        </div>\
+    </section>\
+\
+    <section id="skills" class="skills">\
+        <h2>Skills</h2>\
+        <div class="chips">\
+            <span class="chip">C++</span><span class="chip">Java</span><span class="chip">JavaScript</span>\
+            <span class="chip">React</span><span class="chip">Node.js</span><span class="chip">Express</span>\
+            <span class="chip">MongoDB</span><span class="chip">AWS (EC2, S3, Lambda)</span>\
+            <span class="chip">Spring Boot</span><span class="chip">Python</span><span class="chip">UI/UX Design</span>\
+        </div>\
+    </section>\
+\
+    <section id="certs" class="certs">\
+        <h2>Certifications</h2>\
+        <div class="cert-gallery">\
+            <a onclick="openModal('azure-cert.jpeg', 'image')">Microsoft Azure Fundamentals</a>\
+            <a onclick="openModal('aws-cloud.jpeg', 'image')">AWS Cloud Foundations</a>\
+            <a onclick="openModal('cisco cyber cert.pdf', 'pdf')">Cisco Introduction to Cybersecurity</a>\
+            <a onclick="openModal('data analyst.jpg', 'image')">GenAI Data Analytics Job Simulation \'97 Tata iQ (Forage)</a>\
+            <a onclick="openModal('full stack.jpg', 'image')">Full-Stack MERN Traineeship \'97 V Vision, MSME</a>\
+            <a onclick="openModal('azure badge.jpeg', 'image')">Microsoft Azure AI-900 Badge</a>\
+            <a onclick="openModal('raspberrypi cer.jpg', 'image')">Raspberry Pi Certification</a>\
+            <a onclick="openModal('innovate x cert.jpeg', 'image')">IoT InnovateX Certification</a>\
+        </div>\
+    </section>\
+\
+    <section id="internships" class="internships">\
+        <h2>Internships</h2>\
+        <div class="internship-gallery">\
+            <a onclick="openModal('Prem INTERN CERTIFICATE 3.pdf', 'pdf')">Maven Advert \'97 Digital Marketing Intern</a>\
+        </div>\
+    </section>\
+    \
+    <section id="achievements" class="achievements">\
+        <h2>Achievements & Awards</h2>\
+        <div class="cert-gallery">\
+            <a onclick="openModal('topper cer.jpg', 'image')">Academic Best Performer \'97 Top 1%</a>\
+        </div>\
+    </section>\
+\
+    <section id="contact" class="contact">\
+        <h2>Contact Me</h2>\
+        <form action="https://formspree.io/f/mwkawnyg" method="POST">\
+            <input type="text" name="name" placeholder="Your Name" required>\
+            <input type="email" name="email" placeholder="Your Email" required>\
+            <textarea name="message" rows="4" placeholder="Your Message" required></textarea>\
+            <button type="submit">Send Query</button>\
+        </form>\
+        <h3>Other Contact Links</h3>\
+        <p>Email: <a href="mailto:selvaraj3805@gmail.com" style="color:#fff">selvaraj3805@gmail.com</a></p>\
+        <p>Phone: <a href="tel:+918778642535" style="color:#fff">+91 8778642535</a></p>\
+        <p>\
+            <a href="https://www.linkedin.com/in/prem-s-12626b309/" target="_blank" style="color:#fff">LinkedIn</a> | \
+            <a href="https://github.com/kingprem12" target="_blank" style="color:#fff">GitHub</a> | \
+            <a href="https://canary.discord.com/channels/@me/948821325370253343" target="_blank" style="color:#fff">Discord</a>\
+        </p>\
+    </section>\
+\
+    <section id="resume" class="resume">\
+        <h2>My Resume</h2>\
+        <p>Preview my resume directly below or download it above.</p>\
+        <iframe src="kisame.pdf"></iframe>\
+    </section>\
+\
+    <div id="fileModal" class="modal" onclick="closeModal()">\
+        <span class="close">&times;</span>\
+        <div class="modal-content-container">\
+            <img class="modal-content" id="modalImg" style="display: none;">\
+            <iframe id="modalIframe" style="display: none;"></iframe>\
+            <video id="modalVideo" controls style="display: none;"></video>\
+        </div>\
+    </div>\
+\
+    <script>\
+        const canvas=document.getElementById('cursorCanvas');\
+        const ctx=canvas.getContext('2d');\
+        let particles=[];\
+        resize();\
+        window.addEventListener('resize',resize);\
+        function resize()\{canvas.width=window.innerWidth;canvas.height=window.innerHeight\}\
+        window.addEventListener('mousemove',e=>\{\
+            for(let i=0;i<5;i++)\{\
+                particles.push(\{x:e.clientX,y:e.clientY,dx:(Math.random()-0.5)*2,dy:(Math.random()-0.5)*2,life:60\});\
+            \}\
+        \});\
+        function draw()\{\
+            ctx.clearRect(0,0,canvas.width,canvas.height);\
+            particles.forEach((p,i)=>\{\
+                ctx.beginPath();ctx.arc(p.x,p.y,3,0,Math.PI*2);\
+                ctx.fillStyle=`hsla($\{p.life*6\},100%,50%,0.8)`;ctx.fill();\
+                p.x+=p.dx;p.y+=p.dy;p.life--;\
+                if(p.life<=0)particles.splice(i,1);\
+            \});\
+            requestAnimationFrame(draw);\
+        \}\
+        draw();\
+\
+        // Modal functions\
+        function openModal(src, type)\{\
+            const modal = document.getElementById('fileModal');\
+            const img = document.getElementById('modalImg');\
+            const iframe = document.getElementById('modalIframe');\
+            const video = document.getElementById('modalVideo');\
+            \
+            img.style.display = 'none';\
+            iframe.style.display = 'none';\
+            video.style.display = 'none';\
+\
+            if (type === 'image' || type === 'jpeg' || type === 'jpg' || type === 'png') \{\
+                img.src = src;\
+                img.style.display = 'block';\
+            \} else if (type === 'pdf' || type === 'ppt' || type === 'pptx' || type === 'doc' || type === 'docx') \{\
+                iframe.src = src;\
+                iframe.style.display = 'block';\
+            \} else if (type === 'video' || type === 'mp4') \{\
+                video.src = src;\
+                video.style.display = 'block';\
+            \}\
+            \
+            modal.style.display = 'flex';\
+        \}\
+        function closeModal()\{\
+            document.getElementById('fileModal').style.display='none';\
+            document.getElementById('modalVideo').pause();\
+        \}\
+    </script>\
+</body>\
+</html>}
