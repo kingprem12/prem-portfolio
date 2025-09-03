@@ -23,48 +23,55 @@
         
         .intro, .about, .projects, .skills, .certs, .contact, .resume, .achievements, .internships { background: none; }
         
-        /* New Project Section Styling */
-        .projects { padding: 80px 20px; }
-        .projects-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 40px;
-            width: 100%;
-            max-width: 1200px;
+        /* Skills Section Overhaul */
+        .skills-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            width: 80%;
             margin-top: 40px;
+        }
+        .skills-chip {
+            background: rgba(255,255,255,0.1);
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-size: 16px;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid transparent;
+            box-shadow: 0 0 10px rgba(0,255,255,0.2);
+            transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+        }
+        .skills-chip:hover {
+            transform: scale(1.1);
+            background: rgba(0,255,255,0.2);
+            box-shadow: 0 0 20px rgba(0,255,255,0.8);
+        }
+
+        /* Projects Section Overhaul */
+        .projects {
+            perspective: 1000px;
+            padding: 80px 20px;
         }
         .project-card {
             background: rgba(255,255,255,0.1);
             padding: 30px;
             border-radius: 16px;
             border: 1px solid rgba(255,255,255,0.1);
-            position: relative;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            box-shadow: 0 0 10px rgba(0,255,255,0.2);
+            margin-bottom: 40px;
+            transition: transform 0.6s ease-out;
+            transform-origin: center center;
+            opacity: 0;
+            transform: translateY(50px) rotateX(15deg);
         }
-        .project-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 30px rgba(0,255,255,0.4);
+        .project-card.in-view {
+            opacity: 1;
+            transform: translateY(0) rotateX(0deg);
         }
-        .project-card h3 { color: #0ff; }
-        
-        @media (min-width: 768px) {
-            .projects-grid {
-                grid-template-columns: 1fr 1fr;
-                grid-template-areas:
-                    "card1 ."
-                    ". card2"
-                    "card3 ."
-                    ". card4"
-                    "card5 .";
-            }
-            #project-1 { grid-area: card1; }
-            #project-2 { grid-area: card2; }
-            #project-3 { grid-area: card3; }
-            #project-4 { grid-area: card4; }
-            #project-5 { grid-area: card5; }
-        }
-        
+
+        /* General styles */
         .chips { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 10px; }
         .chip { background: rgba(255,255,255,0.2); padding: 6px 14px; border-radius: 20px; font-size: 14px; color: #fff; }
         form { display: flex; flex-direction: column; gap: 10px; max-width: 400px; width: 100%; margin: 20px auto; }
@@ -137,47 +144,52 @@
 
     <section id="projects" class="projects">
         <h2>My Projects</h2>
-        <div class="projects-grid">
-            <div class="project-card" id="project-1">
-                <h3>Smart AI-Based Traffic Management</h3>
-                <p>An IoT-based system that uses thermal and humidity-aware vision to manage urban traffic dynamically. It adjusts traffic light timings based on real-time data, helping to reduce congestion and improve efficiency. This project was presented at the IoT InnovateX.</p>
-                <p>
-                    <a class="project-link" onclick="openModal('traffic managemnet proto.jpeg', 'image')">View Prototype</a>
-                </p>
-            </div>
-            <div class="project-card" id="project-2">
-                <h3>Kutty Port: The Zepto of Indian Export Logistics</h3>
-                <p>A logistics platform designed to streamline the export process for small and medium-sized businesses (MSMEs). It addresses issues like high costs, delays, and lack of real-time tracking through a decentralized port model.</p>
-                <a class="project-link" onclick="openModal('kutty port.pptx', 'ppt')">View Details</a>
-            </div>
-            <div class="project-card" id="project-3">
-                <h3>IEEE Emergency Lane Clearance</h3>
-                <p>A smart Edge-IoT system for dynamic emergency lane clearance. The system uses a combination of thermal cameras and humidity sensors to detect emergency vehicles in any weather, including fog and rain, and controls traffic lights to provide a clear path.</p>
-                <p>
-                    <a class="project-link" onclick="openModal('IEEE lane clearance.docx', 'docx')">View Details</a> |
-                    <a class="project-link" onclick="openModal('lane clearance.mp4', 'video')">View Video</a>
-                </p>
-            </div>
-            <div class="project-card" id="project-4">
-                <h3>IEEE Shadow AI</h3>
-                <p>A consultancy project focused on the risks and ethical implications of "Shadow AI"—the unauthorized use of AI tools by employees within a company. The project highlights the security and privacy risks and provides a framework for responsible AI use.</p>
-                <a class="project-link" onclick="openModal('IEEE shadow ai.docx', 'docx')">View Details</a>
-            </div>
-            <div class="project-card" id="project-5">
-                <h3>SAP Hackfest: AI-Dharma</h3>
-                <p>An ethical AI-based fraud detection system for the banking sector. The project uses machine learning and game theory to identify suspicious transactions while ensuring transparency and fairness, aligning with principles from the Indian Knowledge System (IKS).</p>
-                <a class="project-link" onclick="openModal('SAP_HACKFEST_UPDATED.pptx', 'ppt')">View Details</a>
-            </div>
+        <div class="project-card">
+            <h3>Smart AI-Based Traffic Management</h3>
+            <p>An IoT-based system that uses thermal and humidity-aware vision to manage urban traffic dynamically. It adjusts traffic light timings based on real-time data, helping to reduce congestion and improve efficiency. This project was presented at the IoT InnovateX.</p>
+            <p>
+                <a class="project-link" onclick="openModal('traffic managemnet proto.jpeg', 'image')">View Prototype</a>
+            </p>
+        </div>
+        <div class="project-card">
+            <h3>Kutty Port: The Zepto of Indian Export Logistics</h3>
+            <p>A logistics platform designed to streamline the export process for small and medium-sized businesses (MSMEs). It addresses issues like high costs, delays, and lack of real-time tracking through a decentralized port model.</p>
+            <a class="project-link" onclick="openModal('kutty port.pptx', 'ppt')">View Details</a>
+        </div>
+        <div class="project-card">
+            <h3>IEEE Emergency Lane Clearance</h3>
+            <p>A smart Edge-IoT system for dynamic emergency lane clearance. The system uses a combination of thermal cameras and humidity sensors to detect emergency vehicles in any weather, including fog and rain, and controls traffic lights to provide a clear path.</p>
+            <p>
+                <a class="project-link" onclick="openModal('IEEE lane clearance.docx', 'docx')">View Details</a> |
+                <a class="project-link" onclick="openModal('lane clearance.mp4', 'video')">View Video</a>
+            </p>
+        </div>
+        <div class="project-card">
+            <h3>IEEE Shadow AI</h3>
+            <p>A consultancy project focused on the risks and ethical implications of "Shadow AI"—the unauthorized use of AI tools by employees within a company. The project highlights the security and privacy risks and provides a framework for responsible AI use.</p>
+            <a class="project-link" onclick="openModal('IEEE shadow ai.docx', 'docx')">View Details</a>
+        </div>
+        <div class="project-card">
+            <h3>SAP Hackfest: AI-Dharma</h3>
+            <p>An ethical AI-based fraud detection system for the banking sector. The project uses machine learning and game theory to identify suspicious transactions while ensuring transparency and fairness, aligning with principles from the Indian Knowledge System (IKS).</p>
+            <a class="project-link" onclick="openModal('SAP_HACKFEST_UPDATED.pptx', 'ppt')">View Details</a>
         </div>
     </section>
 
     <section id="skills" class="skills">
         <h2>Skills</h2>
-        <div class="chips">
-            <span class="chip">C++</span><span class="chip">Java</span><span class="chip">JavaScript</span>
-            <span class="chip">React</span><span class="chip">Node.js</span><span class="chip">Express</span>
-            <span class="chip">MongoDB</span><span class="chip">AWS (EC2, S3, Lambda)</span>
-            <span class="chip">Spring Boot</span><span class="chip">Python</span><span class="chip">UI/UX Design</span>
+        <div class="skills-grid">
+            <div class="skills-chip">C++</div>
+            <div class="skills-chip">Java</div>
+            <div class="skills-chip">JavaScript</div>
+            <div class="skills-chip">React</div>
+            <div class="skills-chip">Node.js</div>
+            <div class="skills-chip">Express</div>
+            <div class="skills-chip">MySql</div>
+            <div class="skills-chip">AWS (EC2, S3, Lambda)</div>
+            <div class="skills-chip">Spring Boot</div>
+            <div class="skills-chip">Python</div>
+            <div class="skills-chip">UI/UX Design</div>
         </div>
     </section>
 
@@ -252,6 +264,7 @@
     </div>
 
     <script>
+        // Background and cursor particles (Existing)
         const cursorCanvas=document.getElementById('cursorCanvas');
         const ctxCursor=cursorCanvas.getContext('2d');
         let cursorParticles=[];
@@ -327,7 +340,23 @@
             requestAnimationFrame(animateBackground);
         }
         animateBackground();
-        
+
+        // New intersection observer for project card animation
+        document.addEventListener('DOMContentLoaded', () => {
+            const projectCards = document.querySelectorAll('.project-card');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('in-view');
+                    }
+                });
+            }, { threshold: 0.5 }); // Trigger when 50% of the element is visible
+            projectCards.forEach(card => {
+                observer.observe(card);
+            });
+        });
+
+        // Modal functions (Existing)
         function openModal(src, type){
             const modal = document.getElementById('fileModal');
             const img = document.getElementById('modalImg');
