@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Poppins', sans-serif; overflow-x: hidden; background: #0a0a0a; color: #fff; scroll-behavior: smooth; position: relative; }
+        body { font-family: 'Poppins', sans-serif; overflow-x: hidden; background: #0a0a0a; color: #fff; scroll-behavior: smooth; perspective: 1000px; }
         
         #backgroundCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; background-color: #0a0a0a; }
         #cursorCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
@@ -23,14 +23,60 @@
         
         .intro, .about, .projects, .skills, .certs, .contact, .resume, .achievements, .internships { background: none; }
         
-        /* Skills Section Overhaul */
-        .skills-grid {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
-            width: 80%;
+        /* Interactive Project Cards */
+        .projects-grid, .certs-grid, .internships-grid, .achievements-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 40px;
+            width: 100%;
+            max-width: 1200px;
             margin-top: 40px;
+        }
+        .project-card, .cert-item, .internship-card, .achievement-item {
+            background: rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.2s ease-out;
+            box-shadow: 0 0 10px rgba(0,255,255,0.2);
+        }
+        .project-card h3 { color: #0ff; }
+        .cert-item, .internship-card h3, .achievement-item { color: #0ff; }
+
+        @media (min-width: 768px) {
+            .projects-grid, .certs-grid, .internships-grid, .achievements-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        @media (min-width: 1024px) {
+             .projects-grid, .certs-grid, .internships-grid, .achievements-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* 3D Skills Cloud */
+        .skills-container {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .skills-cloud {
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            animation: rotateSkills 20s infinite linear;
+            position: relative;
+        }
+        .skills-chip-wrapper {
+            position: absolute;
+            transform-style: preserve-3d;
+            transform: rotateY(0deg);
+            transition: transform 0.5s ease-out;
         }
         .skills-chip {
             background: rgba(255,255,255,0.1);
@@ -42,35 +88,72 @@
             overflow: hidden;
             border: 1px solid transparent;
             box-shadow: 0 0 10px rgba(0,255,255,0.2);
-            transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-align: center;
+            line-height: 1.2;
+            white-space: nowrap;
         }
-        .skills-chip:hover {
-            transform: scale(1.1);
+        .skills-chip-wrapper:hover .skills-chip {
             background: rgba(0,255,255,0.2);
             box-shadow: 0 0 20px rgba(0,255,255,0.8);
+            transform: scale(1.2);
+        }
+        .skill-description {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            width: 250px;
+            padding: 10px;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
+            border: 1px solid #0ff;
+            border-radius: 8px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            text-align: center;
+            font-size: 12px;
+            line-height: 1.4;
+            z-index: 10;
+        }
+        .skills-chip:hover .skill-description {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+        @keyframes rotateSkills {
+            from { transform: rotateY(0deg) rotateX(0deg); }
+            to { transform: rotateY(360deg) rotateX(360deg); }
         }
 
-        /* Projects Section Overhaul */
-        .projects {
-            perspective: 1000px;
-            padding: 80px 20px;
+        /* Unique Contact Section */
+        .contact-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            max-width: 900px;
+            margin-top: 40px;
+            position: relative;
+            transform-style: preserve-3d;
         }
-        .project-card {
+        .contact-card {
             background: rgba(255,255,255,0.1);
             padding: 30px;
             border-radius: 16px;
             border: 1px solid rgba(255,255,255,0.1);
-            margin-bottom: 40px;
-            transition: transform 0.6s ease-out;
-            transform-origin: center center;
-            opacity: 0;
-            transform: translateY(50px) rotateX(15deg);
+            box-shadow: 0 0 10px rgba(0,255,255,0.2);
+            transform-style: preserve-3d;
+            transition: transform 0.2s ease-out;
         }
-        .project-card.in-view {
-            opacity: 1;
-            transform: translateY(0) rotateX(0deg);
+        .contact-card:hover {
+            transform: translateZ(20px);
         }
-
+        .contact-card h3 { color: #0ff; }
+        .contact-card form { margin-top: 20px; }
+        
         /* General styles */
         .chips { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 10px; }
         .chip { background: rgba(255,255,255,0.2); padding: 6px 14px; border-radius: 20px; font-size: 14px; color: #fff; }
@@ -86,7 +169,7 @@
         .btn:hover { transform: scale(1.05); }
         iframe { width: 80%; height: 80vh; border-radius: 12px; border: none; margin-top: 20px; }
         .cert-gallery, .internship-gallery { display: flex; flex-direction: column; gap: 12px; align-items: center; }
-        .cert-gallery a, .project-link, .internship-link { color: #0ff; text-decoration: underline; cursor: pointer; }
+        .cert-gallery a, .project-link, .internship-link, .achievement-link { color: #0ff; text-decoration: underline; cursor: pointer; }
         .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background: rgba(0,0,0,0.9); align-items: center; justify-content: center; }
         .modal-content { margin: 5% auto; display: block; max-width: 80%; border-radius: 12px; }
         .close { position: absolute; top: 20px; right: 40px; color: #fff; font-size: 40px; font-weight: bold; cursor: pointer; }
@@ -144,112 +227,186 @@
 
     <section id="projects" class="projects">
         <h2>My Projects</h2>
-        <div class="project-card">
-            <h3>Smart AI-Based Traffic Management</h3>
-            <p>An IoT-based system that uses thermal and humidity-aware vision to manage urban traffic dynamically. It adjusts traffic light timings based on real-time data, helping to reduce congestion and improve efficiency. This project was presented at the IoT InnovateX.</p>
-            <p>
-                <a class="project-link" onclick="openModal('traffic managemnet proto.jpeg', 'image')">View Prototype</a>
-            </p>
-        </div>
-        <div class="project-card">
-            <h3>Kutty Port: The Zepto of Indian Export Logistics</h3>
-            <p>A logistics platform designed to streamline the export process for small and medium-sized businesses (MSMEs). It addresses issues like high costs, delays, and lack of real-time tracking through a decentralized port model.</p>
-            <a class="project-link" onclick="openModal('kutty port.pptx', 'ppt')">View Details</a>
-        </div>
-        <div class="project-card">
-            <h3>IEEE Emergency Lane Clearance</h3>
-            <p>A smart Edge-IoT system for dynamic emergency lane clearance. The system uses a combination of thermal cameras and humidity sensors to detect emergency vehicles in any weather, including fog and rain, and controls traffic lights to provide a clear path.</p>
-            <p>
-                <a class="project-link" onclick="openModal('IEEE lane clearance.docx', 'docx')">View Details</a> |
-                <a class="project-link" onclick="openModal('lane clearance.mp4', 'video')">View Video</a>
-            </p>
-        </div>
-        <div class="project-card">
-            <h3>IEEE Shadow AI</h3>
-            <p>A consultancy project focused on the risks and ethical implications of "Shadow AI"—the unauthorized use of AI tools by employees within a company. The project highlights the security and privacy risks and provides a framework for responsible AI use.</p>
-            <a class="project-link" onclick="openModal('IEEE shadow ai.docx', 'docx')">View Details</a>
-        </div>
-        <div class="project-card">
-            <h3>SAP Hackfest: AI-Dharma</h3>
-            <p>An ethical AI-based fraud detection system for the banking sector. The project uses machine learning and game theory to identify suspicious transactions while ensuring transparency and fairness, aligning with principles from the Indian Knowledge System (IKS).</p>
-            <a class="project-link" onclick="openModal('SAP_HACKFEST_UPDATED.pptx', 'ppt')">View Details</a>
+        <div class="projects-grid">
+            <div class="project-card" id="project-1">
+                <h3>Smart AI-Based Traffic Management</h3>
+                <p>An IoT-based system that uses thermal and humidity-aware vision to manage urban traffic dynamically. It adjusts traffic light timings based on real-time data, helping to reduce congestion and improve efficiency. This project was presented at the IoT InnovateX.</p>
+                <p><a class="project-link" onclick="openModal('traffic managemnet proto.jpeg', 'image')">View Prototype</a></p>
+            </div>
+            <div class="project-card" id="project-2">
+                <h3>Kutty Port: The Zepto of Indian Export Logistics</h3>
+                <p>A logistics platform designed to streamline the export process for small and medium-sized businesses (MSMEs). It addresses issues like high costs, delays, and lack of real-time tracking through a decentralized port model.</p>
+                <p><a class="project-link" onclick="openModal('kutty port.pptx', 'ppt')">View Details</a></p>
+            </div>
+            <div class="project-card" id="project-3">
+                <h3>IEEE Emergency Lane Clearance</h3>
+                <p>A smart Edge-IoT system for dynamic emergency lane clearance. The system uses a combination of thermal cameras and humidity sensors to detect emergency vehicles in any weather, including fog and rain, and controls traffic lights to provide a clear path.</p>
+                <p><a class="project-link" onclick="openModal('IEEE lane clearance.docx', 'docx')">View Details</a> | <a class="project-link" onclick="openModal('lane clearance.mp4', 'video')">View Video</a></p>
+            </div>
+            <div class="project-card" id="project-4">
+                <h3>IEEE Shadow AI</h3>
+                <p>A consultancy project focused on the risks and ethical implications of "Shadow AI"—the unauthorized use of AI tools by employees within a company. The project highlights the security and privacy risks and provides a framework for responsible AI use.</p>
+                <p><a class="project-link" onclick="openModal('IEEE shadow ai.docx', 'docx')">View Details</a></p>
+            </div>
+            <div class="project-card" id="project-5">
+                <h3>SAP Hackfest: AI-Dharma</h3>
+                <p>An ethical AI-based fraud detection system for the banking sector. The project uses machine learning and game theory to identify suspicious transactions while ensuring transparency and fairness, aligning with principles from the Indian Knowledge System (IKS).</p>
+                <p><a class="project-link" onclick="openModal('SAP_HACKFEST_UPDATED.pptx', 'ppt')">View Details</a></p>
+            </div>
+            <div class="project-card" id="project-6">
+                <h3>Budget Management System</h3>
+                <p>A secure, full-stack financial application built with Spring Boot and REST API. This system allows users to track expenses, manage budgets, and visualize financial data for better financial control and planning.</p>
+                <p><a class="project-link" onclick="openModal('budget.pdf', 'pdf')">View Details</a></p>
+            </div>
         </div>
     </section>
 
     <section id="skills" class="skills">
         <h2>Skills</h2>
-        <div class="skills-grid">
-            <div class="skills-chip">C++</div>
-            <div class="skills-chip">Java</div>
-            <div class="skills-chip">JavaScript</div>
-            <div class="skills-chip">React</div>
-            <div class="skills-chip">Node.js</div>
-            <div class="skills-chip">Express</div>
-            <div class="skills-chip">MySql</div>
-            <div class="skills-chip">AWS (EC2, S3, Lambda)</div>
-            <div class="skills-chip">Spring Boot</div>
-            <div class="skills-chip">Python</div>
-            <div class="skills-chip">UI/UX Design</div>
+        <div class="skills-container">
+            <div class="skills-cloud">
+                <div class="skills-chip-wrapper" style="--rotation-x: 10deg; --rotation-y: 25deg;">
+                    <div class="skills-chip">
+                        C++
+                        <div class="skill-description">Proficient in C++ for competitive programming and system-level applications.</div>
+                    </div>
+                </div>
+                <div class="skills-chip-wrapper" style="--rotation-x: -15deg; --rotation-y: -20deg;">
+                    <div class="skills-chip">
+                        Java
+                        <div class="skill-description">Extensive experience with Java for building robust backend services with Spring Boot.</div>
+                    </div>
+                </div>
+                <div class="skills-chip-wrapper" style="--rotation-x: 5deg; --rotation-y: 50deg;">
+                    <div class="skills-chip">
+                        JavaScript
+                        <div class="skill-description">Skilled in modern JavaScript frameworks for dynamic, interactive web experiences.</div>
+                    </div>
+                </div>
+                <div class="skills-chip-wrapper" style="--rotation-x: -25deg; --rotation-y: 10deg;">
+                    <div class="skills-chip">
+                        React
+                        <div class="skill-description">Experienced in building modern, responsive user interfaces with React.js.</div>
+                    </div>
+                </div>
+                <div class="skills-chip-wrapper" style="--rotation-x: 20deg; --rotation-y: -40deg;">
+                    <div class="skills-chip">
+                        Node.js
+                        <div class="skill-description">Strong background in building scalable server-side applications and APIs using Node.js.</div>
+                    </div>
+                </div>
+                <div class="skills-chip-wrapper" style="--rotation-x: -30deg; --rotation-y: -5deg;">
+                    <div class="skills-chip">
+                        Express
+                        <div class="skill-description">Used Express.js to create efficient and flexible RESTful APIs.</div>
+                    </div>
+                </div>
+                <div class="skills-chip-wrapper" style="--rotation-x: -5deg; --rotation-y: 35deg;">
+                    <div class="skills-chip">
+                        MySql
+                        <div class="skill-description">Expert in designing and managing relational databases with MySQL.</div>
+                    </div>
+                </div>
+                <div class="skills-chip-wrapper" style="--rotation-x: 15deg; --rotation-y: -15deg;">
+                    <div class="skills-chip">
+                        AWS
+                        <div class="skill-description">Hands-on experience with AWS services like EC2, S3, and Lambda for cloud deployments.</div>
+                    </div>
+                </div>
+                <div class="skills-chip-wrapper" style="--rotation-x: -10deg; --rotation-y: 45deg;">
+                    <div class="skills-chip">
+                        Spring Boot
+                        <div class="skill-description">Proficient in Spring Boot for creating production-grade, stand-alone applications.</div>
+                    </div>
+                </div>
+                <div class="skills-chip-wrapper" style="--rotation-x: 40deg; --rotation-y: -25deg;">
+                    <div class="skills-chip">
+                        Python
+                        <div class="skill-description">Utilized Python for data analysis, machine learning, and scripting.</div>
+                    </div>
+                </div>
+                <div class="skills-chip-wrapper" style="--rotation-x: -20deg; --rotation-y: 20deg;">
+                    <div class="skills-chip">
+                        UI/UX Design
+                        <div class="skill-description">Designed user-centric interfaces and experiences for web and mobile applications.</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
     <section id="certs" class="certs">
-        <h2>Certifications</h2>
-        <div class="cert-gallery">
-            <a onclick="openModal('azure-cert.jpeg', 'image')">Microsoft Azure Fundamentals</a>
-            <a onclick="openModal('aws-cloud.jpeg', 'image')">AWS Cloud Foundations</a>
-            <a onclick="openModal('cisco cyber cert.pdf', 'pdf')">Cisco Introduction to Cybersecurity</a>
-            <a onclick="openModal('data analyst.jpg', 'image')">GenAI Data Analyst</a>
-            <a onclick="openModal('full stack.jpg', 'image')">Full Stack/MERN Developer</a>
-            <a onclick="openModal('azure badge.jpeg', 'image')">Microsoft Azure AI-900 Badge</a>
-            <a onclick="openModal('innovate x cert.jpeg', 'image')">IoT InnovateX Certification</a>
+        <h2 style="margin-top: -100px;">Certifications</h2>
+        <div class="certs-grid">
+            <a class="cert-item" onclick="openModal('azure-cert.jpeg', 'image')">Microsoft Azure Fundamentals</a>
+            <a class="cert-item" onclick="openModal('aws-cloud.jpeg', 'image')">AWS Cloud Foundations</a>
+            <a class="cert-item" onclick="openModal('cisco cyber cert.pdf', 'pdf')">Cisco Introduction to Cybersecurity</a>
+            <a class="cert-item" onclick="openModal('data analyst.jpg', 'image')">Data Analyst</a>
+            <a class="cert-item" onclick="openModal('data analyst.jpg', 'image')">GenAI Data Analyst</a>
+            <a class="cert-item" onclick="openModal('full stack.jpg', 'image')">Full Stack/MERN Developer</a>
+            <a class="cert-item" onclick="openModal('azure badge.jpeg', 'image')">Microsoft Azure AI-900 Badge</a>
+            <a class="cert-item" onclick="openModal('innovate x cert.jpeg', 'image')">IoT InnovateX Certification</a>
         </div>
     </section>
 
     <section id="internships" class="internships">
-        <h2>Internships & Workshops</h2>
-        <div class="internship-gallery">
-            <div class="card">
+        <h2 style="margin-top: -100px;">Internships & Workshops</h2>
+        <div class="internships-grid">
+            <div class="internship-card">
                 <h3>Raspberry Pi & Node.js Workshop</h3>
                 <p>Attended a workshop at IIT Madras focused on building IoT applications using Raspberry Pi and Node.js for real-time data processing and device control.</p>
-                <a class="internship-link" onclick="openModal('raspberrypi cer.jpg', 'image')">View Certificate</a>
+                <p><a class="internship-link" onclick="openModal('raspberrypi cer.jpg', 'image')">View Certificate</a></p>
             </div>
-            <div class="card">
+            <div class="internship-card">
                 <h3>Digital Marketing Intern — Maven Advert</h3>
                 <p>Gained hands-on experience in digital marketing strategies and tools. This role included content creation and analytics to improve online visibility.</p>
-                <a class="internship-link" onclick="openModal('Prem INTERN CERTIFICATE 3.pdf', 'pdf')">View Certificate</a>
+                <p><a class="internship-link" onclick="openModal('Prem INTERN CERTIFICATE 3.pdf', 'pdf')">View Certificate</a></p>
             </div>
         </div>
     </section>
     
     <section id="achievements" class="achievements">
-        <h2>Achievements & Awards</h2>
-        <div class="cert-gallery">
-            <a onclick="openModal('topper cer.jpg', 'image')">Academic Recognition</a>
-            <a onclick="openModal('academic topper.jpeg', 'image')">College Recognition</a>
+        <h2 style="margin-top: -100px;">Achievements & Awards</h2>
+        <div class="achievements-grid">
+            <div class="achievement-item">
+                <a class="achievement-link" onclick="openModal('topper cer.jpg', 'image')">Academic Recognition</a>
+            </div>
+            <div class="achievement-item">
+                <a class="achievement-link" onclick="openModal('academic topper.jpeg', 'image')">College Recognition</a>
+            </div>
         </div>
     </section>
 
     <section id="contact" class="contact">
-        <h2>Contact Me</h2>
-        <form action="https://formspree.io/f/mwkawnyg" method="POST">
-            <input type="text" name="name" placeholder="Your Name" required>
-            <input type="email" name="email" placeholder="Your Email" required>
-            <textarea name="message" rows="4" placeholder="Your Message" required></textarea>
-            <button type="submit">Send Query</button>
-        </form>
-        <h3>Other Contact Links</h3>
-        <p>Email: <a href="mailto:selvaraj3805@gmail.com" style="color:#0ff">selvaraj3805@gmail.com</a></p>
-        <p>Phone: <a href="tel:+918778642535" style="color:#0ff">+91 8778642535</a></p>
-        <p>
-            <a href="https://www.linkedin.com/in/prem-s-12626b309/" target="_blank" style="color:#0ff">LinkedIn</a> | 
-            <a href="https://github.com/kingprem12" target="_blank" style="color:#0ff">GitHub</a> | 
-            <a href="https://canary.discord.com/channels/@me/948821325370253343" target="_blank" style="color:#0ff">Discord</a>
-        </p>
+        <h2 style="margin-top: -100px;">Contact Me</h2>
+        <div class="contact-container">
+            <div class="contact-card">
+                <h3>Get in Touch</h3>
+                <p>I'm always open to new opportunities, collaborations, and conversations. Feel free to send me a message.</p>
+                <form action="https://formspree.io/f/mwkawnyg" method="POST">
+                    <input type="text" name="name" placeholder="Your Name" required>
+                    <input type="email" name="email" placeholder="Your Email" required>
+                    <textarea name="message" rows="4" placeholder="Your Message" required></textarea>
+                    <button type="submit">Send Message</button>
+                    <small style="color: #bbb; margin-top: 10px;">**Important:** Your first submission may require a confirmation email from Formspree.</small>
+                </form>
+            </div>
+            <div class="contact-card">
+                <h3>Connect with Me</h3>
+                <p>Find me on social media and other platforms.</p>
+                <p style="display: flex; gap: 20px; justify-content: center;">
+                    <a href="https://www.linkedin.com/in/prem-s-12626b309/" target="_blank" style="color:#0ff">LinkedIn</a>
+                    <a href="https://github.com/kingprem12" target="_blank" style="color:#0ff">GitHub</a>
+                    <a href="https://canary.discord.com/channels/@me/948821325370253343" target="_blank" style="color:#0ff">Discord</a>
+                </p>
+                <p>Email: <a href="mailto:selvaraj3805@gmail.com" style="color:#0ff">selvaraj3805@gmail.com</a></p>
+                <p>Phone: <a href="tel:+918778642535" style="color:#0ff">+91 8778642535</a></p>
+            </div>
+        </div>
     </section>
 
     <section id="resume" class="resume">
-        <h2>My Resume</h2>
+        <h2 style="margin-top: -100px;">My Resume</h2>
         <p>Preview my resume directly below or download it above.</p>
         <iframe src="kisame.pdf"></iframe>
     </section>
@@ -265,24 +422,37 @@
 
     <script>
         // Background and cursor particles (Existing)
-        const cursorCanvas=document.getElementById('cursorCanvas');
-        const ctxCursor=cursorCanvas.getContext('2d');
-        let cursorParticles=[];
+        const cursorCanvas = document.getElementById('cursorCanvas');
+        const ctxCursor = cursorCanvas.getContext('2d');
+        let cursorParticles = [];
         resizeCursorCanvas();
-        window.addEventListener('resize',resizeCursorCanvas);
-        function resizeCursorCanvas(){cursorCanvas.width=window.innerWidth;cursorCanvas.height=window.innerHeight}
-        window.addEventListener('mousemove',e=>{
-            for(let i=0;i<5;i++){
-                cursorParticles.push({x:e.clientX,y:e.clientY,dx:(Math.random()-0.5)*2,dy:(Math.random()-0.5)*2,life:60});
+        window.addEventListener('resize', resizeCursorCanvas);
+        function resizeCursorCanvas() {
+            cursorCanvas.width = window.innerWidth;
+            cursorCanvas.height = window.innerHeight;
+        }
+        window.addEventListener('mousemove', e => {
+            for (let i = 0; i < 5; i++) {
+                cursorParticles.push({
+                    x: e.clientX,
+                    y: e.clientY,
+                    dx: (Math.random() - 0.5) * 2,
+                    dy: (Math.random() - 0.5) * 2,
+                    life: 60
+                });
             }
         });
-        function drawCursorParticles(){
-            ctxCursor.clearRect(0,0,cursorCanvas.width,cursorCanvas.height);
-            cursorParticles.forEach((p,i)=>{
-                ctxCursor.beginPath();ctxCursor.arc(p.x,p.y,3,0,Math.PI*2);
-                ctxCursor.fillStyle=`hsla(${p.life*6},100%,50%,0.8)`;ctxCursor.fill();
-                p.x+=p.dx;p.y+=p.dy;p.life--;
-                if(p.life<=0)cursorParticles.splice(i,1);
+        function drawCursorParticles() {
+            ctxCursor.clearRect(0, 0, cursorCanvas.width, cursorCanvas.height);
+            cursorParticles.forEach((p, i) => {
+                ctxCursor.beginPath();
+                ctxCursor.arc(p.x, p.y, 3, 0, Math.PI * 2);
+                ctxCursor.fillStyle = `hsla(${p.life * 6},100%,50%,0.8)`;
+                ctxCursor.fill();
+                p.x += p.dx;
+                p.y += p.dy;
+                p.life--;
+                if (p.life <= 0) cursorParticles.splice(i, 1);
             });
             requestAnimationFrame(drawCursorParticles);
         }
@@ -340,24 +510,51 @@
             requestAnimationFrame(animateBackground);
         }
         animateBackground();
-
-        // New intersection observer for project card animation
-        document.addEventListener('DOMContentLoaded', () => {
-            const projectCards = document.querySelectorAll('.project-card');
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('in-view');
-                    }
-                });
-            }, { threshold: 0.5 }); // Trigger when 50% of the element is visible
-            projectCards.forEach(card => {
-                observer.observe(card);
+        
+        // 3D Tilt Effect for Cards
+        const cards = document.querySelectorAll('.project-card, .cert-item, .internship-card, .achievement-item, .contact-card');
+        cards.forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const {
+                    left,
+                    top,
+                    width,
+                    height
+                } = card.getBoundingClientRect();
+                const x = e.clientX - left - width / 2;
+                const y = e.clientY - top - height / 2;
+                const rotateX = (y / height) * 20;
+                const rotateY = (x / width) * -20;
+                card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = `rotateX(0) rotateY(0)`;
             });
         });
 
-        // Modal functions (Existing)
-        function openModal(src, type){
+        // Skills Cloud Animation
+        document.addEventListener('DOMContentLoaded', () => {
+            const skillsCloud = document.querySelector('.skills-cloud');
+            const skillsChips = document.querySelectorAll('.skills-chip-wrapper');
+            const numSkills = skillsChips.length;
+            const radius = 200; // Radius of the 3D sphere
+
+            skillsChips.forEach((chip, i) => {
+                const phi = Math.acos(-1 + (2 * i + 1) / numSkills);
+                const theta = Math.sqrt(numSkills * Math.PI) * phi;
+                
+                const x = radius * Math.cos(theta) * Math.sin(phi);
+                const y = radius * Math.sin(theta) * Math.sin(phi);
+                const z = radius * Math.cos(phi);
+
+                chip.style.transform = `translate3d(${x}px, ${y}px, ${z}px) rotateX(${phi * 180 / Math.PI}deg) rotateY(${theta * 180 / Math.PI}deg)`;
+                chip.style.transition = 'transform 1s ease-out, opacity 1s ease-out';
+                chip.style.opacity = '1';
+            });
+        });
+
+        // Modal functions
+        function openModal(src, type) {
             const modal = document.getElementById('fileModal');
             const img = document.getElementById('modalImg');
             const iframe = document.getElementById('modalIframe');
@@ -382,8 +579,8 @@
             
             modal.style.display = 'flex';
         }
-        function closeModal(){
-            document.getElementById('fileModal').style.display='none';
+        function closeModal() {
+            document.getElementById('fileModal').style.display = 'none';
             const video = document.getElementById('modalVideo');
             video.pause();
             video.currentTime = 0;
