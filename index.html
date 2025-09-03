@@ -6,121 +6,95 @@
     <title>Prem S — Portfolio</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{font-family:'Poppins',sans-serif;overflow-x:hidden;background:#0a0a0a;color:#fff;scroll-behavior:smooth;position:relative}
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; overflow-x: hidden; background: #0a0a0a; color: #fff; scroll-behavior: smooth; position: relative; }
         
-        #backgroundCanvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2; 
-            background-color: #0a0a0a;
-        }
-        #cursorCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1}
-        section{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px;text-align:center;position:relative;z-index:1;background:rgba(0,0,0,0.6);margin-bottom:20px;border-radius:16px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1)}
+        #backgroundCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; background-color: #0a0a0a; }
+        #cursorCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+        
+        section { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; text-align: center; position: relative; z-index: 1; background: rgba(0,0,0,0.6); margin-bottom: 20px; border-radius: 16px; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
         section:first-child { margin-top: 80px; }
         
-        h1,h2,h3{margin-bottom:16px;color:#0ff;}
-        p{max-width:700px;margin:0 auto 16px;line-height:1.6;color:#e0e0e0;}
-        nav{position:fixed;top:0;left:0;width:100%;display:flex;justify-content:center;gap:20px;padding:20px;background:rgba(0,0,0,0.8);z-index:100;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,0.1)}
-        nav a{color:#fff;text-decoration:none;font-weight:500;transition:.3s}
-        nav a:hover{color:#0ff}
+        h1, h2, h3 { margin-bottom: 16px; color: #0ff; }
+        p { max-width: 700px; margin: 0 auto 16px; line-height: 1.6; color: #e0e0e0; }
+        nav { position: fixed; top: 0; left: 0; width: 100%; display: flex; justify-content: center; gap: 20px; padding: 20px; background: rgba(0,0,0,0.8); z-index: 100; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,0.1); }
+        nav a { color: #fff; text-decoration: none; font-weight: 500; transition: .3s; }
+        nav a:hover { color: #0ff; }
         
-        .intro, .about, .projects, .skills, .certs, .contact, .resume, .achievements, .internships {
-            background: none;
-        }
+        .intro, .about, .projects, .skills, .certs, .contact, .resume, .achievements, .internships { background: none; }
         
-        /* Updated Project Section Styling */
-        .projects {
-            display: flex;
-            flex-direction: column;
+        /* New Project Section Styling */
+        .projects { padding: 80px 20px; }
+        .projects-grid {
+            display: grid;
+            grid-template-columns: 1fr;
             gap: 40px;
-            padding: 80px 20px;
+            width: 100%;
+            max-width: 1200px;
+            margin-top: 40px;
         }
         .project-card {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            width: 100%;
-            max-width: 800px;
-            padding: 20px;
             background: rgba(255,255,255,0.1);
+            padding: 30px;
             border-radius: 16px;
             border: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 0 10px rgba(0,255,255,0.2);
         }
-        .project-card.left {
-            align-self: flex-start;
-            text-align: left;
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0,255,255,0.4);
         }
-        .project-card.right {
-            align-self: flex-end;
-            text-align: right;
-        }
-
-        @media (min-width: 768px) {
-            .projects {
-                align-items: center;
-            }
-        }
-        .chips{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:10px}
-        .chip{background:rgba(255,255,255,0.2);padding:6px 14px;border-radius:20px;font-size:14px;color:#fff}
-        form{display:flex;flex-direction:column;gap:10px;max-width:400px;width:100%;margin:20px auto}
-        input,textarea{padding:12px;border:none;border-radius:8px;font-family:inherit;background:rgba(255,255,255,0.1);color:#fff}
-        button{padding:12px;background:#0ff;color:#000;border:none;border-radius:8px;font-weight:700;cursor:pointer;transition:.3s}
-        button:hover{background:#fff;color:#000}
+        .project-card h3 { color: #0ff; }
         
-        img.project-img, .modal-img{max-width:100%;border-radius:12px;margin-top:12px;border:2px solid rgba(255,255,255,0.2)}
-        .btn{display:inline-block;margin:10px;padding:12px 20px;border-radius:10px;text-decoration:none;font-weight:600;transition:.3s}
-        .btn-view{background:#0ff;color:#000}
-        .btn-download{background:#8e2de2;color:#fff}
-        .btn:hover{transform:scale(1.05)}
-        iframe{width:80%;height:80vh;border-radius:12px;border:none;margin-top:20px}
-        .cert-gallery, .internship-gallery{display:flex;flex-direction:column;gap:12px;align-items:center}
-        .cert-gallery a, .project-link, .internship-link{color:#0ff;text-decoration:underline;cursor:pointer}
-        .modal{display:none;position:fixed;z-index:1000;left:0;top:0;width:100%;height:100%;overflow:auto;background:rgba(0,0,0,0.9);align-items:center;justify-content:center}
-        .modal-content{margin:5% auto;display:block;max-width:80%;border-radius:12px}
-        .close{position:absolute;top:20px;right:40px;color:#fff;font-size:40px;font-weight:bold;cursor:pointer}
-        .modal-content-container{max-height:90vh;display:flex;flex-direction:column;align-items:center;justify-content:center}
-        .modal-content-container img, .modal-content-container iframe, .modal-content-container video { max-width: 90%; max-height: 90vh; }
-
-        .about-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 30px;
-            max-width: 900px;
-        }
-        .about-image {
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 4px solid #0ff;
-            box-shadow: 0 0 15px #0ff;
-            transition: transform 0.3s ease-in-out;
-        }
-        .about-image:hover {
-            transform: scale(1.05);
-        }
-        .about p {
-            font-size: 1.1em;
-            max-width: 800px;
-        }
-
         @media (min-width: 768px) {
-            .about-content {
-                flex-direction: row;
-                text-align: left;
+            .projects-grid {
+                grid-template-columns: 1fr 1fr;
+                grid-template-areas:
+                    "card1 ."
+                    ". card2"
+                    "card3 ."
+                    ". card4"
+                    "card5 .";
             }
-            .about-text {
-                margin-left: 30px;
-            }
-            .about-image {
-                margin-right: 30px;
-            }
+            #project-1 { grid-area: card1; }
+            #project-2 { grid-area: card2; }
+            #project-3 { grid-area: card3; }
+            #project-4 { grid-area: card4; }
+            #project-5 { grid-area: card5; }
+        }
+        
+        .chips { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 10px; }
+        .chip { background: rgba(255,255,255,0.2); padding: 6px 14px; border-radius: 20px; font-size: 14px; color: #fff; }
+        form { display: flex; flex-direction: column; gap: 10px; max-width: 400px; width: 100%; margin: 20px auto; }
+        input, textarea { padding: 12px; border: none; border-radius: 8px; font-family: inherit; background: rgba(255,255,255,0.1); color: #fff; }
+        button { padding: 12px; background: #0ff; color: #000; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; transition: .3s; }
+        button:hover { background: #fff; color: #000; }
+        
+        img.project-img, .modal-img { max-width: 100%; border-radius: 12px; margin-top: 12px; border: 2px solid rgba(255,255,255,0.2); }
+        .btn { display: inline-block; margin: 10px; padding: 12px 20px; border-radius: 10px; text-decoration: none; font-weight: 600; transition: .3s; }
+        .btn-view { background: #0ff; color: #000; }
+        .btn-download { background: #8e2de2; color: #fff; }
+        .btn:hover { transform: scale(1.05); }
+        iframe { width: 80%; height: 80vh; border-radius: 12px; border: none; margin-top: 20px; }
+        .cert-gallery, .internship-gallery { display: flex; flex-direction: column; gap: 12px; align-items: center; }
+        .cert-gallery a, .project-link, .internship-link { color: #0ff; text-decoration: underline; cursor: pointer; }
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background: rgba(0,0,0,0.9); align-items: center; justify-content: center; }
+        .modal-content { margin: 5% auto; display: block; max-width: 80%; border-radius: 12px; }
+        .close { position: absolute; top: 20px; right: 40px; color: #fff; font-size: 40px; font-weight: bold; cursor: pointer; }
+        .modal-content-container { max-height: 90vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .modal-content-container img, .modal-content-container iframe, .modal-content-container video { max-width: 90%; max-height: 90vh; }
+        
+        .about-content { display: flex; flex-direction: column; align-items: center; gap: 30px; max-width: 900px; }
+        .about-image { width: 200px; height: 200px; border-radius: 50%; object-fit: cover; border: 4px solid #0ff; box-shadow: 0 0 15px #0ff; transition: transform 0.3s ease-in-out; }
+        .about-image:hover { transform: scale(1.05); }
+        .about p { font-size: 1.1em; max-width: 800px; }
+        
+        @media (min-width: 768px) {
+            .about-content { flex-direction: row; text-align: left; }
+            .about-text { margin-left: 30px; }
+            .about-image { margin-right: 30px; }
         }
     </style>
 </head>
@@ -163,35 +137,37 @@
 
     <section id="projects" class="projects">
         <h2>My Projects</h2>
-        <div class="project-card left">
-            <h3>Smart AI-Based Traffic Management</h3>
-            <p>An IoT-based system that uses thermal and humidity-aware vision to manage urban traffic dynamically. It adjusts traffic light timings based on real-time data, helping to reduce congestion and improve efficiency. This project was presented at the IoT InnovateX.</p>
-            <p>
-                <a class="project-link" onclick="openModal('traffic managemnet proto.jpeg', 'image')">View Prototype</a>
-            </p>
-        </div>
-        <div class="project-card right">
-            <h3>Kutty Port: The Zepto of Indian Export Logistics</h3>
-            <p>A logistics platform designed to streamline the export process for small and medium-sized businesses (MSMEs). It addresses issues like high costs, delays, and lack of real-time tracking through a decentralized port model.</p>
-            <a class="project-link" onclick="openModal('kutty port.pptx', 'ppt')">View Details</a>
-        </div>
-        <div class="project-card left">
-            <h3>IEEE Emergency Lane Clearance</h3>
-            <p>A smart Edge-IoT system for dynamic emergency lane clearance. The system uses a combination of thermal cameras and humidity sensors to detect emergency vehicles in any weather, including fog and rain, and controls traffic lights to provide a clear path.</p>
-            <p>
-                <a class="project-link" onclick="openModal('IEEE lane clearance.docx', 'docx')">View Details</a> |
-                <a class="project-link" onclick="openModal('lane clearance.mp4', 'video')">View Video</a>
-            </p>
-        </div>
-        <div class="project-card right">
-            <h3>IEEE Shadow AI</h3>
-            <p>A consultancy project focused on the risks and ethical implications of "Shadow AI"—the unauthorized use of AI tools by employees within a company. The project highlights the security and privacy risks and provides a framework for responsible AI use.</p>
-            <a class="project-link" onclick="openModal('IEEE shadow ai.docx', 'docx')">View Details</a>
-        </div>
-        <div class="project-card left">
-            <h3>SAP Hackfest: AI-Dharma</h3>
-            <p>An ethical AI-based fraud detection system for the banking sector. The project uses machine learning and game theory to identify suspicious transactions while ensuring transparency and fairness, aligning with principles from the Indian Knowledge System (IKS).</p>
-            <a class="project-link" onclick="openModal('SAP_HACKFEST_UPDATED.pptx', 'ppt')">View Details</a>
+        <div class="projects-grid">
+            <div class="project-card" id="project-1">
+                <h3>Smart AI-Based Traffic Management</h3>
+                <p>An IoT-based system that uses thermal and humidity-aware vision to manage urban traffic dynamically. It adjusts traffic light timings based on real-time data, helping to reduce congestion and improve efficiency. This project was presented at the IoT InnovateX.</p>
+                <p>
+                    <a class="project-link" onclick="openModal('traffic managemnet proto.jpeg', 'image')">View Prototype</a>
+                </p>
+            </div>
+            <div class="project-card" id="project-2">
+                <h3>Kutty Port: The Zepto of Indian Export Logistics</h3>
+                <p>A logistics platform designed to streamline the export process for small and medium-sized businesses (MSMEs). It addresses issues like high costs, delays, and lack of real-time tracking through a decentralized port model.</p>
+                <a class="project-link" onclick="openModal('kutty port.pptx', 'ppt')">View Details</a>
+            </div>
+            <div class="project-card" id="project-3">
+                <h3>IEEE Emergency Lane Clearance</h3>
+                <p>A smart Edge-IoT system for dynamic emergency lane clearance. The system uses a combination of thermal cameras and humidity sensors to detect emergency vehicles in any weather, including fog and rain, and controls traffic lights to provide a clear path.</p>
+                <p>
+                    <a class="project-link" onclick="openModal('IEEE lane clearance.docx', 'docx')">View Details</a> |
+                    <a class="project-link" onclick="openModal('lane clearance.mp4', 'video')">View Video</a>
+                </p>
+            </div>
+            <div class="project-card" id="project-4">
+                <h3>IEEE Shadow AI</h3>
+                <p>A consultancy project focused on the risks and ethical implications of "Shadow AI"—the unauthorized use of AI tools by employees within a company. The project highlights the security and privacy risks and provides a framework for responsible AI use.</p>
+                <a class="project-link" onclick="openModal('IEEE shadow ai.docx', 'docx')">View Details</a>
+            </div>
+            <div class="project-card" id="project-5">
+                <h3>SAP Hackfest: AI-Dharma</h3>
+                <p>An ethical AI-based fraud detection system for the banking sector. The project uses machine learning and game theory to identify suspicious transactions while ensuring transparency and fairness, aligning with principles from the Indian Knowledge System (IKS).</p>
+                <a class="project-link" onclick="openModal('SAP_HACKFEST_UPDATED.pptx', 'ppt')">View Details</a>
+            </div>
         </div>
     </section>
 
@@ -351,7 +327,7 @@
             requestAnimationFrame(animateBackground);
         }
         animateBackground();
-
+        
         function openModal(src, type){
             const modal = document.getElementById('fileModal');
             const img = document.getElementById('modalImg');
