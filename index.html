@@ -1,483 +1,213 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Prem S — Portfolio</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary-color: #0ff;
-            --secondary-color: #fff;
-            --background-color: #0a0a0a;
-            --card-bg: rgba(255, 255, 255, 0.1);
-            --card-border: 1px solid rgba(255, 255, 255, 0.1);
-            --glow-color: rgba(0, 255, 255, 0.5);
-        }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Prem S — Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Poppins', sans-serif; overflow-x: hidden; background: #0a0a0a; color: #fff; scroll-behavior: smooth; }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Poppins', sans-serif; overflow-x: hidden; background: var(--background-color); color: var(--secondary-color); scroll-behavior: smooth; perspective: 1000px; }
-        
-        #backgroundCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; background-color: var(--background-color); }
-        
-        section { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; text-align: center; position: relative; z-index: 1; background: rgba(0,0,0,0.6); margin-bottom: 20px; border-radius: 16px; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
-        section:first-child { margin-top: 80px; }
-        
-        h1, h2, h3 { margin-bottom: 16px; color: var(--primary-color); }
-        p { max-width: 700px; margin: 0 auto 16px; line-height: 1.6; color: #e0e0e0; }
-        nav { position: fixed; top: 0; left: 0; width: 100%; display: flex; justify-content: center; gap: 20px; padding: 20px; background: rgba(0,0,0,0.8); z-index: 100; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,0.1); }
-        nav a { color: var(--secondary-color); text-decoration: none; font-weight: 500; transition: .3s; }
-        nav a:hover { color: var(--primary-color); }
-        
-        .intro, .about, .projects, .skills, .certs, .contact, .resume, .achievements, .internships { background: none; }
-        
-        /* General Interactive Card Styling */
-        .interactive-card {
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: 16px;
-            border: var(--card-border);
-            position: relative;
-            transform-style: preserve-3d;
-            transform: perspective(1000px) rotateX(0deg) rotateY(0deg);
-            transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
-            box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
-        }
-        .interactive-card:hover {
-            box-shadow: 0 0 20px var(--glow-color);
-        }
+    /* Background Canvas */
+    #backgroundCanvas, #cursorCanvas, #smokeCanvas {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      z-index: -3;
+    }
+    #cursorCanvas { z-index: -2; }
+    #backgroundCanvas { z-index: -1; }
 
-        /* 3D Skills Flip Cards */
-        .skills-grid {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 25px;
-            margin-top: 40px;
-            width: 100%;
-            max-width: 900px;
-            perspective: 1000px;
-        }
-        .skills-chip-container {
-            width: 200px;
-            height: 100px;
-            position: relative;
-            transform-style: preserve-3d;
-            transition: transform 0.6s;
-            cursor: pointer;
-        }
-        .skills-chip-container:hover {
-            transform: rotateY(180deg);
-        }
-        .skills-chip-container .skills-chip, .skills-chip-container .skill-description-box {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            backface-visibility: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,255,255,0.2);
-        }
-        .skills-chip {
-            background: rgba(255,255,255,0.1);
-            padding: 12px 24px;
-            color: #fff;
-            border: 1px solid transparent;
-            font-weight: 500;
-        }
-        .skill-description-box {
-            background: rgba(0,0,0,0.9);
-            border: 1px solid #0ff;
-            color: #fff;
-            text-align: center;
-            padding: 15px;
-            font-size: 14px;
-            line-height: 1.4;
-            transform: rotateY(180deg);
-        }
+    section { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; text-align: center; position: relative; z-index: 1; margin-bottom: 20px; border-radius: 16px; opacity: 0; transform: translateY(50px); transition: opacity 1s ease, transform 1s ease; }
+    section.visible { opacity: 1; transform: translateY(0); }
 
-        /* Grid Layouts */
-        .projects-grid, .certs-grid, .internships-grid, .achievements-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 40px;
-            width: 100%;
-            max-width: 1200px;
-            margin-top: 40px;
-        }
-        @media (min-width: 768px) {
-            .projects-grid, .certs-grid, .internships-grid, .achievements-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-        @media (min-width: 1024px) {
-             .projects-grid, .certs-grid, .internships-grid, .achievements-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
+    h1, h2, h3 { margin-bottom: 16px; color: #0ff; text-shadow: 0 0 10px #0ff; }
+    p { max-width: 700px; margin: 0 auto 16px; line-height: 1.6; color: #e0e0e0; }
 
-        /* General styles */
-        form { display: flex; flex-direction: column; gap: 10px; max-width: 400px; width: 100%; margin: 20px auto; z-index: 10; }
-        input, textarea { padding: 12px; border: none; border-radius: 8px; font-family: inherit; background: rgba(255,255,255,0.1); color: var(--secondary-color); z-index: 11; }
-        button { padding: 12px; background: var(--primary-color); color: #000; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; transition: .3s; z-index: 11; }
-        button:hover { background: var(--secondary-color); color: #000; }
-        
-        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background: rgba(0,0,0,0.9); align-items: center; justify-content: center; }
-        .modal-content { margin: 5% auto; display: block; max-width: 80%; border-radius: 12px; }
-        .close { position: absolute; top: 20px; right: 40px; color: var(--secondary-color); font-size: 40px; font-weight: bold; cursor: pointer; }
-        .modal-content-container { max-height: 90vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .modal-content-container img, .modal-content-container iframe, .modal-content-container video { max-width: 90%; max-height: 90vh; }
-        
-        .about-content { display: flex; flex-direction: column; align-items: center; gap: 30px; max-width: 900px; }
-        .about-image { width: 200px; height: 200px; border-radius: 50%; object-fit: cover; border: 4px solid var(--primary-color); box-shadow: 0 0 15px var(--primary-color); transition: transform 0.3s ease-in-out; }
-        .about-image:hover { transform: scale(1.05); }
-        .about p { font-size: 1.1em; max-width: 800px; }
-        
-        @media (min-width: 768px) {
-            .about-content { flex-direction: row; text-align: left; }
-            .about-text { margin-left: 30px; }
-            .about-image { margin-right: 30px; }
-        }
-    </style>
+    nav { position: fixed; top: 0; left: 0; width: 100%; display: flex; justify-content: center; gap: 20px; padding: 20px; background: rgba(0,0,0,0.8); z-index: 100; backdrop-filter: blur(10px); }
+    nav a { color: #fff; text-decoration: none; font-weight: 500; transition: .3s; }
+    nav a:hover { color: #0ff; text-shadow: 0 0 10px #0ff; }
+
+    /* 3D Cards */
+    .projects-grid, .certs-grid, .internships-grid, .achievements-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 40px;
+      width: 100%;
+      max-width: 1200px;
+      margin-top: 40px;
+    }
+    .project-card, .cert-item, .internship-card, .achievement-item, .contact-card {
+      background: rgba(255,255,255,0.05);
+      padding: 30px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 0 15px rgba(0,255,255,0.2);
+      transition: transform 0.5s ease, box-shadow 0.5s ease;
+      cursor: pointer;
+    }
+    .project-card:hover, .cert-item:hover, .internship-card:hover, .achievement-item:hover, .contact-card:hover {
+      transform: translateY(-15px) scale(1.05) rotateX(5deg) rotateY(5deg);
+      box-shadow: 0 20px 40px rgba(0,255,255,0.5), 0 0 30px rgba(142,45,226,0.8);
+    }
+
+    @media (min-width: 768px) {
+      .projects-grid, .certs-grid, .internships-grid, .achievements-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    /* Contact */
+    form { display: flex; flex-direction: column; gap: 12px; max-width: 400px; margin: 20px auto; }
+    input, textarea { padding: 12px; border: none; border-radius: 8px; font-family: inherit; background: rgba(255,255,255,0.1); color: #fff; }
+    button { padding: 12px; background: #0ff; color: #000; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; transition: .3s; }
+    button:hover { background: #fff; color: #000; }
+
+    .btn { display: inline-block; margin: 10px; padding: 12px 20px; border-radius: 10px; text-decoration: none; font-weight: 600; transition: .3s; }
+    .btn-view { background: #0ff; color: #000; }
+    .btn-download { background: #8e2de2; color: #fff; }
+    .btn:hover { transform: scale(1.1); box-shadow: 0 0 20px #0ff; }
+
+    iframe { width: 80%; height: 80vh; border-radius: 12px; border: none; margin-top: 20px; }
+
+    /* Modal */
+    .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background: rgba(0,0,0,0.9); align-items: center; justify-content: center; }
+    .modal-content-container { max-height: 90vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .modal-content-container img, .modal-content-container iframe, .modal-content-container video { max-width: 90%; max-height: 90vh; }
+    .close { position: absolute; top: 20px; right: 40px; color: #fff; font-size: 40px; cursor: pointer; }
+  </style>
 </head>
 <body>
-    <canvas id="backgroundCanvas"></canvas>
-    
-    <nav>
-        <a href="#intro">Home</a>
-        <a href="#about">About</a>
-        <a href="#projects">Projects</a>
-        <a href="#skills">Skills</a>
-        <a href="#certs">Certifications</a>
-        <a href="#internships">Internships</a>
-        <a href="#achievements">Achievements</a>
-        <a href="#contact">Contact</a>
-        <a href="#resume">Resume</a>
-    </nav>
+  <canvas id="smokeCanvas"></canvas>
+  <canvas id="cursorCanvas"></canvas>
+  <canvas id="backgroundCanvas"></canvas>
 
-    <section id="intro" class="intro">
-        <h1>Hi, I'm Prem 👋</h1>
-        <h3>Software Developer · Full-Stack · IoT & Cloud</h3>
-        <p>Turning visionary ideas into scalable applications, intelligent IoT solutions, and cutting-edge AI-driven projects. I thrive at the intersection of innovation and execution.</p>
-        <div>
-            <a href="kisame.pdf" target="_blank" class="btn btn-view">📄 View Resume</a>
-            <a href="kisame.pdf" download class="btn btn-download">⬇️ Download Resume</a>
-        </div>
-    </section>
+  <!-- NAVIGATION -->
+  <nav>
+    <a href="#intro">Home</a>
+    <a href="#about">About</a>
+    <a href="#projects">Projects</a>
+    <a href="#skills">Skills</a>
+    <a href="#certs">Certifications</a>
+    <a href="#internships">Internships</a>
+    <a href="#achievements">Achievements</a>
+    <a href="#contact">Contact</a>
+    <a href="#resume">Resume</a>
+  </nav>
 
-    <section id="about" class="about">
-        <h2>About Me</h2>
-        <div class="about-content">
-            <img src="prem.jpg" alt="Prem S" class="about-image">
-            <div class="about-text">
-                <p>As a driven 3rd-year BE Computer Science student, I specialize in crafting robust full-stack applications and deploying innovative IoT systems. My expertise extends to leveraging cloud platforms like AWS to build scalable, resilient solutions.</p>
-                <p>I am deeply passionate about translating complex challenges into elegant code and architecting systems that make a tangible impact. From data-driven insights to seamless user experiences, I am always pushing the boundaries of what's possible in the digital realm.</p>
-            </div>
-        </div>
-    </section>
-
-    <section id="projects" class="projects">
-        <h2>My Projects</h2>
-        <div class="projects-grid">
-            <div class="interactive-card project-card" id="project-1">
-                <h3>Smart AI-Based Traffic Management</h3>
-                <p>An IoT-based system that uses thermal and humidity-aware vision to manage urban traffic dynamically. It adjusts traffic light timings based on real-time data, helping to reduce congestion and improve efficiency. This project was presented at the IoT InnovateX.</p>
-                <p><a class="project-link" onclick="openModal('traffic managemnet proto.jpeg', 'image')">View Prototype</a></p>
-            </div>
-            <div class="interactive-card project-card" id="project-2">
-                <h3>Kutty Port: The Zepto of Indian Export Logistics</h3>
-                <p>A logistics platform designed to streamline the export process for small and medium-sized businesses (MSMEs). It addresses issues like high costs, delays, and lack of real-time tracking through a decentralized port model.</p>
-                <p><a class="project-link" onclick="openModal('kutty port.pptx', 'ppt')">View Details</a></p>
-            </div>
-            <div class="interactive-card project-card" id="project-3">
-                <h3>IEEE Emergency Lane Clearance</h3>
-                <p>A smart Edge-IoT system for dynamic emergency lane clearance. The system uses a combination of thermal cameras and humidity sensors to detect emergency vehicles in any weather, including fog and rain, and controls traffic lights to provide a clear path.</p>
-                <p><a class="project-link" onclick="openModal('IEEE lane clearance.docx', 'docx')">View Details</a> | <a class="project-link" onclick="openModal('lane clearance.mp4', 'video')">View Video</a></p>
-            </div>
-            <div class="interactive-card project-card" id="project-4">
-                <h3>IEEE Shadow AI</h3>
-                <p>A consultancy project focused on the risks and ethical implications of "Shadow AI"—the unauthorized use of AI tools by employees within a company. The project highlights the security and privacy risks and provides a framework for responsible AI use.</p>
-                <p><a class="project-link" onclick="openModal('IEEE shadow ai.docx', 'docx')">View Details</a></p>
-            </div>
-            <div class="interactive-card project-card" id="project-5">
-                <h3>SAP Hackfest: AI-Dharma</h3>
-                <p>An ethical AI-based fraud detection system for the banking sector. The project uses machine learning and game theory to identify suspicious transactions while ensuring transparency and fairness, aligning with principles from the Indian Knowledge System (IKS).</p>
-                <p><a class="project-link" onclick="openModal('SAP_HACKFEST_UPDATED.pptx', 'ppt')">View Details</a></p>
-            </div>
-            <div class="interactive-card project-card" id="project-6">
-                <h3>Budget Management System</h3>
-                <p>A secure, full-stack financial application built with Spring Boot and REST API. This system allows users to track expenses, manage budgets, and visualize financial data for better financial control and planning.</p>
-                <p><a class="project-link" onclick="openModal('budget.pdf', 'pdf')">View Details</a></p>
-            </div>
-        </div>
-    </section>
-
-    <section id="skills" class="skills">
-        <h2>Skills</h2>
-        <div class="skills-grid">
-            <div class="skills-chip-container">
-                <div class="skills-chip">C++</div>
-                <div class="skill-description-box">Proficient in C++ for competitive programming and system-level applications.</div>
-            </div>
-            <div class="skills-chip-container">
-                <div class="skills-chip">Java</div>
-                <div class="skill-description-box">Extensive experience with Java for building robust backend services with Spring Boot.</div>
-            </div>
-            <div class="skills-chip-container">
-                <div class="skills-chip">JavaScript</div>
-                <div class="skill-description-box">Skilled in modern JavaScript frameworks for dynamic, interactive web experiences.</div>
-            </div>
-            <div class="skills-chip-container">
-                <div class="skills-chip">React</div>
-                <div class="skill-description-box">Experienced in building modern, responsive user interfaces with React.js.</div>
-            </div>
-            <div class="skills-chip-container">
-                <div class="skills-chip">Node.js</div>
-                <div class="skill-description-box">Strong background in building scalable server-side applications and APIs using Node.js.</div>
-            </div>
-            <div class="skills-chip-container">
-                <div class="skills-chip">Express</div>
-                <div class="skill-description-box">Used Express.js to create efficient and flexible RESTful APIs.</div>
-            </div>
-            <div class="skills-chip-container">
-                <div class="skills-chip">MySql</div>
-                <div class="skill-description-box">Expert in designing and managing relational databases with MySQL.</div>
-            </div>
-            <div class="skills-chip-container">
-                <div class="skills-chip">AWS</div>
-                <div class="skill-description-box">Hands-on experience with AWS services like EC2, S3, and Lambda for cloud deployments.</div>
-            </div>
-            <div class="skills-chip-container">
-                <div class="skills-chip">Spring Boot</div>
-                <div class="skill-description-box">Proficient in Spring Boot for creating production-grade, stand-alone applications.</div>
-            </div>
-            <div class="skills-chip-container">
-                <div class="skills-chip">Python</div>
-                <div class="skill-description-box">Utilized Python for data analysis, machine learning, and scripting.</div>
-            </div>
-            <div class="skills-chip-container">
-                <div class="skills-chip">UI/UX Design</div>
-                <div class="skill-description-box">Designed user-centric interfaces and experiences for web and mobile applications.</div>
-            </div>
-        </div>
-    </section>
-
-    <section id="certs" class="certs">
-        <h2>Certifications</h2>
-        <div class="certs-grid">
-            <a class="interactive-card cert-item" onclick="openModal('full stack.jpg', 'image')">Full Stack/MERN Developer</a>
-            <a class="interactive-card cert-item" onclick="openModal('azure-cert.jpeg', 'image')">Microsoft Azure Fundamentals</a>
-            <a class="interactive-card cert-item" onclick="openModal('aws-cloud.jpeg', 'image')">AWS Cloud Foundations</a>
-            <a class="interactive-card cert-item" onclick="openModal('cisco cyber cert.pdf', 'pdf')">Cisco Introduction to Cybersecurity</a>
-            <a class="interactive-card cert-item" onclick="openModal('data analyst.jpg', 'image')">Data Analyst</a>
-            <a class="interactive-card cert-item" onclick="openModal('genai.jpg', 'image')">GenAI Data Analyst</a>
-            <a class="interactive-card cert-item" onclick="openModal('azure badge.jpeg', 'image')">Microsoft Azure AI-900 Badge</a>
-            <a class="interactive-card cert-item" onclick="openModal('innovate x cert.jpeg', 'image')">IoT InnovateX Certification</a>
-        </div>
-    </section>
-
-    <section id="internships" class="internships">
-        <h2>Internships & Workshops</h2>
-        <div class="internships-grid">
-            <div class="interactive-card internship-card">
-                <h3>Raspberry Pi & Node.js Workshop</h3>
-                <p>Attended a workshop at IIT Madras focused on building IoT applications using Raspberry Pi and Node.js for real-time data processing and device control.</p>
-                <p><a class="internship-link" onclick="openModal('respberry pi.jpeg', 'image')">View Certificate</a></p>
-            </div>
-            <div class="interactive-card internship-card">
-                <h3>Digital Marketing Intern — Maven Advert</h3>
-                <p>Gained hands-on experience in digital marketing strategies and tools. This role included content creation and analytics to improve online visibility.</p>
-                <p><a class="internship-link" onclick="openModal('Prem INTERN CERTIFICATE 3.pdf', 'pdf')">View Certificate</a></p>
-            </div>
-        </div>
-    </section>
-    
-    <section id="achievements" class="achievements">
-        <h2>Achievements & Awards</h2>
-        <div class="achievements-grid">
-            <div class="interactive-card achievement-item">
-                <a class="achievement-link" onclick="openModal('academic topper.jpg', 'image')">Academic Topper</a>
-            </div>
-            <div class="interactive-card achievement-item">
-                <a class="achievement-link" onclick="openModal('college.jpg', 'image')">College Recognition</a>
-            </div>
-        </div>
-    </section>
-
-    <section id="contact" class="contact">
-        <h2>Contact Me</h2>
-        <div class="contact-container">
-            <div class="interactive-card contact-card">
-                <h3>Get in Touch</h3>
-                <p>I'm always open to new opportunities, collaborations, and conversations. Feel free to send me a message.</p>
-                <form action="https://formspree.io/f/mwkawnyg" method="POST" style="z-index: 20;">
-                    <input type="text" name="name" placeholder="Your Name" required>
-                    <input type="email" name="email" placeholder="Your Email" required>
-                    <textarea name="message" rows="4" placeholder="Your Message" required></textarea>
-                    <button type="submit">Send Message</button>
-                    <small style="color: #bbb; margin-top: 10px;">**Important:** Your first submission may require a confirmation email from Formspree.</small>
-                </form>
-            </div>
-            <div class="interactive-card contact-card">
-                <h3>Connect with Me</h3>
-                <p>Find me on social media and other platforms.</p>
-                <p style="display: flex; gap: 20px; justify-content: center;">
-                    <a href="https://www.linkedin.com/in/prem-s-12626b309/" target="_blank" style="color:var(--primary-color)">LinkedIn</a>
-                    <a href="https://github.com/kingprem12" target="_blank" style="color:var(--primary-color)">GitHub</a>
-                    <a href="https://canary.discord.com/channels/@me/948821325370253343" target="_blank" style="color:var(--primary-color)">Discord</a>
-                </p>
-                <p>Email: <a href="mailto:selvaraj3805@gmail.com" style="color:var(--primary-color)">selvaraj3805@gmail.com</a></p>
-                <p>Phone: <a href="tel:+918778642535" style="color:var(--primary-color)">+91 8778642535</a></p>
-            </div>
-        </div>
-    </section>
-
-    <section id="resume" class="resume">
-        <h2>My Resume</h2>
-        <p>Preview my resume directly below or download it above.</p>
-        <iframe src="kisame.pdf"></iframe>
-    </section>
-
-    <div id="fileModal" class="modal" onclick="closeModal()">
-        <span class="close">&times;</span>
-        <div class="modal-content-container">
-            <img class="modal-content" id="modalImg" style="display: none;">
-            <iframe id="modalIframe" style="display: none;"></iframe>
-            <video id="modalVideo" controls style="display: none;"></video>
-        </div>
+  <!-- INTRO -->
+  <section id="intro">
+    <h1>Hi, I'm Prem 👋</h1>
+    <h3>Software Developer · Full-Stack · IoT & Cloud</h3>
+    <p>Turning visionary ideas into scalable applications, intelligent IoT solutions, and cutting-edge AI-driven projects.</p>
+    <div>
+      <a href="kisame.pdf" target="_blank" class="btn btn-view">📄 View Resume</a>
+      <a href="kisame.pdf" download class="btn btn-download">⬇️ Download Resume</a>
     </div>
+  </section>
 
-    <script>
-        // 3D Tilt Effect
-        function applyTiltEffect(elements) {
-            elements.forEach(card => {
-                card.addEventListener('mousemove', e => {
-                    // Check if the target is an input field, button, or link and skip the effect
-                    if (['INPUT', 'TEXTAREA', 'BUTTON', 'A'].includes(e.target.tagName)) {
-                        return;
-                    }
+  <!-- ABOUT -->
+  <section id="about">
+    <h2>About Me</h2>
+    <p>I am a 3rd-year BE Computer Science student, passionate about building scalable full-stack applications and IoT solutions powered by Cloud & AI.</p>
+  </section>
 
-                    const { left, top, width, height } = card.getBoundingClientRect();
-                    const x = e.clientX - left - width / 2;
-                    const y = e.clientY - top - height / 2;
-                    const rotateX = (y / height) * 20;
-                    const rotateY = (x / width) * -20;
-                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-                });
-                card.addEventListener('mouseleave', () => {
-                    card.style.transform = `perspective(1000px) rotateX(0) rotateY(0)`;
-                });
-            });
-        }
-        
-        applyTiltEffect(document.querySelectorAll('.interactive-card'));
-        
-        // 3D Smoke Effect
-        const bgCanvas = document.getElementById('backgroundCanvas');
-        const ctxBg = bgCanvas.getContext('2d');
-        let particles = [];
-        let time = 0;
-        let scale = 10;
-        let speed = 0.005;
+  <!-- PROJECTS -->
+  <section id="projects">
+    <h2>Projects</h2>
+    <div class="projects-grid">
+      <div class="project-card">
+        <h3>Smart AI-Based Traffic Management</h3>
+        <p>IoT-based system using thermal & humidity-aware vision to manage traffic.</p>
+        <p><a onclick="openModal('traffic.jpeg','image')">View Prototype</a></p>
+      </div>
+    </div>
+  </section>
 
-        function resizeCanvas() {
-            bgCanvas.width = window.innerWidth;
-            bgCanvas.height = window.innerHeight;
-            particles = [];
-            for (let i = 0; i < 500; i++) {
-                particles.push({
-                    x: Math.random() * bgCanvas.width,
-                    y: Math.random() * bgCanvas.height,
-                    z: Math.random() * 200,
-                    size: Math.random() * 2 + 1,
-                    alpha: Math.random() * 0.3 + 0.1,
-                    color: `hsl(${Math.random() * 360}, 50%, 70%)`
-                });
-            }
-        }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
+  <!-- CERTIFICATIONS -->
+  <section id="certs">
+    <h2>Certifications</h2>
+    <div class="certs-grid">
+      <a class="cert-item" onclick="openModal('azure-cert.jpeg','image')">Microsoft Azure Fundamentals</a>
+      <a class="cert-item" onclick="openModal('aws-cloud.jpeg','image')">AWS Cloud Foundations</a>
+    </div>
+  </section>
 
-        function perlinNoise(x, y, z) {
-            const grad3 = [
-                [1,1,0],[-1,1,0],[1,-1,0],[-1,-1,0],[1,0,1],[-1,0,1],[1,0,-1],[-1,0,-1],
-                [0,1,1],[0,-1,1],[0,1,-1],[0,-1,-1]
-            ];
-            const p = new Uint8Array(512);
-            for (let i=0; i<256; i++) p[i] = p[i+256] = Math.random()*256|0;
-            const fade = t => t*t*t*(t*(t*6-15)+10);
-            const lerp = (a, b, t) => a + t*(b-a);
-            const grad = (hash, x, y, z) => {
-                const h = hash & 15;
-                const u = h<8 ? x : y;
-                const v = h<4 ? y : h===12||h===14 ? x : z;
-                return ((h&1)===0 ? u : -u) + ((h&2)===0 ? v : -v);
-            };
-            const X=Math.floor(x)&255, Y=Math.floor(y)&255, Z=Math.floor(z)&255;
-            x-=Math.floor(x); y-=Math.floor(y); z-=Math.floor(z);
-            const u=fade(x), v=fade(y), w=fade(z);
-            const A=p[X]+Y, B=p[X+1]+Y, AA=p[A]+Z, AB=p[A+1]+Z, BA=p[B]+Z, BB=p[B+1]+Z;
-            return lerp(lerp(lerp(grad(p[AA],x,y,z), grad(p[BA],x-1,y,z), u),
-                             lerp(grad(p[AB],x,y-1,z), grad(p[BB],x-1,y-1,z), u), v),
-                         lerp(lerp(grad(p[AA+1],x,y,z-1), grad(p[BA+1],x-1,y,z-1), u),
-                             lerp(grad(p[AB+1],x,y-1,z-1), grad(p[BB+1],x-1,y-1,z-1), u), v), w);
-        }
+  <!-- CONTACT -->
+  <section id="contact">
+    <h2>Contact Me</h2>
+    <form action="https://formspree.io/f/mwkawnyg" method="POST">
+      <input type="text" name="name" placeholder="Your Name" required>
+      <input type="email" name="email" placeholder="Your Email" required>
+      <textarea name="message" rows="4" placeholder="Your Message" required></textarea>
+      <button type="submit">Send</button>
+    </form>
+    <p>📞 <a href="tel:+918778642535" style="color:#0ff">+91 8778642535</a></p>
+    <p>📧 <a href="mailto:selvaraj3805@gmail.com" style="color:#0ff">selvaraj3805@gmail.com</a></p>
+    <p><a href="https://www.linkedin.com/in/prem-s-12626b309/" style="color:#0ff">LinkedIn</a> | <a href="https://github.com/kingprem12" style="color:#0ff">GitHub</a> | <a href="https://canary.discord.com/channels/@me/948821325370253343" style="color:#0ff">Discord</a></p>
+  </section>
 
-        function drawSmoke() {
-            ctxBg.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
-            ctxBg.fillStyle = var(--background-color);
-            ctxBg.fillRect(0, 0, bgCanvas.width, bgCanvas.height);
-            
-            time += speed;
+  <!-- RESUME -->
+  <section id="resume">
+    <h2>My Resume</h2>
+    <iframe src="kisame.pdf"></iframe>
+  </section>
 
-            particles.forEach(p => {
-                const noiseVal = perlinNoise(p.x / scale, p.y / scale, p.z / scale + time);
-                const alpha = p.alpha + (noiseVal + 1) / 4;
-                const size = p.size + (noiseVal + 1) / 2;
+  <!-- MODAL -->
+  <div id="fileModal" class="modal" onclick="closeModal()">
+    <span class="close">&times;</span>
+    <div class="modal-content-container">
+      <img id="modalImg" style="display:none;">
+      <iframe id="modalIframe" style="display:none;"></iframe>
+      <video id="modalVideo" controls style="display:none;"></video>
+    </div>
+  </div>
 
-                ctxBg.beginPath();
-                ctxBg.arc(p.x, p.y, size, 0, Math.PI * 2);
-                ctxBg.fillStyle = `rgba(0, 255, 255, ${alpha})`;
-                ctxBg.fill();
-            });
-            requestAnimationFrame(drawSmoke);
-        }
-        drawSmoke();
-        
-        // Modal functions
-        function openModal(src, type) {
-            const modal = document.getElementById('fileModal');
-            const img = document.getElementById('modalImg');
-            const iframe = document.getElementById('modalIframe');
-            const video = document.getElementById('modalVideo');
-            
-            img.style.display = 'none';
-            iframe.style.display = 'none';
-            video.style.display = 'none';
-            video.pause();
-            video.currentTime = 0;
+  <script>
+    /* Section Fade-in on Scroll */
+    const sections = document.querySelectorAll("section");
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add("visible");
+      });
+    }, { threshold: 0.2 });
+    sections.forEach(sec => observer.observe(sec));
 
-            if (type === 'image' || type === 'jpeg' || type === 'jpg' || type === 'png') {
-                img.src = src;
-                img.style.display = 'block';
-            } else if (type === 'pdf' || type === 'ppt' || type === 'pptx' || type === 'doc' || type === 'docx') {
-                iframe.src = src;
-                iframe.style.display = 'block';
-            } else if (type === 'video' || type === 'mp4') {
-                video.src = src;
-                video.style.display = 'block';
-            }
-            
-            modal.style.display = 'flex';
-        }
-        function closeModal() {
-            document.getElementById('fileModal').style.display = 'none';
-            const video = document.getElementById('modalVideo');
-            video.pause();
-            video.currentTime = 0;
-        }
-    </script>
+    /* Cursor Particles */
+    const cursorCanvas = document.getElementById("cursorCanvas");
+    const ctxCursor = cursorCanvas.getContext("2d");
+    cursorCanvas.width = innerWidth;
+    cursorCanvas.height = innerHeight;
+    let particles = [];
+    window.addEventListener("mousemove", e => {
+      for (let i=0; i<5; i++) {
+        particles.push({x:e.clientX,y:e.clientY,dx:(Math.random()-0.5)*2,dy:(Math.random()-0.5)*2,life:60});
+      }
+    });
+    function animateCursor() {
+      ctxCursor.clearRect(0,0,cursorCanvas.width,cursorCanvas.height);
+      particles.forEach((p,i)=> {
+        ctxCursor.beginPath();
+        ctxCursor.arc(p.x,p.y,3,0,Math.PI*2);
+        ctxCursor.fillStyle=`hsla(${p.life*6},100%,50%,0.8)`;
+        ctxCursor.fill();
+        p.x+=p.dx; p.y+=p.dy; p.life--;
+        if (p.life<=0) particles.splice(i,1);
+      });
+      requestAnimationFrame(animateCursor);
+    } animateCursor();
+
+    /* Smoke Background */
+    const smokeCanvas=document.getElementById("smokeCanvas");
+    const sCtx=smokeCanvas.getContext("2d");
+    function resizeSmoke(){smokeCanvas.width=innerWidth;smokeCanvas.height=innerHeight;}
+    resizeSmoke(); window.addEventListener("resize",resizeSmoke);
+    class Smoke{constructor(){this.x=Math.random()*smokeCanvas.width;this.y=smokeCanvas.height+50;this.size=Math.random()*60+40;this.speedY=Math.random()*0.5+0.2;this.alpha=Math.random()*0.3+0.1;}update(){this.y-=this.speedY;if(this.y<-this.size){this.y=smokeCanvas.height+50;this.x=Math.random()*smokeCanvas.width;}}draw(){sCtx.beginPath();sCtx.arc(this.x,this.y,this.size,0,Math.PI*2);sCtx.fillStyle=`rgba(200,200,200,${this.alpha})`;sCtx.fill();}}
+    let smokeParticles=[];for(let i=0;i<40;i++){smokeParticles.push(new Smoke());}
+    function animateSmoke(){sCtx.clearRect(0,0,smokeCanvas.width,smokeCanvas.height);smokeParticles.forEach(p=>{p.update();p.draw();});requestAnimationFrame(animateSmoke);}animateSmoke();
+
+    /* Modal */
+    function openModal(src,type){const modal=document.getElementById("fileModal");const img=document.getElementById("modalImg");const iframe=document.getElementById("modalIframe");const video=document.getElementById("modalVideo");img.style.display="none";iframe.style.display="none";video.style.display="none";video.pause();video.currentTime=0;if(type==="image"){img.src=src;img.style.display="block";}else if(type==="pdf"||type==="ppt"||type==="pptx"||type==="doc"||type==="docx"){iframe.src=src;iframe.style.display="block";}else if(type==="video"||type==="mp4"){video.src=src;video.style.display="block";}modal.style.display="flex";}
+    function closeModal(){document.getElementById("fileModal").style.display="none";const video=document.getElementById("modalVideo");video.pause();video.currentTime=0;}
+  </script>
 </body>
 </html>
