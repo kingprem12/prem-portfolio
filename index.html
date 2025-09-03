@@ -6,110 +6,24 @@
     <title>Prem S — Portfolio</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary-color: #0ff;
-            --secondary-color: #fff;
-            --background-color: #0a0a0a;
-            --card-bg: rgba(255, 255, 255, 0.1);
-            --card-border: 1px solid rgba(255, 255, 255, 0.1);
-            --glow-color: rgba(0, 255, 255, 0.5);
-            --glow-spread: 0 0 20px;
-        }
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Poppins', sans-serif; overflow-x: hidden; background: var(--background-color); color: var(--secondary-color); scroll-behavior: smooth; perspective: 1000px; }
+        body { font-family: 'Poppins', sans-serif; overflow-x: hidden; background: #0a0a0a; color: #fff; scroll-behavior: smooth; perspective: 1000px; }
         
-        #backgroundCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; background-color: var(--background-color); }
+        #backgroundCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; background-color: #0a0a0a; }
         #cursorCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
         
         section { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; text-align: center; position: relative; z-index: 1; background: rgba(0,0,0,0.6); margin-bottom: 20px; border-radius: 16px; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
         section:first-child { margin-top: 80px; }
         
-        h1, h2, h3 { margin-bottom: 16px; color: var(--primary-color); }
+        h1, h2, h3 { margin-bottom: 16px; color: #0ff; }
         p { max-width: 700px; margin: 0 auto 16px; line-height: 1.6; color: #e0e0e0; }
         nav { position: fixed; top: 0; left: 0; width: 100%; display: flex; justify-content: center; gap: 20px; padding: 20px; background: rgba(0,0,0,0.8); z-index: 100; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,0.1); }
-        nav a { color: var(--secondary-color); text-decoration: none; font-weight: 500; transition: .3s; }
-        nav a:hover { color: var(--primary-color); }
+        nav a { color: #fff; text-decoration: none; font-weight: 500; transition: .3s; }
+        nav a:hover { color: #0ff; }
         
         .intro, .about, .projects, .skills, .certs, .contact, .resume, .achievements, .internships { background: none; }
         
-        /* General Interactive Card Styling */
-        .interactive-card {
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: 16px;
-            border: var(--card-border);
-            position: relative;
-            transform-style: preserve-3d;
-            transform: perspective(1000px) rotateX(0deg) rotateY(0deg);
-            transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
-            box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
-        }
-        .interactive-card:hover {
-            box-shadow: 0 0 20px var(--glow-color);
-        }
-
-        /* 3D Skills Cloud */
-        .skills-container {
-            width: 100%;
-            height: 500px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            transform-style: preserve-3d;
-            perspective: 1000px;
-            margin-top: 40px;
-            user-select: none;
-        }
-
-        .skill-item {
-            position: absolute;
-            background: var(--card-bg);
-            border: var(--card-border);
-            color: var(--secondary-color);
-            padding: 10px 20px;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: transform 0.3s ease-out, opacity 0.3s ease-out, background 0.3s ease-out;
-            backface-visibility: hidden;
-            will-change: transform;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .skill-item:hover {
-            transform: scale(1.5) translateZ(100px);
-            background: rgba(0, 255, 255, 0.2);
-            color: var(--primary-color);
-            z-index: 10;
-        }
-        .skill-item span.description {
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translate(-50%, 10px) scale(0);
-            background: rgba(0,0,0,0.9);
-            border: 1px solid var(--primary-color);
-            padding: 10px;
-            width: 250px;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            white-space: normal;
-            transition: transform 0.3s ease-out, opacity 0.3s ease-out;
-            opacity: 0;
-            pointer-events: none;
-            z-index: 20;
-        }
-
-        .skill-item:hover span.description {
-            transform: translate(-50%, 10px) scale(1);
-            opacity: 1;
-        }
-
-        /* Grid Layouts */
+        /* Interactive Project Cards */
         .projects-grid, .certs-grid, .internships-grid, .achievements-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -118,6 +32,19 @@
             max-width: 1200px;
             margin-top: 40px;
         }
+        .project-card, .cert-item, .internship-card, .achievement-item {
+            background: rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.2s ease-out;
+            box-shadow: 0 0 10px rgba(0,255,255,0.2);
+        }
+        .project-card h3 { color: #0ff; }
+        .cert-item, .internship-card h3, .achievement-item { color: #0ff; }
+
         @media (min-width: 768px) {
             .projects-grid, .certs-grid, .internships-grid, .achievements-grid {
                 grid-template-columns: 1fr 1fr;
@@ -129,20 +56,126 @@
             }
         }
 
-        /* General styles */
-        form { display: flex; flex-direction: column; gap: 10px; max-width: 400px; width: 100%; margin: 20px auto; z-index: 10; }
-        input, textarea { padding: 12px; border: none; border-radius: 8px; font-family: inherit; background: rgba(255,255,255,0.1); color: var(--secondary-color); z-index: 11; }
-        button { padding: 12px; background: var(--primary-color); color: #000; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; transition: .3s; z-index: 11; }
-        button:hover { background: var(--secondary-color); color: #000; }
+        /* Unique Contact Section */
+        .contact-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            max-width: 900px;
+            margin-top: 40px;
+            position: relative;
+            transform-style: preserve-3d;
+        }
+        .contact-card {
+            background: rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 0 10px rgba(0,255,255,0.2);
+            transform-style: preserve-3d;
+            transition: transform 0.2s ease-out;
+        }
+        .contact-card:hover {
+            transform: translateZ(20px);
+        }
+        .contact-card h3 { color: #0ff; }
+        .contact-card form { margin-top: 20px; }
         
+        /* New Skills Section Styling */
+        .skills-wrapper {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 40px;
+            perspective: 1000px;
+        }
+        .skills-cloud {
+            position: relative;
+            transform-style: preserve-3d;
+            animation: rotateSkills 30s linear infinite;
+        }
+        .skills-chip-container {
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.5s, z-index 0s 0.5s;
+        }
+        .skills-chip-container:hover {
+            transform: scale(2) translateZ(150px);
+            z-index: 100;
+        }
+        .skills-chip-container:hover .skill-description {
+            opacity: 1;
+            transform: translate(-50%, -50%) rotateY(0) rotateX(0) rotateZ(0);
+        }
+        .skills-chip {
+            background: rgba(255,255,255,0.1);
+            padding: 12px 24px;
+            border-radius: 10px;
+            color: #fff;
+            border: 1px solid transparent;
+            box-shadow: 0 0 10px rgba(0,255,255,0.2);
+            transition: background 0.3s, border 0.3s;
+            transform-style: preserve-3d;
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            text-align: center;
+            font-weight: 500;
+        }
+        .skill-description {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotateY(180deg);
+            width: 250px;
+            padding: 15px;
+            background: rgba(0,0,0,0.9);
+            border: 1px solid #0ff;
+            border-radius: 8px;
+            opacity: 0;
+            transition: opacity 0.5s, transform 0.5s;
+            text-align: center;
+            font-size: 14px;
+            line-height: 1.4;
+            pointer-events: none;
+            backface-visibility: hidden;
+            z-index: 3;
+        }
+        @keyframes rotateSkills {
+            from { transform: rotateY(0) rotateX(0); }
+            to { transform: rotateY(360deg) rotateX(360deg); }
+        }
+        
+        /* General styles */
+        .chips { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 10px; }
+        .chip { background: rgba(255,255,255,0.2); padding: 6px 14px; border-radius: 20px; font-size: 14px; color: #fff; }
+        form { display: flex; flex-direction: column; gap: 10px; max-width: 400px; width: 100%; margin: 20px auto; }
+        input, textarea { padding: 12px; border: none; border-radius: 8px; font-family: inherit; background: rgba(255,255,255,0.1); color: #fff; }
+        button { padding: 12px; background: #0ff; color: #000; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; transition: .3s; }
+        button:hover { background: #fff; color: #000; }
+        
+        img.project-img, .modal-img { max-width: 100%; border-radius: 12px; margin-top: 12px; border: 2px solid rgba(255,255,255,0.2); }
+        .btn { display: inline-block; margin: 10px; padding: 12px 20px; border-radius: 10px; text-decoration: none; font-weight: 600; transition: .3s; }
+        .btn-view { background: #0ff; color: #000; }
+        .btn-download { background: #8e2de2; color: #fff; }
+        .btn:hover { transform: scale(1.05); }
+        iframe { width: 80%; height: 80vh; border-radius: 12px; border: none; margin-top: 20px; }
+        .cert-gallery, .internship-gallery { display: flex; flex-direction: column; gap: 12px; align-items: center; }
+        .cert-gallery a, .project-link, .internship-link, .achievement-link { color: #0ff; text-decoration: underline; cursor: pointer; }
         .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background: rgba(0,0,0,0.9); align-items: center; justify-content: center; }
         .modal-content { margin: 5% auto; display: block; max-width: 80%; border-radius: 12px; }
-        .close { position: absolute; top: 20px; right: 40px; color: var(--secondary-color); font-size: 40px; font-weight: bold; cursor: pointer; }
+        .close { position: absolute; top: 20px; right: 40px; color: #fff; font-size: 40px; font-weight: bold; cursor: pointer; }
         .modal-content-container { max-height: 90vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .modal-content-container img, .modal-content-container iframe, .modal-content-container video { max-width: 90%; max-height: 90vh; }
         
         .about-content { display: flex; flex-direction: column; align-items: center; gap: 30px; max-width: 900px; }
-        .about-image { width: 200px; height: 200px; border-radius: 50%; object-fit: cover; border: 4px solid var(--primary-color); box-shadow: 0 0 15px var(--primary-color); transition: transform 0.3s ease-in-out; }
+        .about-image { width: 200px; height: 200px; border-radius: 50%; object-fit: cover; border: 4px solid #0ff; box-shadow: 0 0 15px #0ff; transition: transform 0.3s ease-in-out; }
         .about-image:hover { transform: scale(1.05); }
         .about p { font-size: 1.1em; max-width: 800px; }
         
@@ -193,32 +226,32 @@
     <section id="projects" class="projects">
         <h2>My Projects</h2>
         <div class="projects-grid">
-            <div class="interactive-card project-card" id="project-1">
+            <div class="project-card" id="project-1">
                 <h3>Smart AI-Based Traffic Management</h3>
                 <p>An IoT-based system that uses thermal and humidity-aware vision to manage urban traffic dynamically. It adjusts traffic light timings based on real-time data, helping to reduce congestion and improve efficiency. This project was presented at the IoT InnovateX.</p>
                 <p><a class="project-link" onclick="openModal('traffic managemnet proto.jpeg', 'image')">View Prototype</a></p>
             </div>
-            <div class="interactive-card project-card" id="project-2">
+            <div class="project-card" id="project-2">
                 <h3>Kutty Port: The Zepto of Indian Export Logistics</h3>
                 <p>A logistics platform designed to streamline the export process for small and medium-sized businesses (MSMEs). It addresses issues like high costs, delays, and lack of real-time tracking through a decentralized port model.</p>
                 <p><a class="project-link" onclick="openModal('kutty port.pptx', 'ppt')">View Details</a></p>
             </div>
-            <div class="interactive-card project-card" id="project-3">
+            <div class="project-card" id="project-3">
                 <h3>IEEE Emergency Lane Clearance</h3>
                 <p>A smart Edge-IoT system for dynamic emergency lane clearance. The system uses a combination of thermal cameras and humidity sensors to detect emergency vehicles in any weather, including fog and rain, and controls traffic lights to provide a clear path.</p>
                 <p><a class="project-link" onclick="openModal('IEEE lane clearance.docx', 'docx')">View Details</a> | <a class="project-link" onclick="openModal('lane clearance.mp4', 'video')">View Video</a></p>
             </div>
-            <div class="interactive-card project-card" id="project-4">
+            <div class="project-card" id="project-4">
                 <h3>IEEE Shadow AI</h3>
                 <p>A consultancy project focused on the risks and ethical implications of "Shadow AI"—the unauthorized use of AI tools by employees within a company. The project highlights the security and privacy risks and provides a framework for responsible AI use.</p>
                 <p><a class="project-link" onclick="openModal('IEEE shadow ai.docx', 'docx')">View Details</a></p>
             </div>
-            <div class="interactive-card project-card" id="project-5">
+            <div class="project-card" id="project-5">
                 <h3>SAP Hackfest: AI-Dharma</h3>
                 <p>An ethical AI-based fraud detection system for the banking sector. The project uses machine learning and game theory to identify suspicious transactions while ensuring transparency and fairness, aligning with principles from the Indian Knowledge System (IKS).</p>
                 <p><a class="project-link" onclick="openModal('SAP_HACKFEST_UPDATED.pptx', 'ppt')">View Details</a></p>
             </div>
-            <div class="interactive-card project-card" id="project-6">
+            <div class="project-card" id="project-6">
                 <h3>Budget Management System</h3>
                 <p>A secure, full-stack financial application built with Spring Boot and REST API. This system allows users to track expenses, manage budgets, and visualize financial data for better financial control and planning.</p>
                 <p><a class="project-link" onclick="openModal('budget.pdf', 'pdf')">View Details</a></p>
@@ -228,32 +261,79 @@
 
     <section id="skills" class="skills">
         <h2>Skills</h2>
-        <div class="skills-container" id="skills-cloud"></div>
+        <div class="skills-wrapper">
+            <div class="skills-cloud">
+                <div class="skills-chip-container">
+                    <div class="skills-chip">C++</div>
+                    <div class="skill-description">Proficient in C++ for competitive programming and system-level applications.</div>
+                </div>
+                <div class="skills-chip-container">
+                    <div class="skills-chip">Java</div>
+                    <div class="skill-description">Extensive experience with Java for building robust backend services with Spring Boot.</div>
+                </div>
+                <div class="skills-chip-container">
+                    <div class="skills-chip">JavaScript</div>
+                    <div class="skill-description">Skilled in modern JavaScript frameworks for dynamic, interactive web experiences.</div>
+                </div>
+                <div class="skills-chip-container">
+                    <div class="skills-chip">React</div>
+                    <div class="skill-description">Experienced in building modern, responsive user interfaces with React.js.</div>
+                </div>
+                <div class="skills-chip-container">
+                    <div class="skills-chip">Node.js</div>
+                    <div class="skill-description">Strong background in building scalable server-side applications and APIs using Node.js.</div>
+                </div>
+                <div class="skills-chip-container">
+                    <div class="skills-chip">Express</div>
+                    <div class="skill-description">Used Express.js to create efficient and flexible RESTful APIs.</div>
+                </div>
+                <div class="skills-chip-container">
+                    <div class="skills-chip">MySql</div>
+                    <div class="skill-description">Expert in designing and managing relational databases with MySQL.</div>
+                </div>
+                <div class="skills-chip-container">
+                    <div class="skills-chip">AWS</div>
+                    <div class="skill-description">Hands-on experience with AWS services like EC2, S3, and Lambda for cloud deployments.</div>
+                </div>
+                <div class="skills-chip-container">
+                    <div class="skills-chip">Spring Boot</div>
+                    <div class="skill-description">Proficient in Spring Boot for creating production-grade, stand-alone applications.</div>
+                </div>
+                <div class="skills-chip-container">
+                    <div class="skills-chip">Python</div>
+                    <div class="skill-description">Utilized Python for data analysis, machine learning, and scripting.</div>
+                </div>
+                <div class="skills-chip-container">
+                    <div class="skills-chip">UI/UX Design</div>
+                    <div class="skill-description">Designed user-centric interfaces and experiences for web and mobile applications.</div>
+                </div>
+            </div>
+        </div>
     </section>
 
     <section id="certs" class="certs">
-        <h2>Certifications</h2>
+        <h2 style="margin-top: -100px;">Certifications</h2>
         <div class="certs-grid">
-            <a class="interactive-card cert-item" onclick="openModal('azure-cert.jpeg', 'image')">Microsoft Azure Fundamentals</a>
-            <a class="interactive-card cert-item" onclick="openModal('aws-cloud.jpeg', 'image')">AWS Cloud Foundations</a>
-            <a class="interactive-card cert-item" onclick="openModal('cisco cyber cert.pdf', 'pdf')">Cisco Introduction to Cybersecurity</a>
-            <a class="interactive-card cert-item" onclick="openModal('data analyst.jpg', 'image')">Data Analyst</a>
-            <a class="interactive-card cert-item" onclick="openModal('genai.jpg', 'image')">GenAI Data Analyst</a>
-            <a class="interactive-card cert-item" onclick="openModal('full stack.jpg', 'image')">Full Stack/MERN Developer</a>
-            <a class="interactive-card cert-item" onclick="openModal('azure badge.jpeg', 'image')">Microsoft Azure AI-900 Badge</a>
-            <a class="interactive-card cert-item" onclick="openModal('innovate x cert.jpeg', 'image')">IoT InnovateX Certification</a>
+            <a class="cert-item" onclick="openModal('azure-cert.jpeg', 'image')">Microsoft Azure Fundamentals</a>
+            <a class="cert-item" onclick="openModal('aws-cloud.jpeg', 'image')">AWS Cloud Foundations</a>
+            <a class="cert-item" onclick="openModal('cisco cyber cert.pdf', 'pdf')">Cisco Introduction to Cybersecurity</a>
+            <a class="cert-item" onclick="openModal('data analyst.jpg', 'image')">Data Analyst</a>
+            <a class="cert-item" onclick="openModal('genai.jpg', 'image')">GenAI Data Analyst</a>
+            <a class="cert-item" onclick="openModal('full stack.jpg', 'image')">Full Stack/MERN Developer</a>
+            <a class="cert-item" onclick="openModal('azure badge.jpeg', 'image')">Microsoft Azure AI-900 Badge</a>
+            <a class="cert-item" onclick="openModal('innovate x cert.jpeg', 'image')">IoT InnovateX Certification</a>
         </div>
     </section>
 
     <section id="internships" class="internships">
-        <h2>Internships & Workshops</h2>
+        <h2 style="margin-top: -100px;">Internships & Workshops</h2>
         <div class="internships-grid">
-            <div class="interactive-card internship-card">
+            <div class="internship-card">
                 <h3>Raspberry Pi & Node.js Workshop</h3>
                 <p>Attended a workshop at IIT Madras focused on building IoT applications using Raspberry Pi and Node.js for real-time data processing and device control.</p>
                 <p><a class="internship-link" onclick="openModal('respberry pi.jpeg', 'image')">View Certificate</a></p>
             </div>
-            <div class="interactive-card internship-card">
+            <div class="internship-card">
                 <h3>Digital Marketing Intern — Maven Advert</h3>
                 <p>Gained hands-on experience in digital marketing strategies and tools. This role included content creation and analytics to improve online visibility.</p>
                 <p><a class="internship-link" onclick="openModal('Prem INTERN CERTIFICATE 3.pdf', 'pdf')">View Certificate</a></p>
@@ -262,24 +342,24 @@
     </section>
     
     <section id="achievements" class="achievements">
-        <h2>Achievements & Awards</h2>
+        <h2 style="margin-top: -100px;">Achievements & Awards</h2>
         <div class="achievements-grid">
-            <div class="interactive-card achievement-item">
+            <div class="achievement-item">
                 <a class="achievement-link" onclick="openModal('academic.jpg', 'image')">Academic Recognition</a>
             </div>
-            <div class="interactive-card achievement-item">
+            <div class="achievement-item">
                 <a class="achievement-link" onclick="openModal('college.jpg', 'image')">College Recognition</a>
             </div>
         </div>
     </section>
 
     <section id="contact" class="contact">
-        <h2>Contact Me</h2>
+        <h2 style="margin-top: -100px;">Contact Me</h2>
         <div class="contact-container">
-            <div class="interactive-card contact-card">
+            <div class="contact-card">
                 <h3>Get in Touch</h3>
                 <p>I'm always open to new opportunities, collaborations, and conversations. Feel free to send me a message.</p>
-                <form action="https://formspree.io/f/mwkawnyg" method="POST" style="z-index: 20;">
+                <form action="https://formspree.io/f/mwkawnyg" method="POST">
                     <input type="text" name="name" placeholder="Your Name" required>
                     <input type="email" name="email" placeholder="Your Email" required>
                     <textarea name="message" rows="4" placeholder="Your Message" required></textarea>
@@ -287,22 +367,22 @@
                     <small style="color: #bbb; margin-top: 10px;">**Important:** Your first submission may require a confirmation email from Formspree.</small>
                 </form>
             </div>
-            <div class="interactive-card contact-card">
+            <div class="contact-card">
                 <h3>Connect with Me</h3>
                 <p>Find me on social media and other platforms.</p>
                 <p style="display: flex; gap: 20px; justify-content: center;">
-                    <a href="https://www.linkedin.com/in/prem-s-12626b309/" target="_blank" style="color:var(--primary-color)">LinkedIn</a>
-                    <a href="https://github.com/kingprem12" target="_blank" style="color:var(--primary-color)">GitHub</a>
-                    <a href="https://canary.discord.com/channels/@me/948821325370253343" target="_blank" style="color:var(--primary-color)">Discord</a>
+                    <a href="https://www.linkedin.com/in/prem-s-12626b309/" target="_blank" style="color:#0ff">LinkedIn</a>
+                    <a href="https://github.com/kingprem12" target="_blank" style="color:#0ff">GitHub</a>
+                    <a href="https://canary.discord.com/channels/@me/948821325370253343" target="_blank" style="color:#0ff">Discord</a>
                 </p>
-                <p>Email: <a href="mailto:selvaraj3805@gmail.com" style="color:var(--primary-color)">selvaraj3805@gmail.com</a></p>
-                <p>Phone: <a href="tel:+918778642535" style="color:var(--primary-color)">+91 8778642535</a></p>
+                <p>Email: <a href="mailto:selvaraj3805@gmail.com" style="color:#0ff">selvaraj3805@gmail.com</a></p>
+                <p>Phone: <a href="tel:+918778642535" style="color:#0ff">+91 8778642535</a></p>
             </div>
         </div>
     </section>
 
     <section id="resume" class="resume">
-        <h2>My Resume</h2>
+        <h2 style="margin-top: -100px;">My Resume</h2>
         <p>Preview my resume directly below or download it above.</p>
         <iframe src="kisame.pdf"></iframe>
     </section>
@@ -317,86 +397,7 @@
     </div>
 
     <script>
-        const SKILLS = [
-            { name: "C++", desc: "Proficient in C++ for competitive programming and system-level applications." },
-            { name: "Java", desc: "Extensive experience with Java for building robust backend services with Spring Boot." },
-            { name: "JavaScript", desc: "Skilled in modern JavaScript frameworks for dynamic, interactive web experiences." },
-            { name: "React", desc: "Experienced in building modern, responsive user interfaces with React.js." },
-            { name: "Node.js", desc: "Strong background in building scalable server-side applications and APIs using Node.js." },
-            { name: "Express", desc: "Used Express.js to create efficient and flexible RESTful APIs." },
-            { name: "MySql", desc: "Expert in designing and managing relational databases with MySQL." },
-            { name: "AWS", desc: "Hands-on experience with AWS services like EC2, S3, and Lambda for cloud deployments." },
-            { name: "Spring Boot", desc: "Proficient in Spring Boot for creating production-grade, stand-alone applications." },
-            { name: "Python", desc: "Utilized Python for data analysis, machine learning, and scripting." },
-            { name: "UI/UX Design", desc: "Designed user-centric interfaces and experiences for web and mobile applications." }
-        ];
-
-        // 3D Tilt Effect
-        function applyTiltEffect(elements) {
-            elements.forEach(card => {
-                card.addEventListener('mousemove', e => {
-                    const {
-                        left,
-                        top,
-                        width,
-                        height
-                    } = card.getBoundingClientRect();
-                    const x = e.clientX - left - width / 2;
-                    const y = e.clientY - top - height / 2;
-                    const rotateX = (y / height) * 20;
-                    const rotateY = (x / width) * -20;
-                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-                });
-                card.addEventListener('mouseleave', () => {
-                    card.style.transform = `perspective(1000px) rotateX(0) rotateY(0)`;
-                });
-            });
-        }
-        
-        applyTiltEffect(document.querySelectorAll('.interactive-card'));
-        
-        // Galactic Word Cloud
-        const skillsContainer = document.getElementById('skills-cloud');
-        const numSkills = SKILLS.length;
-        const radius = 250; 
-        
-        function createSkillCloud() {
-            SKILLS.forEach((skill, i) => {
-                const phi = Math.acos(-1 + (2 * i + 1) / numSkills);
-                const theta = Math.sqrt(numSkills * Math.PI) * phi;
-                
-                const x = radius * Math.cos(theta) * Math.sin(phi);
-                const y = radius * Math.sin(theta) * Math.sin(phi);
-                const z = radius * Math.cos(phi);
-                
-                const skillElement = document.createElement('div');
-                skillElement.classList.add('skill-item');
-                skillElement.style.transform = `translate3d(${x}px, ${y}px, ${z}px) rotateY(${theta}rad) rotateX(${phi}rad)`;
-                skillElement.innerHTML = `<span>${skill.name}</span><span class="description">${skill.desc}</span>`;
-                skillsContainer.appendChild(skillElement);
-            });
-        }
-        
-        let rotationX = 0;
-        let rotationY = 0;
-        let isHovered = false;
-
-        function animateCloud() {
-            if (!isHovered) {
-                rotationX += 0.001;
-                rotationY += 0.001;
-            }
-            skillsContainer.style.transform = `rotateX(${rotationX}rad) rotateY(${rotationY}rad)`;
-            requestAnimationFrame(animateCloud);
-        }
-
-        skillsContainer.addEventListener('mouseenter', () => isHovered = true);
-        skillsContainer.addEventListener('mouseleave', () => isHovered = false);
-
-        createSkillCloud();
-        animateCloud();
-
-        // Background and cursor particles
+        // Background and cursor particles (Existing)
         const cursorCanvas = document.getElementById('cursorCanvas');
         const ctxCursor = cursorCanvas.getContext('2d');
         let cursorParticles = [];
@@ -485,6 +486,66 @@
             requestAnimationFrame(animateBackground);
         }
         animateBackground();
+        
+        // 3D Tilt Effect for Cards
+        const cards = document.querySelectorAll('.project-card, .cert-item, .internship-card, .achievement-item, .contact-card');
+        cards.forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const {
+                    left,
+                    top,
+                    width,
+                    height
+                } = card.getBoundingClientRect();
+                const x = e.clientX - left - width / 2;
+                const y = e.clientY - top - height / 2;
+                const rotateX = (y / height) * 20;
+                const rotateY = (x / width) * -20;
+                card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = `rotateX(0) rotateY(0)`;
+            });
+        });
+
+        // Skills Cloud Logic
+        const skillsCloud = document.querySelector('.skills-cloud');
+        const skillItems = document.querySelectorAll('.skills-chip-container');
+        const numSkills = skillItems.length;
+        const radius = 200;
+        const maxTilt = 10;
+        let lastMouseX = 0;
+        let lastMouseY = 0;
+        let rotationX = 0;
+        let rotationY = 0;
+
+        function positionSkills() {
+            const angleStep = Math.PI * 2 / numSkills;
+            skillItems.forEach((item, i) => {
+                const angle = i * angleStep;
+                const x = radius * Math.cos(angle);
+                const y = 0;
+                const z = radius * Math.sin(angle);
+                
+                item.style.transform = `rotateY(${angle * 180 / Math.PI}deg) translateZ(${radius}px)`;
+            });
+        }
+        positionSkills();
+
+        window.addEventListener('mousemove', (e) => {
+            const deltaX = e.clientX - lastMouseX;
+            const deltaY = e.clientY - lastMouseY;
+            
+            rotationY += deltaX * 0.1;
+            rotationX -= deltaY * 0.1;
+            
+            rotationX = Math.max(-maxTilt, Math.min(maxTilt, rotationX));
+
+            skillsCloud.style.transform = `rotateY(${rotationY}deg) rotateX(${rotationX}deg)`;
+
+            lastMouseX = e.clientX;
+            lastMouseY = e.clientY;
+        });
 
         // Modal functions
         function openModal(src, type) {
