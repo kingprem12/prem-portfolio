@@ -9,35 +9,62 @@
         *{margin:0;padding:0;box-sizing:border-box}
         body{font-family:'Poppins',sans-serif;overflow-x:hidden;background:#0a0a0a;color:#fff;scroll-behavior:smooth;position:relative}
         
-        /* New background canvas for futuristic effect */
         #backgroundCanvas {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -2; /* Below cursor canvas */
-            background-color: #0a0a0a; /* Fallback */
+            z-index: -2; 
+            background-color: #0a0a0a;
         }
-
-        /* Existing cursor canvas */
         #cursorCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1}
-
         section{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px;text-align:center;position:relative;z-index:1;background:rgba(0,0,0,0.6);margin-bottom:20px;border-radius:16px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1)}
-        section:first-child { margin-top: 80px; } /* Adjust for fixed nav */
+        section:first-child { margin-top: 80px; }
         
-        h1,h2,h3{margin-bottom:16px;color:#0ff;} /* Highlight headings */
+        h1,h2,h3{margin-bottom:16px;color:#0ff;}
         p{max-width:700px;margin:0 auto 16px;line-height:1.6;color:#e0e0e0;}
         nav{position:fixed;top:0;left:0;width:100%;display:flex;justify-content:center;gap:20px;padding:20px;background:rgba(0,0,0,0.8);z-index:100;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,0.1)}
         nav a{color:#fff;text-decoration:none;font-weight:500;transition:.3s}
         nav a:hover{color:#0ff}
         
-        /* Remove old gradient backgrounds */
         .intro, .about, .projects, .skills, .certs, .contact, .resume, .achievements, .internships {
-            background: none; /* Removed static gradients */
+            background: none;
         }
         
-        .card{background:rgba(255,255,255,0.1);padding:20px;border-radius:16px;margin:10px auto;max-width:600px;border:1px solid rgba(255,255,255,0.1)}
+        /* Updated Project Section Styling */
+        .projects {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            padding: 80px 20px;
+        }
+        .project-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            width: 100%;
+            max-width: 800px;
+            padding: 20px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .project-card.left {
+            align-self: flex-start;
+            text-align: left;
+        }
+        .project-card.right {
+            align-self: flex-end;
+            text-align: right;
+        }
+
+        @media (min-width: 768px) {
+            .projects {
+                align-items: center;
+            }
+        }
         .chips{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:10px}
         .chip{background:rgba(255,255,255,0.2);padding:6px 14px;border-radius:20px;font-size:14px;color:#fff}
         form{display:flex;flex-direction:column;gap:10px;max-width:400px;width:100%;margin:20px auto}
@@ -47,8 +74,8 @@
         
         img.project-img, .modal-img{max-width:100%;border-radius:12px;margin-top:12px;border:2px solid rgba(255,255,255,0.2)}
         .btn{display:inline-block;margin:10px;padding:12px 20px;border-radius:10px;text-decoration:none;font-weight:600;transition:.3s}
-        .btn-view{background:#0ff;color:#000} /* Updated colors for futuristic theme */
-        .btn-download{background:#8e2de2;color:#fff} /* Updated colors */
+        .btn-view{background:#0ff;color:#000}
+        .btn-download{background:#8e2de2;color:#fff}
         .btn:hover{transform:scale(1.05)}
         iframe{width:80%;height:80vh;border-radius:12px;border:none;margin-top:20px}
         .cert-gallery, .internship-gallery{display:flex;flex-direction:column;gap:12px;align-items:center}
@@ -59,7 +86,6 @@
         .modal-content-container{max-height:90vh;display:flex;flex-direction:column;align-items:center;justify-content:center}
         .modal-content-container img, .modal-content-container iframe, .modal-content-container video { max-width: 90%; max-height: 90vh; }
 
-        /* About Me specific styling */
         .about-content {
             display: flex;
             flex-direction: column;
@@ -68,12 +94,12 @@
             max-width: 900px;
         }
         .about-image {
-            width: 200px; /* Adjust size as needed */
+            width: 200px;
             height: 200px;
-            border-radius: 50%; /* Make it circular */
+            border-radius: 50%;
             object-fit: cover;
-            border: 4px solid #0ff; /* Glowing border */
-            box-shadow: 0 0 15px #0ff; /* Matching glow */
+            border: 4px solid #0ff;
+            box-shadow: 0 0 15px #0ff;
             transition: transform 0.3s ease-in-out;
         }
         .about-image:hover {
@@ -99,7 +125,8 @@
     </style>
 </head>
 <body>
-    <canvas id="backgroundCanvas"></canvas> <canvas id="cursorCanvas"></canvas>
+    <canvas id="backgroundCanvas"></canvas>
+    <canvas id="cursorCanvas"></canvas>
     
     <nav>
         <a href="#intro">Home</a>
@@ -136,30 +163,32 @@
 
     <section id="projects" class="projects">
         <h2>My Projects</h2>
-        <div class="card">
+        <div class="project-card left">
             <h3>Smart AI-Based Traffic Management</h3>
             <p>An IoT-based system that uses thermal and humidity-aware vision to manage urban traffic dynamically. It adjusts traffic light timings based on real-time data, helping to reduce congestion and improve efficiency. This project was presented at the IoT InnovateX.</p>
             <p>
-                <a class="project-link" onclick="openModal('traffic managemnet proto.jpeg', 'image')">View Prototype</a> | 
-                <a class="project-link" onclick="openModal('lane clearance.mp4', 'video')">View Video</a>
+                <a class="project-link" onclick="openModal('traffic managemnet proto.jpeg', 'image')">View Prototype</a>
             </p>
         </div>
-        <div class="card">
+        <div class="project-card right">
             <h3>Kutty Port: The Zepto of Indian Export Logistics</h3>
             <p>A logistics platform designed to streamline the export process for small and medium-sized businesses (MSMEs). It addresses issues like high costs, delays, and lack of real-time tracking through a decentralized port model.</p>
             <a class="project-link" onclick="openModal('kutty port.pptx', 'ppt')">View Details</a>
         </div>
-        <div class="card">
+        <div class="project-card left">
             <h3>IEEE Emergency Lane Clearance</h3>
             <p>A smart Edge-IoT system for dynamic emergency lane clearance. The system uses a combination of thermal cameras and humidity sensors to detect emergency vehicles in any weather, including fog and rain, and controls traffic lights to provide a clear path.</p>
-            <a class="project-link" onclick="openModal('IEEE lane clearance.docx', 'docx')">View Details</a>
+            <p>
+                <a class="project-link" onclick="openModal('IEEE lane clearance.docx', 'docx')">View Details</a> |
+                <a class="project-link" onclick="openModal('lane clearance.mp4', 'video')">View Video</a>
+            </p>
         </div>
-        <div class="card">
+        <div class="project-card right">
             <h3>IEEE Shadow AI</h3>
             <p>A consultancy project focused on the risks and ethical implications of "Shadow AI"—the unauthorized use of AI tools by employees within a company. The project highlights the security and privacy risks and provides a framework for responsible AI use.</p>
             <a class="project-link" onclick="openModal('IEEE shadow ai.docx', 'docx')">View Details</a>
         </div>
-        <div class="card">
+        <div class="project-card left">
             <h3>SAP Hackfest: AI-Dharma</h3>
             <p>An ethical AI-based fraud detection system for the banking sector. The project uses machine learning and game theory to identify suspicious transactions while ensuring transparency and fairness, aligning with principles from the Indian Knowledge System (IKS).</p>
             <a class="project-link" onclick="openModal('SAP_HACKFEST_UPDATED.pptx', 'ppt')">View Details</a>
@@ -247,9 +276,8 @@
     </div>
 
     <script>
-        // Cursor particles (existing)
         const cursorCanvas=document.getElementById('cursorCanvas');
-        const ctxCursor=cursorCanvas.getContext('2d'); // Renamed context to avoid conflict
+        const ctxCursor=cursorCanvas.getContext('2d');
         let cursorParticles=[];
         resizeCursorCanvas();
         window.addEventListener('resize',resizeCursorCanvas);
@@ -271,13 +299,11 @@
         }
         drawCursorParticles();
 
-        // Futuristic Background Animation (New)
         const bgCanvas = document.getElementById('backgroundCanvas');
         const ctxBg = bgCanvas.getContext('2d');
         let dots = [];
         const numDots = 100;
-        const maxDist = 120; // Max distance for lines
-
+        const maxDist = 120;
         function resizeBgCanvas() {
             bgCanvas.width = window.innerWidth;
             bgCanvas.height = window.innerHeight;
@@ -289,47 +315,34 @@
                     vx: (Math.random() - 0.5) * 0.5,
                     vy: (Math.random() - 0.5) * 0.5,
                     radius: Math.random() * 1.5 + 0.5,
-                    color: `hsla(${Math.random() * 360}, 100%, 70%, 0.8)` // Dynamic colors
+                    color: `hsla(${Math.random() * 360}, 100%, 70%, 0.8)`
                 });
             }
         }
-
         window.addEventListener('resize', resizeBgCanvas);
-        resizeBgCanvas(); // Initial setup
-
+        resizeBgCanvas();
         function animateBackground() {
             ctxBg.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
-            
-            ctxBg.fillStyle = '#0a0a0a'; // Background color
+            ctxBg.fillStyle = '#0a0a0a';
             ctxBg.fillRect(0, 0, bgCanvas.width, bgCanvas.height);
-
             for (let i = 0; i < numDots; i++) {
                 let dot = dots[i];
-
-                // Update position
                 dot.x += dot.vx;
                 dot.y += dot.vy;
-
-                // Bounce off edges
                 if (dot.x < 0 || dot.x > bgCanvas.width) dot.vx *= -1;
                 if (dot.y < 0 || dot.y > bgCanvas.height) dot.vy *= -1;
-
-                // Draw dot
                 ctxBg.beginPath();
                 ctxBg.arc(dot.x, dot.y, dot.radius, 0, Math.PI * 2);
                 ctxBg.fillStyle = dot.color;
                 ctxBg.fill();
-
-                // Draw lines to other nearby dots
                 for (let j = i + 1; j < numDots; j++) {
                     let otherDot = dots[j];
                     let dist = Math.sqrt(Math.pow(dot.x - otherDot.x, 2) + Math.pow(dot.y - otherDot.y, 2));
-
                     if (dist < maxDist) {
                         ctxBg.beginPath();
                         ctxBg.moveTo(dot.x, dot.y);
                         ctxBg.lineTo(otherDot.x, otherDot.y);
-                        ctxBg.strokeStyle = `rgba(0, 255, 255, ${1 - (dist / maxDist) * 0.8})`; /* Cyan lines, fading */
+                        ctxBg.strokeStyle = `rgba(0, 255, 255, ${1 - (dist / maxDist) * 0.8})`;
                         ctxBg.lineWidth = 0.5;
                         ctxBg.stroke();
                     }
@@ -339,8 +352,6 @@
         }
         animateBackground();
 
-
-        // Modal functions (existing)
         function openModal(src, type){
             const modal = document.getElementById('fileModal');
             const img = document.getElementById('modalImg');
@@ -350,6 +361,8 @@
             img.style.display = 'none';
             iframe.style.display = 'none';
             video.style.display = 'none';
+            video.pause();
+            video.currentTime = 0;
 
             if (type === 'image' || type === 'jpeg' || type === 'jpg' || type === 'png') {
                 img.src = src;
@@ -366,7 +379,9 @@
         }
         function closeModal(){
             document.getElementById('fileModal').style.display='none';
-            document.getElementById('modalVideo').pause();
+            const video = document.getElementById('modalVideo');
+            video.pause();
+            video.currentTime = 0;
         }
     </script>
 </body>
