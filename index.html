@@ -1,213 +1,553 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Prem S — Portfolio</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Poppins', sans-serif; overflow-x: hidden; background: #0a0a0a; color: #fff; scroll-behavior: smooth; }
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Prem S — Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; overflow-x: hidden; background: #0a0a0a; color: #fff; scroll-behavior: smooth; perspective: 1000px; }
+        
+        #backgroundCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; background-color: #0a0a0a; }
+        #cursorCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+        
+        section { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; text-align: center; position: relative; z-index: 1; background: rgba(0,0,0,0.6); margin-bottom: 20px; border-radius: 16px; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+        section:first-child { margin-top: 80px; }
+        
+        h1, h2, h3 { margin-bottom: 16px; color: #0ff; }
+        p { max-width: 700px; margin: 0 auto 16px; line-height: 1.6; color: #e0e0e0; }
+        nav { position: fixed; top: 0; left: 0; width: 100%; display: flex; justify-content: center; gap: 20px; padding: 20px; background: rgba(0,0,0,0.8); z-index: 100; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,0.1); }
+        nav a { color: #fff; text-decoration: none; font-weight: 500; transition: .3s; }
+        nav a:hover { color: #0ff; }
+        
+        .intro, .about, .projects, .skills, .certs, .contact, .resume, .achievements, .internships { background: none; }
+        
+        /* Interactive Project Cards */
+        .projects-grid, .certs-grid, .internships-grid, .achievements-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 40px;
+            width: 100%;
+            max-width: 1200px;
+            margin-top: 40px;
+        }
+        .project-card, .cert-item, .internship-card, .achievement-item {
+            background: rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.2s ease-out;
+            box-shadow: 0 0 10px rgba(0,255,255,0.2);
+        }
+        .project-card h3 { color: #0ff; }
+        .cert-item a, .internship-card h3, .achievement-item a { color: #0ff; }
 
-    /* Background Canvas */
-    #backgroundCanvas, #cursorCanvas, #smokeCanvas {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      z-index: -3;
-    }
-    #cursorCanvas { z-index: -2; }
-    #backgroundCanvas { z-index: -1; }
+        @media (min-width: 768px) {
+            .projects-grid, .certs-grid, .internships-grid, .achievements-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        @media (min-width: 1024px) {
+             .projects-grid, .certs-grid, .internships-grid, .achievements-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
 
-    section { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; text-align: center; position: relative; z-index: 1; margin-bottom: 20px; border-radius: 16px; opacity: 0; transform: translateY(50px); transition: opacity 1s ease, transform 1s ease; }
-    section.visible { opacity: 1; transform: translateY(0); }
+        /* 3D Skills Cloud */
+        .skills-container {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .skills-cloud {
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            animation: rotateSkills 20s infinite linear;
+            position: relative;
+        }
+        .skills-chip-wrapper {
+            position: absolute;
+            transform-style: preserve-3d;
+            transform: rotateY(0deg);
+            transition: transform 0.5s ease-out;
+        }
+        .skills-chip {
+            background: rgba(255,255,255,0.1);
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-size: 16px;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid transparent;
+            box-shadow: 0 0 10px rgba(0,255,255,0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-align: center;
+            line-height: 1.2;
+            white-space: nowrap;
+        }
+        .skills-chip-wrapper:hover .skills-chip {
+            background: rgba(0,255,255,0.2);
+            box-shadow: 0 0 20px rgba(0,255,255,0.8);
+            transform: scale(1.2);
+        }
+        .skill-description {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            width: 250px;
+            padding: 10px;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
+            border: 1px solid #0ff;
+            border-radius: 8px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            text-align: center;
+            font-size: 12px;
+            line-height: 1.4;
+            z-index: 10;
+        }
+        .skills-chip:hover .skill-description {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+        @keyframes rotateSkills {
+            from { transform: rotateY(0deg) rotateX(0deg); }
+            to { transform: rotateY(360deg) rotateX(360deg); }
+        }
 
-    h1, h2, h3 { margin-bottom: 16px; color: #0ff; text-shadow: 0 0 10px #0ff; }
-    p { max-width: 700px; margin: 0 auto 16px; line-height: 1.6; color: #e0e0e0; }
-
-    nav { position: fixed; top: 0; left: 0; width: 100%; display: flex; justify-content: center; gap: 20px; padding: 20px; background: rgba(0,0,0,0.8); z-index: 100; backdrop-filter: blur(10px); }
-    nav a { color: #fff; text-decoration: none; font-weight: 500; transition: .3s; }
-    nav a:hover { color: #0ff; text-shadow: 0 0 10px #0ff; }
-
-    /* 3D Cards */
-    .projects-grid, .certs-grid, .internships-grid, .achievements-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 40px;
-      width: 100%;
-      max-width: 1200px;
-      margin-top: 40px;
-    }
-    .project-card, .cert-item, .internship-card, .achievement-item, .contact-card {
-      background: rgba(255,255,255,0.05);
-      padding: 30px;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,0.1);
-      box-shadow: 0 0 15px rgba(0,255,255,0.2);
-      transition: transform 0.5s ease, box-shadow 0.5s ease;
-      cursor: pointer;
-    }
-    .project-card:hover, .cert-item:hover, .internship-card:hover, .achievement-item:hover, .contact-card:hover {
-      transform: translateY(-15px) scale(1.05) rotateX(5deg) rotateY(5deg);
-      box-shadow: 0 20px 40px rgba(0,255,255,0.5), 0 0 30px rgba(142,45,226,0.8);
-    }
-
-    @media (min-width: 768px) {
-      .projects-grid, .certs-grid, .internships-grid, .achievements-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    /* Contact */
-    form { display: flex; flex-direction: column; gap: 12px; max-width: 400px; margin: 20px auto; }
-    input, textarea { padding: 12px; border: none; border-radius: 8px; font-family: inherit; background: rgba(255,255,255,0.1); color: #fff; }
-    button { padding: 12px; background: #0ff; color: #000; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; transition: .3s; }
-    button:hover { background: #fff; color: #000; }
-
-    .btn { display: inline-block; margin: 10px; padding: 12px 20px; border-radius: 10px; text-decoration: none; font-weight: 600; transition: .3s; }
-    .btn-view { background: #0ff; color: #000; }
-    .btn-download { background: #8e2de2; color: #fff; }
-    .btn:hover { transform: scale(1.1); box-shadow: 0 0 20px #0ff; }
-
-    iframe { width: 80%; height: 80vh; border-radius: 12px; border: none; margin-top: 20px; }
-
-    /* Modal */
-    .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background: rgba(0,0,0,0.9); align-items: center; justify-content: center; }
-    .modal-content-container { max-height: 90vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-    .modal-content-container img, .modal-content-container iframe, .modal-content-container video { max-width: 90%; max-height: 90vh; }
-    .close { position: absolute; top: 20px; right: 40px; color: #fff; font-size: 40px; cursor: pointer; }
-  </style>
+        /* General styles */
+        .chips { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 10px; }
+        .chip { background: rgba(255,255,255,0.2); padding: 6px 14px; border-radius: 20px; font-size: 14px; color: #fff; }
+        form { display: flex; flex-direction: column; gap: 10px; max-width: 400px; width: 100%; margin: 20px auto; }
+        input, textarea { padding: 12px; border: none; border-radius: 8px; font-family: inherit; background: rgba(255,255,255,0.1); color: #fff; }
+        button { padding: 12px; background: #0ff; color: #000; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; transition: .3s; }
+        button:hover { background: #fff; color: #000; }
+        
+        img.project-img, .modal-img { max-width: 100%; border-radius: 12px; margin-top: 12px; border: 2px solid rgba(255,255,255,0.2); }
+        .btn { display: inline-block; margin: 10px; padding: 12px 20px; border-radius: 10px; text-decoration: none; font-weight: 600; transition: .3s; }
+        .btn-view { background: #0ff; color: #000; }
+        .btn-download { background: #8e2de2; color: #fff; }
+        .btn:hover { transform: scale(1.05); }
+        iframe { width: 80%; height: 80vh; border-radius: 12px; border: none; margin-top: 20px; }
+        .cert-gallery, .internship-gallery { display: flex; flex-direction: column; gap: 12px; align-items: center; }
+        .cert-gallery a, .project-link, .internship-link, .achievement-link { color: #0ff; text-decoration: underline; cursor: pointer; }
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background: rgba(0,0,0,0.9); align-items: center; justify-content: center; }
+        .modal-content { margin: 5% auto; display: block; max-width: 80%; border-radius: 12px; }
+        .close { position: absolute; top: 20px; right: 40px; color: #fff; font-size: 40px; font-weight: bold; cursor: pointer; }
+        .modal-content-container { max-height: 90vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .modal-content-container img, .modal-content-container iframe, .modal-content-container video { max-width: 90%; max-height: 90vh; }
+        
+        .about-content { display: flex; flex-direction: column; align-items: center; gap: 30px; max-width: 900px; }
+        .about-image { width: 200px; height: 200px; border-radius: 50%; object-fit: cover; border: 4px solid #0ff; box-shadow: 0 0 15px #0ff; transition: transform 0.3s ease-in-out; }
+        .about-image:hover { transform: scale(1.05); }
+        .about p { font-size: 1.1em; max-width: 800px; }
+        
+        @media (min-width: 768px) {
+            .about-content { flex-direction: row; text-align: left; }
+            .about-text { margin-left: 30px; }
+            .about-image { margin-right: 30px; }
+        }
+    </style>
 </head>
 <body>
-  <canvas id="smokeCanvas"></canvas>
-  <canvas id="cursorCanvas"></canvas>
-  <canvas id="backgroundCanvas"></canvas>
+    <canvas id="backgroundCanvas"></canvas>
+    <canvas id="cursorCanvas"></canvas>
+    
+    <nav>
+        <a href="#intro">Home</a>
+        <a href="#about">About</a>
+        <a href="#projects">Projects</a>
+        <a href="#skills">Skills</a>
+        <a href="#certs">Certifications</a>
+        <a href="#internships">Internships</a>
+        <a href="#achievements">Achievements</a>
+        <a href="#contact">Contact</a>
+        <a href="#resume">Resume</a>
+    </nav>
 
-  <!-- NAVIGATION -->
-  <nav>
-    <a href="#intro">Home</a>
-    <a href="#about">About</a>
-    <a href="#projects">Projects</a>
-    <a href="#skills">Skills</a>
-    <a href="#certs">Certifications</a>
-    <a href="#internships">Internships</a>
-    <a href="#achievements">Achievements</a>
-    <a href="#contact">Contact</a>
-    <a href="#resume">Resume</a>
-  </nav>
+    <section id="intro" class="intro">
+        <h1>Hi, I'm Prem 👋</h1>
+        <h3>Software Developer · Full-Stack · IoT & Cloud</h3>
+        <p>Turning visionary ideas into scalable applications, intelligent IoT solutions, and cutting-edge AI-driven projects. I thrive at the intersection of innovation and execution.</p>
+        <div>
+            <a href="kisame.pdf" target="_blank" class="btn btn-view">📄 View Resume</a>
+            <a href="kisame.pdf" download class="btn btn-download">⬇️ Download Resume</a>
+        </div>
+    </section>
 
-  <!-- INTRO -->
-  <section id="intro">
-    <h1>Hi, I'm Prem 👋</h1>
-    <h3>Software Developer · Full-Stack · IoT & Cloud</h3>
-    <p>Turning visionary ideas into scalable applications, intelligent IoT solutions, and cutting-edge AI-driven projects.</p>
-    <div>
-      <a href="kisame.pdf" target="_blank" class="btn btn-view">📄 View Resume</a>
-      <a href="kisame.pdf" download class="btn btn-download">⬇️ Download Resume</a>
+    <section id="about" class="about">
+        <h2>About Me</h2>
+        <div class="about-content">
+            <img src="prem.jpg" alt="Prem S" class="about-image">
+            <div class="about-text">
+                <p>As a driven 3rd-year BE Computer Science student, I specialize in crafting robust full-stack applications and deploying innovative IoT systems. My expertise extends to leveraging cloud platforms like AWS to build scalable, resilient solutions.</p>
+                <p>I am deeply passionate about translating complex challenges into elegant code and architecting systems that make a tangible impact. From data-driven insights to seamless user experiences, I am always pushing the boundaries of what's possible in the digital realm.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="projects">
+        <h2>My Projects</h2>
+        <div class="projects-grid">
+            <div class="project-card" id="project-1">
+                <h3>Smart AI-Based Traffic Management</h3>
+                <p>An IoT-based system that uses thermal and humidity-aware vision to manage urban traffic dynamically. It adjusts traffic light timings based on real-time data, helping to reduce congestion and improve efficiency. This project was presented at the IoT InnovateX.</p>
+                <p><a class="project-link" onclick="openModal('traffic managemnet proto.jpeg', 'image')">View Prototype</a></p>
+            </div>
+            <div class="project-card" id="project-2">
+                <h3>Kutty Port: The Zepto of Indian Export Logistics</h3>
+                <p>A logistics platform designed to streamline the export process for small and medium-sized businesses (MSMEs). It addresses issues like high costs, delays, and lack of real-time tracking through a decentralized port model.</p>
+                <p><a class="project-link" onclick="openModal('kutty port.pptx', 'ppt')">View Details</a></p>
+            </div>
+            <div class="project-card" id="project-3">
+                <h3>IEEE Emergency Lane Clearance</h3>
+                <p>A smart Edge-IoT system for dynamic emergency lane clearance. The system uses a combination of thermal cameras and humidity sensors to detect emergency vehicles in any weather, including fog and rain, and controls traffic lights to provide a clear path.</p>
+                <p><a class="project-link" onclick="openModal('IEEE lane clearance.docx', 'docx')">View Details</a> | <a class="project-link" onclick="openModal('lane clearance.mp4', 'video')">View Video</a></p>
+            </div>
+            <div class="project-card" id="project-4">
+                <h3>IEEE Shadow AI</h3>
+                <p>A consultancy project focused on the risks and ethical implications of "Shadow AI"—the unauthorized use of AI tools by employees within a company. The project highlights the security and privacy risks and provides a framework for responsible AI use.</p>
+                <p><a class="project-link" onclick="openModal('IEEE shadow ai.docx', 'docx')">View Details</a></p>
+            </div>
+            <div class="project-card" id="project-5">
+                <h3>SAP Hackfest: AI-Dharma</h3>
+                <p>An ethical AI-based fraud detection system for the banking sector. The project uses machine learning and game theory to identify suspicious transactions while ensuring transparency and fairness, aligning with principles from the Indian Knowledge System (IKS).</p>
+                <p><a class="project-link" onclick="openModal('SAP_HACKFEST_UPDATED.pptx', 'ppt')">View Details</a></p>
+            </div>
+            <div class="project-card" id="project-6">
+                <h3>Budget Management System</h3>
+                <p>A secure, full-stack financial application built with Spring Boot and REST API. This system allows users to track expenses, manage budgets, and visualize financial data for better financial control and planning.</p>
+                <p><a class="project-link" onclick="openModal('budget.pdf', 'pdf')">View Details</a></p>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills" class="skills">
+        <h2>Skills</h2>
+        <div class="skills-container">
+            <div class="skills-cloud">
+                <div class="skills-chip-wrapper" style="--rotation-x: 10deg; --rotation-y: 25deg;">
+                    <div class="skills-chip">
+                        C++
+                        <div class="skill-description">Proficient in C++ for competitive programming and system-level applications.</div>
+                    </div>
+                </div>
+                <div class="skills-chip-wrapper" style="--rotation-x: -15deg; --rotation-y: -20deg;">
+                    <div class="skills-chip">
+                        Java
+                        <div class="skill-description">Extensive experience with Java for building robust backend services with Spring Boot.</div>
+                    </div>
+                </div>
+                <div class="skills-chip-wrapper" style="--rotation-x: 5deg; --rotation-y: 50deg;">
+                    <div class="skills-chip">
+                        JavaScript
+                        <div class="skill-description">Skilled in modern JavaScript frameworks for dynamic, interactive web experiences.</div>
+                    </div>
+                </div>
+                <div class="skills-chip-wrapper" style="--rotation-x: -25deg; --rotation-y: 10deg;">
+                    <div class="skills-chip">
+                        React
+                        <div class="skill-description">Experienced in building modern, responsive user interfaces with React.js.</div>
+                    </div>
+                </div>
+                <div class="skills-chip-wrapper" style="--rotation-x: 20deg; --rotation-y: -40deg;">
+                    <div class="skills-chip">
+                        Node.js
+                        <div class="skill-description">Strong background in building scalable server-side applications and APIs using Node.js.</div>
+                    </div>
+                </div>
+                <div class="skills-chip-wrapper" style="--rotation-x: -30deg; --rotation-y: -5deg;">
+                    <div class="skills-chip">
+                        Express
+                        <div class="skill-description">Used Express.js to create efficient and flexible RESTful APIs.</div>
+                    </div>
+                </div>
+                <div class="skills-chip-wrapper" style="--rotation-x: -5deg; --rotation-y: 35deg;">
+                    <div class="skills-chip">
+                        MySql
+                        <div class="skill-description">Expert in designing and managing relational databases with MySQL.</div>
+                    </div>
+                </div>
+                <div class="skills-chip-wrapper" style="--rotation-x: 15deg; --rotation-y: -15deg;">
+                    <div class="skills-chip">
+                        AWS
+                        <div class="skill-description">Hands-on experience with AWS services like EC2, S3, and Lambda for cloud deployments.</div>
+                    </div>
+                </div>
+                <div class="skills-chip-wrapper" style="--rotation-x: -10deg; --rotation-y: 45deg;">
+                    <div class="skills-chip">
+                        Spring Boot
+                        <div class="skill-description">Proficient in Spring Boot for creating production-grade, stand-alone applications.</div>
+                    </div>
+                </div>
+                <div class="skills-chip-wrapper" style="--rotation-x: 40deg; --rotation-y: -25deg;">
+                    <div class="skills-chip">
+                        Python
+                        <div class="skill-description">Utilized Python for data analysis, machine learning, and scripting.</div>
+                    </div>
+                </div>
+                <div class="skills-chip-wrapper" style="--rotation-x: -20deg; --rotation-y: 20deg;">
+                    <div class="skills-chip">
+                        UI/UX Design
+                        <div class="skill-description">Designed user-centric interfaces and experiences for web and mobile applications.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="certs" class="certs">
+        <h2>Certifications</h2>
+        <div class="certs-grid">
+            <a class="cert-item" onclick="openModal('azure-cert.jpeg', 'image')">Microsoft Azure Fundamentals</a>
+            <a class="cert-item" onclick="openModal('aws-cloud.jpeg', 'image')">AWS Cloud Foundations</a>
+            <a class="cert-item" onclick="openModal('cisco cyber cert.pdf', 'pdf')">Cisco Introduction to Cybersecurity</a>
+            <a class="cert-item" onclick="openModal('data analyst.jpg', 'image')">GenAI Data Analyst</a>
+            <a class="cert-item" onclick="openModal('full stack.jpg', 'image')">Full Stack/MERN Developer</a>
+            <a class="cert-item" onclick="openModal('azure badge.jpeg', 'image')">Microsoft Azure AI-900 Badge</a>
+            <a class="cert-item" onclick="openModal('innovate x cert.jpeg', 'image')">IoT InnovateX Certification</a>
+        </div>
+    </section>
+
+    <section id="internships" class="internships">
+        <h2>Internships & Workshops</h2>
+        <div class="internships-grid">
+            <div class="internship-card">
+                <h3>Raspberry Pi & Node.js Workshop</h3>
+                <p>Attended a workshop at IIT Madras focused on building IoT applications using Raspberry Pi and Node.js for real-time data processing and device control.</p>
+                <p><a class="internship-link" onclick="openModal('raspberrypi cer.jpg', 'image')">View Certificate</a></p>
+            </div>
+            <div class="internship-card">
+                <h3>Digital Marketing Intern — Maven Advert</h3>
+                <p>Gained hands-on experience in digital marketing strategies and tools. This role included content creation and analytics to improve online visibility.</p>
+                <p><a class="internship-link" onclick="openModal('Prem INTERN CERTIFICATE 3.pdf', 'pdf')">View Certificate</a></p>
+            </div>
+        </div>
+    </section>
+    
+    <section id="achievements" class="achievements">
+        <h2>Achievements & Awards</h2>
+        <div class="achievements-grid">
+            <div class="achievement-item">
+                <a class="achievement-link" onclick="openModal('topper cer.jpg', 'image')">Academic Recognition</a>
+            </div>
+            <div class="achievement-item">
+                <a class="achievement-link" onclick="openModal('academic topper.jpeg', 'image')">College Recognition</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <h2>Contact Me</h2>
+        <form action="https://formspree.io/f/mwkawnyg" method="POST">
+            <input type="text" name="name" placeholder="Your Name" required>
+            <input type="email" name="email" placeholder="Your Email" required>
+            <textarea name="message" rows="4" placeholder="Your Message" required></textarea>
+            <button type="submit">Send Query</button>
+        </form>
+        <h3>Other Contact Links</h3>
+        <p>Email: <a href="mailto:selvaraj3805@gmail.com" style="color:#0ff">selvaraj3805@gmail.com</a></p>
+        <p>Phone: <a href="tel:+918778642535" style="color:#0ff">+91 8778642535</a></p>
+        <p>
+            <a href="https://www.linkedin.com/in/prem-s-12626b309/" target="_blank" style="color:#0ff">LinkedIn</a> | 
+            <a href="https://github.com/kingprem12" target="_blank" style="color:#0ff">GitHub</a> | 
+            <a href="https://canary.discord.com/channels/@me/948821325370253343" target="_blank" style="color:#0ff">Discord</a>
+        </p>
+    </section>
+
+    <section id="resume" class="resume">
+        <h2>My Resume</h2>
+        <p>Preview my resume directly below or download it above.</p>
+        <iframe src="kisame.pdf"></iframe>
+    </section>
+
+    <div id="fileModal" class="modal" onclick="closeModal()">
+        <span class="close">&times;</span>
+        <div class="modal-content-container">
+            <img class="modal-content" id="modalImg" style="display: none;">
+            <iframe id="modalIframe" style="display: none;"></iframe>
+            <video id="modalVideo" controls style="display: none;"></video>
+        </div>
     </div>
-  </section>
 
-  <!-- ABOUT -->
-  <section id="about">
-    <h2>About Me</h2>
-    <p>I am a 3rd-year BE Computer Science student, passionate about building scalable full-stack applications and IoT solutions powered by Cloud & AI.</p>
-  </section>
+    <script>
+        // Background and cursor particles (Existing)
+        const cursorCanvas = document.getElementById('cursorCanvas');
+        const ctxCursor = cursorCanvas.getContext('2d');
+        let cursorParticles = [];
+        resizeCursorCanvas();
+        window.addEventListener('resize', resizeCursorCanvas);
+        function resizeCursorCanvas() {
+            cursorCanvas.width = window.innerWidth;
+            cursorCanvas.height = window.innerHeight;
+        }
+        window.addEventListener('mousemove', e => {
+            for (let i = 0; i < 5; i++) {
+                cursorParticles.push({
+                    x: e.clientX,
+                    y: e.clientY,
+                    dx: (Math.random() - 0.5) * 2,
+                    dy: (Math.random() - 0.5) * 2,
+                    life: 60
+                });
+            }
+        });
+        function drawCursorParticles() {
+            ctxCursor.clearRect(0, 0, cursorCanvas.width, cursorCanvas.height);
+            cursorParticles.forEach((p, i) => {
+                ctxCursor.beginPath();
+                ctxCursor.arc(p.x, p.y, 3, 0, Math.PI * 2);
+                ctxCursor.fillStyle = `hsla(${p.life * 6},100%,50%,0.8)`;
+                ctxCursor.fill();
+                p.x += p.dx;
+                p.y += p.dy;
+                p.life--;
+                if (p.life <= 0) cursorParticles.splice(i, 1);
+            });
+            requestAnimationFrame(drawCursorParticles);
+        }
+        drawCursorParticles();
 
-  <!-- PROJECTS -->
-  <section id="projects">
-    <h2>Projects</h2>
-    <div class="projects-grid">
-      <div class="project-card">
-        <h3>Smart AI-Based Traffic Management</h3>
-        <p>IoT-based system using thermal & humidity-aware vision to manage traffic.</p>
-        <p><a onclick="openModal('traffic.jpeg','image')">View Prototype</a></p>
-      </div>
-    </div>
-  </section>
+        const bgCanvas = document.getElementById('backgroundCanvas');
+        const ctxBg = bgCanvas.getContext('2d');
+        let dots = [];
+        const numDots = 100;
+        const maxDist = 120;
+        function resizeBgCanvas() {
+            bgCanvas.width = window.innerWidth;
+            bgCanvas.height = window.innerHeight;
+            dots = [];
+            for (let i = 0; i < numDots; i++) {
+                dots.push({
+                    x: Math.random() * bgCanvas.width,
+                    y: Math.random() * bgCanvas.height,
+                    vx: (Math.random() - 0.5) * 0.5,
+                    vy: (Math.random() - 0.5) * 0.5,
+                    radius: Math.random() * 1.5 + 0.5,
+                    color: `hsla(${Math.random() * 360}, 100%, 70%, 0.8)`
+                });
+            }
+        }
+        window.addEventListener('resize', resizeBgCanvas);
+        resizeBgCanvas();
+        function animateBackground() {
+            ctxBg.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
+            ctxBg.fillStyle = '#0a0a0a';
+            ctxBg.fillRect(0, 0, bgCanvas.width, bgCanvas.height);
+            for (let i = 0; i < numDots; i++) {
+                let dot = dots[i];
+                dot.x += dot.vx;
+                dot.y += dot.vy;
+                if (dot.x < 0 || dot.x > bgCanvas.width) dot.vx *= -1;
+                if (dot.y < 0 || dot.y > bgCanvas.height) dot.vy *= -1;
+                ctxBg.beginPath();
+                ctxBg.arc(dot.x, dot.y, dot.radius, 0, Math.PI * 2);
+                ctxBg.fillStyle = dot.color;
+                ctxBg.fill();
+                for (let j = i + 1; j < numDots; j++) {
+                    let otherDot = dots[j];
+                    let dist = Math.sqrt(Math.pow(dot.x - otherDot.x, 2) + Math.pow(dot.y - otherDot.y, 2));
+                    if (dist < maxDist) {
+                        ctxBg.beginPath();
+                        ctxBg.moveTo(dot.x, dot.y);
+                        ctxBg.lineTo(otherDot.x, otherDot.y);
+                        ctxBg.strokeStyle = `rgba(0, 255, 255, ${1 - (dist / maxDist) * 0.8})`;
+                        ctxBg.lineWidth = 0.5;
+                        ctxBg.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animateBackground);
+        }
+        animateBackground();
+        
+        // 3D Tilt Effect for Cards
+        const cards = document.querySelectorAll('.project-card, .cert-item, .internship-card, .achievement-item');
+        cards.forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const {
+                    left,
+                    top,
+                    width,
+                    height
+                } = card.getBoundingClientRect();
+                const x = e.clientX - left - width / 2;
+                const y = e.clientY - top - height / 2;
+                const rotateX = (y / height) * 20;
+                const rotateY = (x / width) * -20;
+                card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = `rotateX(0) rotateY(0)`;
+            });
+        });
 
-  <!-- CERTIFICATIONS -->
-  <section id="certs">
-    <h2>Certifications</h2>
-    <div class="certs-grid">
-      <a class="cert-item" onclick="openModal('azure-cert.jpeg','image')">Microsoft Azure Fundamentals</a>
-      <a class="cert-item" onclick="openModal('aws-cloud.jpeg','image')">AWS Cloud Foundations</a>
-    </div>
-  </section>
+        // Skills Cloud Animation
+        document.addEventListener('DOMContentLoaded', () => {
+            const skillsCloud = document.querySelector('.skills-cloud');
+            const skillsChips = document.querySelectorAll('.skills-chip-wrapper');
+            const numSkills = skillsChips.length;
+            const radius = 200; // Radius of the 3D sphere
 
-  <!-- CONTACT -->
-  <section id="contact">
-    <h2>Contact Me</h2>
-    <form action="https://formspree.io/f/mwkawnyg" method="POST">
-      <input type="text" name="name" placeholder="Your Name" required>
-      <input type="email" name="email" placeholder="Your Email" required>
-      <textarea name="message" rows="4" placeholder="Your Message" required></textarea>
-      <button type="submit">Send</button>
-    </form>
-    <p>📞 <a href="tel:+918778642535" style="color:#0ff">+91 8778642535</a></p>
-    <p>📧 <a href="mailto:selvaraj3805@gmail.com" style="color:#0ff">selvaraj3805@gmail.com</a></p>
-    <p><a href="https://www.linkedin.com/in/prem-s-12626b309/" style="color:#0ff">LinkedIn</a> | <a href="https://github.com/kingprem12" style="color:#0ff">GitHub</a> | <a href="https://canary.discord.com/channels/@me/948821325370253343" style="color:#0ff">Discord</a></p>
-  </section>
+            skillsChips.forEach((chip, i) => {
+                const phi = Math.acos(-1 + (2 * i + 1) / numSkills);
+                const theta = Math.sqrt(numSkills * Math.PI) * phi;
+                
+                const x = radius * Math.cos(theta) * Math.sin(phi);
+                const y = radius * Math.sin(theta) * Math.sin(phi);
+                const z = radius * Math.cos(phi);
 
-  <!-- RESUME -->
-  <section id="resume">
-    <h2>My Resume</h2>
-    <iframe src="kisame.pdf"></iframe>
-  </section>
+                chip.style.transform = `translate3d(${x}px, ${y}px, ${z}px) rotateX(${phi * 180 / Math.PI}deg) rotateY(${theta * 180 / Math.PI}deg)`;
+                chip.style.transition = 'transform 1s ease-out, opacity 1s ease-out';
+                chip.style.opacity = '1';
+            });
+        });
 
-  <!-- MODAL -->
-  <div id="fileModal" class="modal" onclick="closeModal()">
-    <span class="close">&times;</span>
-    <div class="modal-content-container">
-      <img id="modalImg" style="display:none;">
-      <iframe id="modalIframe" style="display:none;"></iframe>
-      <video id="modalVideo" controls style="display:none;"></video>
-    </div>
-  </div>
+        // Modal functions
+        function openModal(src, type) {
+            const modal = document.getElementById('fileModal');
+            const img = document.getElementById('modalImg');
+            const iframe = document.getElementById('modalIframe');
+            const video = document.getElementById('modalVideo');
+            
+            img.style.display = 'none';
+            iframe.style.display = 'none';
+            video.style.display = 'none';
+            video.pause();
+            video.currentTime = 0;
 
-  <script>
-    /* Section Fade-in on Scroll */
-    const sections = document.querySelectorAll("section");
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) entry.target.classList.add("visible");
-      });
-    }, { threshold: 0.2 });
-    sections.forEach(sec => observer.observe(sec));
-
-    /* Cursor Particles */
-    const cursorCanvas = document.getElementById("cursorCanvas");
-    const ctxCursor = cursorCanvas.getContext("2d");
-    cursorCanvas.width = innerWidth;
-    cursorCanvas.height = innerHeight;
-    let particles = [];
-    window.addEventListener("mousemove", e => {
-      for (let i=0; i<5; i++) {
-        particles.push({x:e.clientX,y:e.clientY,dx:(Math.random()-0.5)*2,dy:(Math.random()-0.5)*2,life:60});
-      }
-    });
-    function animateCursor() {
-      ctxCursor.clearRect(0,0,cursorCanvas.width,cursorCanvas.height);
-      particles.forEach((p,i)=> {
-        ctxCursor.beginPath();
-        ctxCursor.arc(p.x,p.y,3,0,Math.PI*2);
-        ctxCursor.fillStyle=`hsla(${p.life*6},100%,50%,0.8)`;
-        ctxCursor.fill();
-        p.x+=p.dx; p.y+=p.dy; p.life--;
-        if (p.life<=0) particles.splice(i,1);
-      });
-      requestAnimationFrame(animateCursor);
-    } animateCursor();
-
-    /* Smoke Background */
-    const smokeCanvas=document.getElementById("smokeCanvas");
-    const sCtx=smokeCanvas.getContext("2d");
-    function resizeSmoke(){smokeCanvas.width=innerWidth;smokeCanvas.height=innerHeight;}
-    resizeSmoke(); window.addEventListener("resize",resizeSmoke);
-    class Smoke{constructor(){this.x=Math.random()*smokeCanvas.width;this.y=smokeCanvas.height+50;this.size=Math.random()*60+40;this.speedY=Math.random()*0.5+0.2;this.alpha=Math.random()*0.3+0.1;}update(){this.y-=this.speedY;if(this.y<-this.size){this.y=smokeCanvas.height+50;this.x=Math.random()*smokeCanvas.width;}}draw(){sCtx.beginPath();sCtx.arc(this.x,this.y,this.size,0,Math.PI*2);sCtx.fillStyle=`rgba(200,200,200,${this.alpha})`;sCtx.fill();}}
-    let smokeParticles=[];for(let i=0;i<40;i++){smokeParticles.push(new Smoke());}
-    function animateSmoke(){sCtx.clearRect(0,0,smokeCanvas.width,smokeCanvas.height);smokeParticles.forEach(p=>{p.update();p.draw();});requestAnimationFrame(animateSmoke);}animateSmoke();
-
-    /* Modal */
-    function openModal(src,type){const modal=document.getElementById("fileModal");const img=document.getElementById("modalImg");const iframe=document.getElementById("modalIframe");const video=document.getElementById("modalVideo");img.style.display="none";iframe.style.display="none";video.style.display="none";video.pause();video.currentTime=0;if(type==="image"){img.src=src;img.style.display="block";}else if(type==="pdf"||type==="ppt"||type==="pptx"||type==="doc"||type==="docx"){iframe.src=src;iframe.style.display="block";}else if(type==="video"||type==="mp4"){video.src=src;video.style.display="block";}modal.style.display="flex";}
-    function closeModal(){document.getElementById("fileModal").style.display="none";const video=document.getElementById("modalVideo");video.pause();video.currentTime=0;}
-  </script>
+            if (type === 'image' || type === 'jpeg' || type === 'jpg' || type === 'png') {
+                img.src = src;
+                img.style.display = 'block';
+            } else if (type === 'pdf' || type === 'ppt' || type === 'pptx' || type === 'doc' || type === 'docx') {
+                iframe.src = src;
+                iframe.style.display = 'block';
+            } else if (type === 'video' || type === 'mp4') {
+                video.src = src;
+                video.style.display = 'block';
+            }
+            
+            modal.style.display = 'flex';
+        }
+        function closeModal() {
+            document.getElementById('fileModal').style.display = 'none';
+            const video = document.getElementById('modalVideo');
+            video.pause();
+            video.currentTime = 0;
+        }
+    </script>
 </body>
 </html>
