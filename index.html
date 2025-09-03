@@ -56,78 +56,6 @@
             }
         }
 
-        /* 3D Skills Cloud */
-        .skills-container {
-            position: relative;
-            width: 100%;
-            height: 500px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .skills-cloud {
-            width: 100%;
-            height: 100%;
-            transform-style: preserve-3d;
-            animation: rotateSkills 20s infinite linear;
-            position: relative;
-        }
-        .skills-chip-wrapper {
-            position: absolute;
-            transform-style: preserve-3d;
-            transform: rotateY(0deg);
-            transition: transform 0.5s ease-out;
-        }
-        .skills-chip {
-            background: rgba(255,255,255,0.1);
-            padding: 12px 24px;
-            border-radius: 10px;
-            font-size: 16px;
-            color: #fff;
-            position: relative;
-            overflow: hidden;
-            border: 1px solid transparent;
-            box-shadow: 0 0 10px rgba(0,255,255,0.2);
-            transition: all 0.3s ease;
-            cursor: pointer;
-            text-align: center;
-            line-height: 1.2;
-            white-space: nowrap;
-        }
-        .skills-chip-wrapper:hover .skills-chip {
-            background: rgba(0,255,255,0.2);
-            box-shadow: 0 0 20px rgba(0,255,255,0.8);
-            transform: scale(1.2);
-        }
-        .skill-description {
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%) translateY(10px);
-            width: 250px;
-            padding: 10px;
-            background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(5px);
-            border: 1px solid #0ff;
-            border-radius: 8px;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, transform 0.3s ease;
-            text-align: center;
-            font-size: 12px;
-            line-height: 1.4;
-            z-index: 10;
-        }
-        .skills-chip:hover .skill-description {
-            opacity: 1;
-            visibility: visible;
-            transform: translateX(-50%) translateY(0);
-        }
-        @keyframes rotateSkills {
-            from { transform: rotateY(0deg) rotateX(0deg); }
-            to { transform: rotateY(360deg) rotateX(360deg); }
-        }
-
         /* Unique Contact Section */
         .contact-container {
             display: flex;
@@ -154,6 +82,61 @@
         .contact-card h3 { color: #0ff; }
         .contact-card form { margin-top: 20px; }
         
+        /* New Skills Section Styling */
+        .skills-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 25px;
+            margin-top: 40px;
+            width: 100%;
+            max-width: 900px;
+        }
+        .skills-chip-container {
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out;
+            transform-style: preserve-3d;
+        }
+        .skills-chip-container:hover {
+            transform: scale(1.1);
+        }
+        .skills-chip-container .skills-chip {
+            background: rgba(255,255,255,0.1);
+            padding: 12px 24px;
+            border-radius: 10px;
+            color: #fff;
+            border: 1px solid transparent;
+            box-shadow: 0 0 10px rgba(0,255,255,0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+        .skill-description {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(15px);
+            width: 250px;
+            padding: 15px;
+            background: rgba(0,0,0,0.9);
+            backdrop-filter: blur(5px);
+            border: 1px solid #0ff;
+            border-radius: 8px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+            text-align: center;
+            font-size: 14px;
+            line-height: 1.4;
+            z-index: 1;
+        }
+        .skills-chip-container:hover .skill-description {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
         /* General styles */
         .chips { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 10px; }
         .chip { background: rgba(255,255,255,0.2); padding: 6px 14px; border-radius: 20px; font-size: 14px; color: #fff; }
@@ -263,74 +246,50 @@
 
     <section id="skills" class="skills">
         <h2>Skills</h2>
-        <div class="skills-container">
-            <div class="skills-cloud">
-                <div class="skills-chip-wrapper" style="--rotation-x: 10deg; --rotation-y: 25deg;">
-                    <div class="skills-chip">
-                        C++
-                        <div class="skill-description">Proficient in C++ for competitive programming and system-level applications.</div>
-                    </div>
-                </div>
-                <div class="skills-chip-wrapper" style="--rotation-x: -15deg; --rotation-y: -20deg;">
-                    <div class="skills-chip">
-                        Java
-                        <div class="skill-description">Extensive experience with Java for building robust backend services with Spring Boot.</div>
-                    </div>
-                </div>
-                <div class="skills-chip-wrapper" style="--rotation-x: 5deg; --rotation-y: 50deg;">
-                    <div class="skills-chip">
-                        JavaScript
-                        <div class="skill-description">Skilled in modern JavaScript frameworks for dynamic, interactive web experiences.</div>
-                    </div>
-                </div>
-                <div class="skills-chip-wrapper" style="--rotation-x: -25deg; --rotation-y: 10deg;">
-                    <div class="skills-chip">
-                        React
-                        <div class="skill-description">Experienced in building modern, responsive user interfaces with React.js.</div>
-                    </div>
-                </div>
-                <div class="skills-chip-wrapper" style="--rotation-x: 20deg; --rotation-y: -40deg;">
-                    <div class="skills-chip">
-                        Node.js
-                        <div class="skill-description">Strong background in building scalable server-side applications and APIs using Node.js.</div>
-                    </div>
-                </div>
-                <div class="skills-chip-wrapper" style="--rotation-x: -30deg; --rotation-y: -5deg;">
-                    <div class="skills-chip">
-                        Express
-                        <div class="skill-description">Used Express.js to create efficient and flexible RESTful APIs.</div>
-                    </div>
-                </div>
-                <div class="skills-chip-wrapper" style="--rotation-x: -5deg; --rotation-y: 35deg;">
-                    <div class="skills-chip">
-                        MySql
-                        <div class="skill-description">Expert in designing and managing relational databases with MySQL.</div>
-                    </div>
-                </div>
-                <div class="skills-chip-wrapper" style="--rotation-x: 15deg; --rotation-y: -15deg;">
-                    <div class="skills-chip">
-                        AWS
-                        <div class="skill-description">Hands-on experience with AWS services like EC2, S3, and Lambda for cloud deployments.</div>
-                    </div>
-                </div>
-                <div class="skills-chip-wrapper" style="--rotation-x: -10deg; --rotation-y: 45deg;">
-                    <div class="skills-chip">
-                        Spring Boot
-                        <div class="skill-description">Proficient in Spring Boot for creating production-grade, stand-alone applications.</div>
-                    </div>
-                </div>
-                <div class="skills-chip-wrapper" style="--rotation-x: 40deg; --rotation-y: -25deg;">
-                    <div class="skills-chip">
-                        Python
-                        <div class="skill-description">Utilized Python for data analysis, machine learning, and scripting.</div>
-                    </div>
-                </div>
-                <div class="skills-chip-wrapper" style="--rotation-x: -20deg; --rotation-y: 20deg;">
-                    <div class="skills-chip">
-                        UI/UX Design
-                        <div class="skill-description">Designed user-centric interfaces and experiences for web and mobile applications.</div>
-                    </div>
-                </div>
+        <div class="skills-grid">
+            <div class="skills-chip-container">
+                <div class="skills-chip">C++</div>
+                <div class="skill-description">Proficient in C++ for competitive programming and system-level applications.</div>
+            </div>
+            <div class="skills-chip-container">
+                <div class="skills-chip">Java</div>
+                <div class="skill-description">Extensive experience with Java for building robust backend services with Spring Boot.</div>
+            </div>
+            <div class="skills-chip-container">
+                <div class="skills-chip">JavaScript</div>
+                <div class="skill-description">Skilled in modern JavaScript frameworks for dynamic, interactive web experiences.</div>
+            </div>
+            <div class="skills-chip-container">
+                <div class="skills-chip">React</div>
+                <div class="skill-description">Experienced in building modern, responsive user interfaces with React.js.</div>
+            </div>
+            <div class="skills-chip-container">
+                <div class="skills-chip">Node.js</div>
+                <div class="skill-description">Strong background in building scalable server-side applications and APIs using Node.js.</div>
+            </div>
+            <div class="skills-chip-container">
+                <div class="skills-chip">Express</div>
+                <div class="skill-description">Used Express.js to create efficient and flexible RESTful APIs.</div>
+            </div>
+            <div class="skills-chip-container">
+                <div class="skills-chip">MySql</div>
+                <div class="skill-description">Expert in designing and managing relational databases with MySQL.</div>
+            </div>
+            <div class="skills-chip-container">
+                <div class="skills-chip">AWS</div>
+                <div class="skill-description">Hands-on experience with AWS services like EC2, S3, and Lambda for cloud deployments.</div>
+            </div>
+            <div class="skills-chip-container">
+                <div class="skills-chip">Spring Boot</div>
+                <div class="skill-description">Proficient in Spring Boot for creating production-grade, stand-alone applications.</div>
+            </div>
+            <div class="skills-chip-container">
+                <div class="skills-chip">Python</div>
+                <div class="skill-description">Utilized Python for data analysis, machine learning, and scripting.</div>
+            </div>
+            <div class="skills-chip-container">
+                <div class="skills-chip">UI/UX Design</div>
+                <div class="skill-description">Designed user-centric interfaces and experiences for web and mobile applications.</div>
             </div>
         </div>
     </section>
@@ -342,7 +301,7 @@
             <a class="cert-item" onclick="openModal('aws-cloud.jpeg', 'image')">AWS Cloud Foundations</a>
             <a class="cert-item" onclick="openModal('cisco cyber cert.pdf', 'pdf')">Cisco Introduction to Cybersecurity</a>
             <a class="cert-item" onclick="openModal('data analyst.jpg', 'image')">Data Analyst</a>
-            <a class="cert-item" onclick="openModal('data analyst.jpg', 'image')">GenAI Data Analyst</a>
+            <a class="cert-item" onclick="openModal('genai.jpg', 'image')">GenAI Data Analyst</a>
             <a class="cert-item" onclick="openModal('full stack.jpg', 'image')">Full Stack/MERN Developer</a>
             <a class="cert-item" onclick="openModal('azure badge.jpeg', 'image')">Microsoft Azure AI-900 Badge</a>
             <a class="cert-item" onclick="openModal('innovate x cert.jpeg', 'image')">IoT InnovateX Certification</a>
@@ -481,7 +440,7 @@
         window.addEventListener('resize', resizeBgCanvas);
         resizeBgCanvas();
         function animateBackground() {
-            ctxBg.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
+            ctxBg.clearRect(0, 0, bgCanvas.width, bgBg.height);
             ctxBg.fillStyle = '#0a0a0a';
             ctxBg.fillRect(0, 0, bgCanvas.width, bgCanvas.height);
             for (let i = 0; i < numDots; i++) {
@@ -529,27 +488,6 @@
             });
             card.addEventListener('mouseleave', () => {
                 card.style.transform = `rotateX(0) rotateY(0)`;
-            });
-        });
-
-        // Skills Cloud Animation
-        document.addEventListener('DOMContentLoaded', () => {
-            const skillsCloud = document.querySelector('.skills-cloud');
-            const skillsChips = document.querySelectorAll('.skills-chip-wrapper');
-            const numSkills = skillsChips.length;
-            const radius = 200; // Radius of the 3D sphere
-
-            skillsChips.forEach((chip, i) => {
-                const phi = Math.acos(-1 + (2 * i + 1) / numSkills);
-                const theta = Math.sqrt(numSkills * Math.PI) * phi;
-                
-                const x = radius * Math.cos(theta) * Math.sin(phi);
-                const y = radius * Math.sin(theta) * Math.sin(phi);
-                const z = radius * Math.cos(phi);
-
-                chip.style.transform = `translate3d(${x}px, ${y}px, ${z}px) rotateX(${phi * 180 / Math.PI}deg) rotateY(${theta * 180 / Math.PI}deg)`;
-                chip.style.transition = 'transform 1s ease-out, opacity 1s ease-out';
-                chip.style.opacity = '1';
             });
         });
 
