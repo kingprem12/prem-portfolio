@@ -43,7 +43,7 @@
             box-shadow: 0 0 10px rgba(0,255,255,0.2);
         }
         .project-card h3 { color: #0ff; }
-        .cert-item a, .internship-card h3, .achievement-item a { color: #0ff; }
+        .cert-item, .internship-card h3, .achievement-item { color: #0ff; }
 
         @media (min-width: 768px) {
             .projects-grid, .certs-grid, .internships-grid, .achievements-grid {
@@ -128,6 +128,32 @@
             to { transform: rotateY(360deg) rotateX(360deg); }
         }
 
+        /* Unique Contact Section */
+        .contact-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            max-width: 900px;
+            margin-top: 40px;
+            position: relative;
+            transform-style: preserve-3d;
+        }
+        .contact-card {
+            background: rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 0 10px rgba(0,255,255,0.2);
+            transform-style: preserve-3d;
+            transition: transform 0.2s ease-out;
+        }
+        .contact-card:hover {
+            transform: translateZ(20px);
+        }
+        .contact-card h3 { color: #0ff; }
+        .contact-card form { margin-top: 20px; }
+        
         /* General styles */
         .chips { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 10px; }
         .chip { background: rgba(255,255,255,0.2); padding: 6px 14px; border-radius: 20px; font-size: 14px; color: #fff; }
@@ -310,11 +336,12 @@
     </section>
 
     <section id="certs" class="certs">
-        <h2>Certifications</h2>
+        <h2 style="margin-top: -100px;">Certifications</h2>
         <div class="certs-grid">
             <a class="cert-item" onclick="openModal('azure-cert.jpeg', 'image')">Microsoft Azure Fundamentals</a>
             <a class="cert-item" onclick="openModal('aws-cloud.jpeg', 'image')">AWS Cloud Foundations</a>
             <a class="cert-item" onclick="openModal('cisco cyber cert.pdf', 'pdf')">Cisco Introduction to Cybersecurity</a>
+            <a class="cert-item" onclick="openModal('data analyst.jpg', 'image')">Data Analyst</a>
             <a class="cert-item" onclick="openModal('data analyst.jpg', 'image')">GenAI Data Analyst</a>
             <a class="cert-item" onclick="openModal('full stack.jpg', 'image')">Full Stack/MERN Developer</a>
             <a class="cert-item" onclick="openModal('azure badge.jpeg', 'image')">Microsoft Azure AI-900 Badge</a>
@@ -323,7 +350,7 @@
     </section>
 
     <section id="internships" class="internships">
-        <h2>Internships & Workshops</h2>
+        <h2 style="margin-top: -100px;">Internships & Workshops</h2>
         <div class="internships-grid">
             <div class="internship-card">
                 <h3>Raspberry Pi & Node.js Workshop</h3>
@@ -339,7 +366,7 @@
     </section>
     
     <section id="achievements" class="achievements">
-        <h2>Achievements & Awards</h2>
+        <h2 style="margin-top: -100px;">Achievements & Awards</h2>
         <div class="achievements-grid">
             <div class="achievement-item">
                 <a class="achievement-link" onclick="openModal('topper cer.jpg', 'image')">Academic Recognition</a>
@@ -351,25 +378,35 @@
     </section>
 
     <section id="contact" class="contact">
-        <h2>Contact Me</h2>
-        <form action="https://formspree.io/f/mwkawnyg" method="POST">
-            <input type="text" name="name" placeholder="Your Name" required>
-            <input type="email" name="email" placeholder="Your Email" required>
-            <textarea name="message" rows="4" placeholder="Your Message" required></textarea>
-            <button type="submit">Send Query</button>
-        </form>
-        <h3>Other Contact Links</h3>
-        <p>Email: <a href="mailto:selvaraj3805@gmail.com" style="color:#0ff">selvaraj3805@gmail.com</a></p>
-        <p>Phone: <a href="tel:+918778642535" style="color:#0ff">+91 8778642535</a></p>
-        <p>
-            <a href="https://www.linkedin.com/in/prem-s-12626b309/" target="_blank" style="color:#0ff">LinkedIn</a> | 
-            <a href="https://github.com/kingprem12" target="_blank" style="color:#0ff">GitHub</a> | 
-            <a href="https://canary.discord.com/channels/@me/948821325370253343" target="_blank" style="color:#0ff">Discord</a>
-        </p>
+        <h2 style="margin-top: -100px;">Contact Me</h2>
+        <div class="contact-container">
+            <div class="contact-card">
+                <h3>Get in Touch</h3>
+                <p>I'm always open to new opportunities, collaborations, and conversations. Feel free to send me a message.</p>
+                <form action="https://formspree.io/f/mwkawnyg" method="POST">
+                    <input type="text" name="name" placeholder="Your Name" required>
+                    <input type="email" name="email" placeholder="Your Email" required>
+                    <textarea name="message" rows="4" placeholder="Your Message" required></textarea>
+                    <button type="submit">Send Message</button>
+                    <small style="color: #bbb; margin-top: 10px;">**Important:** Your first submission may require a confirmation email from Formspree.</small>
+                </form>
+            </div>
+            <div class="contact-card">
+                <h3>Connect with Me</h3>
+                <p>Find me on social media and other platforms.</p>
+                <p style="display: flex; gap: 20px; justify-content: center;">
+                    <a href="https://www.linkedin.com/in/prem-s-12626b309/" target="_blank" style="color:#0ff">LinkedIn</a>
+                    <a href="https://github.com/kingprem12" target="_blank" style="color:#0ff">GitHub</a>
+                    <a href="https://canary.discord.com/channels/@me/948821325370253343" target="_blank" style="color:#0ff">Discord</a>
+                </p>
+                <p>Email: <a href="mailto:selvaraj3805@gmail.com" style="color:#0ff">selvaraj3805@gmail.com</a></p>
+                <p>Phone: <a href="tel:+918778642535" style="color:#0ff">+91 8778642535</a></p>
+            </div>
+        </div>
     </section>
 
     <section id="resume" class="resume">
-        <h2>My Resume</h2>
+        <h2 style="margin-top: -100px;">My Resume</h2>
         <p>Preview my resume directly below or download it above.</p>
         <iframe src="kisame.pdf"></iframe>
     </section>
@@ -475,7 +512,7 @@
         animateBackground();
         
         // 3D Tilt Effect for Cards
-        const cards = document.querySelectorAll('.project-card, .cert-item, .internship-card, .achievement-item');
+        const cards = document.querySelectorAll('.project-card, .cert-item, .internship-card, .achievement-item, .contact-card');
         cards.forEach(card => {
             card.addEventListener('mousemove', e => {
                 const {
