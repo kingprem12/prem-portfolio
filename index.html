@@ -56,78 +56,6 @@
             }
         }
 
-        /* 3D Skills Cloud */
-        .skills-container {
-            position: relative;
-            width: 100%;
-            height: 500px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .skills-cloud {
-            width: 100%;
-            height: 100%;
-            transform-style: preserve-3d;
-            animation: rotateSkills 20s infinite linear;
-            position: relative;
-        }
-        .skills-chip-wrapper {
-            position: absolute;
-            transform-style: preserve-3d;
-            transform: rotateY(0deg);
-            transition: transform 0.5s ease-out;
-        }
-        .skills-chip {
-            background: rgba(255,255,255,0.1);
-            padding: 12px 24px;
-            border-radius: 10px;
-            font-size: 16px;
-            color: #fff;
-            position: relative;
-            overflow: hidden;
-            border: 1px solid transparent;
-            box-shadow: 0 0 10px rgba(0,255,255,0.2);
-            transition: all 0.3s ease;
-            cursor: pointer;
-            text-align: center;
-            line-height: 1.2;
-            white-space: nowrap;
-        }
-        .skills-chip-wrapper:hover .skills-chip {
-            background: rgba(0,255,255,0.2);
-            box-shadow: 0 0 20px rgba(0,255,255,0.8);
-            transform: scale(1.2);
-        }
-        .skill-description {
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%) translateY(10px);
-            width: 250px;
-            padding: 10px;
-            background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(5px);
-            border: 1px solid #0ff;
-            border-radius: 8px;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s ease, transform 0.3s ease;
-            text-align: center;
-            font-size: 12px;
-            line-height: 1.4;
-            z-index: 10;
-        }
-        .skills-chip:hover .skill-description {
-            opacity: 1;
-            visibility: visible;
-            transform: translateX(-50%) translateY(0);
-        }
-        @keyframes rotateSkills {
-            from { transform: rotateY(0deg) rotateX(0deg); }
-            to { transform: rotateY(360deg) rotateX(360deg); }
-        }
-
         /* Unique Contact Section */
         .contact-container {
             display: flex;
@@ -138,6 +66,7 @@
             margin-top: 40px;
             position: relative;
             transform-style: preserve-3d;
+            z-index: 10;
         }
         .contact-card {
             background: rgba(255,255,255,0.1);
@@ -147,19 +76,72 @@
             box-shadow: 0 0 10px rgba(0,255,255,0.2);
             transform-style: preserve-3d;
             transition: transform 0.2s ease-out;
+            z-index: 20;
         }
         .contact-card:hover {
             transform: translateZ(20px);
         }
         .contact-card h3 { color: #0ff; }
-        .contact-card form { margin-top: 20px; }
-        
+        .contact-card form { margin-top: 20px; z-index: 30; }
+        form input, form textarea, form button { z-index: 30; }
+
+        /* New Skills Section Styling (3D Flip) */
+        .skills-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 25px;
+            margin-top: 40px;
+            width: 100%;
+            max-width: 900px;
+            perspective: 1000px;
+        }
+        .skills-chip-container {
+            width: 200px;
+            height: 100px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+            cursor: pointer;
+        }
+        .skills-chip-container:hover {
+            transform: rotateY(180deg);
+        }
+        .skills-chip-container .skills-chip, .skills-chip-container .skill-description-box {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,255,255,0.2);
+        }
+        .skills-chip {
+            background: rgba(255,255,255,0.1);
+            padding: 12px 24px;
+            color: #fff;
+            border: 1px solid transparent;
+            font-weight: 500;
+        }
+        .skill-description-box {
+            background: rgba(0,0,0,0.9);
+            border: 1px solid #0ff;
+            color: #fff;
+            text-align: center;
+            padding: 15px;
+            font-size: 14px;
+            line-height: 1.4;
+            transform: rotateY(180deg);
+        }
+
         /* General styles */
         .chips { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 10px; }
         .chip { background: rgba(255,255,255,0.2); padding: 6px 14px; border-radius: 20px; font-size: 14px; color: #fff; }
-        form { display: flex; flex-direction: column; gap: 10px; max-width: 400px; width: 100%; margin: 20px auto; }
-        input, textarea { padding: 12px; border: none; border-radius: 8px; font-family: inherit; background: rgba(255,255,255,0.1); color: #fff; }
-        button { padding: 12px; background: #0ff; color: #000; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; transition: .3s; }
+        form { display: flex; flex-direction: column; gap: 10px; max-width: 400px; width: 100%; margin: 20px auto; z-index: 10; }
+        input, textarea { padding: 12px; border: none; border-radius: 8px; font-family: inherit; background: rgba(255,255,255,0.1); color: #fff; z-index: 11; }
+        button { padding: 12px; background: #0ff; color: #000; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; transition: .3s; z-index: 11; }
         button:hover { background: #fff; color: #000; }
         
         img.project-img, .modal-img { max-width: 100%; border-radius: 12px; margin-top: 12px; border: 2px solid rgba(255,255,255,0.2); }
@@ -263,74 +245,50 @@
 
     <section id="skills" class="skills">
         <h2>Skills</h2>
-        <div class="skills-container">
-            <div class="skills-cloud">
-                <div class="skills-chip-wrapper" style="--rotation-x: 10deg; --rotation-y: 25deg;">
-                    <div class="skills-chip">
-                        C++
-                        <div class="skill-description">Proficient in C++ for competitive programming and system-level applications.</div>
-                    </div>
-                </div>
-                <div class="skills-chip-wrapper" style="--rotation-x: -15deg; --rotation-y: -20deg;">
-                    <div class="skills-chip">
-                        Java
-                        <div class="skill-description">Extensive experience with Java for building robust backend services with Spring Boot.</div>
-                    </div>
-                </div>
-                <div class="skills-chip-wrapper" style="--rotation-x: 5deg; --rotation-y: 50deg;">
-                    <div class="skills-chip">
-                        JavaScript
-                        <div class="skill-description">Skilled in modern JavaScript frameworks for dynamic, interactive web experiences.</div>
-                    </div>
-                </div>
-                <div class="skills-chip-wrapper" style="--rotation-x: -25deg; --rotation-y: 10deg;">
-                    <div class="skills-chip">
-                        React
-                        <div class="skill-description">Experienced in building modern, responsive user interfaces with React.js.</div>
-                    </div>
-                </div>
-                <div class="skills-chip-wrapper" style="--rotation-x: 20deg; --rotation-y: -40deg;">
-                    <div class="skills-chip">
-                        Node.js
-                        <div class="skill-description">Strong background in building scalable server-side applications and APIs using Node.js.</div>
-                    </div>
-                </div>
-                <div class="skills-chip-wrapper" style="--rotation-x: -30deg; --rotation-y: -5deg;">
-                    <div class="skills-chip">
-                        Express
-                        <div class="skill-description">Used Express.js to create efficient and flexible RESTful APIs.</div>
-                    </div>
-                </div>
-                <div class="skills-chip-wrapper" style="--rotation-x: -5deg; --rotation-y: 35deg;">
-                    <div class="skills-chip">
-                        MySql
-                        <div class="skill-description">Expert in designing and managing relational databases with MySQL.</div>
-                    </div>
-                </div>
-                <div class="skills-chip-wrapper" style="--rotation-x: 15deg; --rotation-y: -15deg;">
-                    <div class="skills-chip">
-                        AWS
-                        <div class="skill-description">Hands-on experience with AWS services like EC2, S3, and Lambda for cloud deployments.</div>
-                    </div>
-                </div>
-                <div class="skills-chip-wrapper" style="--rotation-x: -10deg; --rotation-y: 45deg;">
-                    <div class="skills-chip">
-                        Spring Boot
-                        <div class="skill-description">Proficient in Spring Boot for creating production-grade, stand-alone applications.</div>
-                    </div>
-                </div>
-                <div class="skills-chip-wrapper" style="--rotation-x: 40deg; --rotation-y: -25deg;">
-                    <div class="skills-chip">
-                        Python
-                        <div class="skill-description">Utilized Python for data analysis, machine learning, and scripting.</div>
-                    </div>
-                </div>
-                <div class="skills-chip-wrapper" style="--rotation-x: -20deg; --rotation-y: 20deg;">
-                    <div class="skills-chip">
-                        UI/UX Design
-                        <div class="skill-description">Designed user-centric interfaces and experiences for web and mobile applications.</div>
-                    </div>
-                </div>
+        <div class="skills-grid">
+            <div class="skills-chip-container">
+                <div class="skills-chip">C++</div>
+                <div class="skill-description-box">Proficient in C++ for competitive programming and system-level applications.</div>
+            </div>
+            <div class="skills-chip-container">
+                <div class="skills-chip">Java</div>
+                <div class="skill-description-box">Extensive experience with Java for building robust backend services with Spring Boot.</div>
+            </div>
+            <div class="skills-chip-container">
+                <div class="skills-chip">JavaScript</div>
+                <div class="skill-description-box">Skilled in modern JavaScript frameworks for dynamic, interactive web experiences.</div>
+            </div>
+            <div class="skills-chip-container">
+                <div class="skills-chip">React</div>
+                <div class="skill-description-box">Experienced in building modern, responsive user interfaces with React.js.</div>
+            </div>
+            <div class="skills-chip-container">
+                <div class="skills-chip">Node.js</div>
+                <div class="skill-description-box">Strong background in building scalable server-side applications and APIs using Node.js.</div>
+            </div>
+            <div class="skills-chip-container">
+                <div class="skills-chip">Express</div>
+                <div class="skill-description-box">Used Express.js to create efficient and flexible RESTful APIs.</div>
+            </div>
+            <div class="skills-chip-container">
+                <div class="skills-chip">MySql</div>
+                <div class="skill-description-box">Expert in designing and managing relational databases with MySQL.</div>
+            </div>
+            <div class="skills-chip-container">
+                <div class="skills-chip">AWS</div>
+                <div class="skill-description-box">Hands-on experience with AWS services like EC2, S3, and Lambda for cloud deployments.</div>
+            </div>
+            <div class="skills-chip-container">
+                <div class="skills-chip">Spring Boot</div>
+                <div class="skill-description-box">Proficient in Spring Boot for creating production-grade, stand-alone applications.</div>
+            </div>
+            <div class="skills-chip-container">
+                <div class="skills-chip">Python</div>
+                <div class="skill-description-box">Utilized Python for data analysis, machine learning, and scripting.</div>
+            </div>
+            <div class="skills-chip-container">
+                <div class="skills-chip">UI/UX Design</div>
+                <div class="skill-description-box">Designed user-centric interfaces and experiences for web and mobile applications.</div>
             </div>
         </div>
     </section>
@@ -342,7 +300,7 @@
             <a class="cert-item" onclick="openModal('aws-cloud.jpeg', 'image')">AWS Cloud Foundations</a>
             <a class="cert-item" onclick="openModal('cisco cyber cert.pdf', 'pdf')">Cisco Introduction to Cybersecurity</a>
             <a class="cert-item" onclick="openModal('data analyst.jpg', 'image')">Data Analyst</a>
-            <a class="cert-item" onclick="openModal('data analyst.jpg', 'image')">GenAI Data Analyst</a>
+            <a class="cert-item" onclick="openModal('genai.jpg', 'image')">GenAI Data Analyst</a>
             <a class="cert-item" onclick="openModal('full stack.jpg', 'image')">Full Stack/MERN Developer</a>
             <a class="cert-item" onclick="openModal('azure badge.jpeg', 'image')">Microsoft Azure AI-900 Badge</a>
             <a class="cert-item" onclick="openModal('innovate x cert.jpeg', 'image')">IoT InnovateX Certification</a>
@@ -355,7 +313,7 @@
             <div class="internship-card">
                 <h3>Raspberry Pi & Node.js Workshop</h3>
                 <p>Attended a workshop at IIT Madras focused on building IoT applications using Raspberry Pi and Node.js for real-time data processing and device control.</p>
-                <p><a class="internship-link" onclick="openModal('raspberrypi cer.jpg', 'image')">View Certificate</a></p>
+                <p><a class="internship-link" onclick="openModal('respberry pi.jpeg', 'image')">View Certificate</a></p>
             </div>
             <div class="internship-card">
                 <h3>Digital Marketing Intern — Maven Advert</h3>
@@ -369,10 +327,10 @@
         <h2 style="margin-top: -100px;">Achievements & Awards</h2>
         <div class="achievements-grid">
             <div class="achievement-item">
-                <a class="achievement-link" onclick="openModal('topper cer.jpg', 'image')">Academic Recognition</a>
+                <a class="achievement-link" onclick="openModal('academic.jpg', 'image')">Academic Recognition</a>
             </div>
             <div class="achievement-item">
-                <a class="achievement-link" onclick="openModal('academic topper.jpeg', 'image')">College Recognition</a>
+                <a class="achievement-link" onclick="openModal('college.jpg', 'image')">College Recognition</a>
             </div>
         </div>
     </section>
@@ -383,7 +341,7 @@
             <div class="contact-card">
                 <h3>Get in Touch</h3>
                 <p>I'm always open to new opportunities, collaborations, and conversations. Feel free to send me a message.</p>
-                <form action="https://formspree.io/f/mwkawnyg" method="POST">
+                <form action="https://formspree.io/f/mwkawnyg" method="POST" style="z-index: 20;">
                     <input type="text" name="name" placeholder="Your Name" required>
                     <input type="email" name="email" placeholder="Your Email" required>
                     <textarea name="message" rows="4" placeholder="Your Message" required></textarea>
@@ -529,27 +487,6 @@
             });
             card.addEventListener('mouseleave', () => {
                 card.style.transform = `rotateX(0) rotateY(0)`;
-            });
-        });
-
-        // Skills Cloud Animation
-        document.addEventListener('DOMContentLoaded', () => {
-            const skillsCloud = document.querySelector('.skills-cloud');
-            const skillsChips = document.querySelectorAll('.skills-chip-wrapper');
-            const numSkills = skillsChips.length;
-            const radius = 200; // Radius of the 3D sphere
-
-            skillsChips.forEach((chip, i) => {
-                const phi = Math.acos(-1 + (2 * i + 1) / numSkills);
-                const theta = Math.sqrt(numSkills * Math.PI) * phi;
-                
-                const x = radius * Math.cos(theta) * Math.sin(phi);
-                const y = radius * Math.sin(theta) * Math.sin(phi);
-                const z = radius * Math.cos(phi);
-
-                chip.style.transform = `translate3d(${x}px, ${y}px, ${z}px) rotateX(${phi * 180 / Math.PI}deg) rotateY(${theta * 180 / Math.PI}deg)`;
-                chip.style.transition = 'transform 1s ease-out, opacity 1s ease-out';
-                chip.style.opacity = '1';
             });
         });
 
